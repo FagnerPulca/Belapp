@@ -1,2 +1,3 @@
 # Bellapp
-Projeto desenvolvido para a disciplina de projetão para o curso de Ciência da Computação
+
+Repositório do projeto Belapp para a disciplina de Projetão do curso de Bacharelado em Ciência da Computação da UFRPE-UAG
