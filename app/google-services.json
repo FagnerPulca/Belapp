@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "1048480049359",
+    "firebase_url": "https://belapp-b2a3e.firebaseio.com",
+    "project_id": "belapp-b2a3e",
+    "storage_bucket": "belapp-b2a3e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1048480049359:android:6acac0e58e69b5c2",
+        "android_client_info": {
+          "package_name": "br.com.belapp.belapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1048480049359-blqhsbiel9i4v42ljh72hhr6qfgi9mls.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "br.com.belapp.belapp",
+            "certificate_hash": "50279e6924f971e8151b804af628fcdc7611f485"
+          }
+        },
+        {
+          "client_id": "1048480049359-glk5csl5g8639fce52aaa2079n56ouh1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAWua3P_OdKpeKYcfkVWdFUTSLGBUTrmV0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1048480049359-glk5csl5g8639fce52aaa2079n56ouh1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
