@@ -28,15 +28,16 @@ android:
             - $HOME/.android/build-cache
 
     before_script:
+        - chmod +x gradlew
         - echo no | android create avd --force -n test -t android-22 --abi armeabi-v7a
         - emulator -avd test -no-window &
         - android-wait-for-emulator
         - adb shell input keyevent 82 &
 
     script: 
-        - datahora=`TZ=America/Recife date "+%A %d/%m/%Y %T"`' America/Recife'
+        - ./gradlew build connectedCheck
 
-    before_install:
-        - chmod +x gradlew
+  
+        
 
     
