@@ -37,9 +37,6 @@ android:
     script:     
         - datahora=`TZ=America/Recife date "+%A %d/%m/%Y %T"`' America/Recife'
 
-
-    before_install:
-        - gradle wrapper
         
 
     
