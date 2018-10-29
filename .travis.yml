@@ -39,7 +39,6 @@ android:
 
 
     before_install:
-        - chmod +x gradlew
         - gradle wrapper
         
 
