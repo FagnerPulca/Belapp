@@ -23,6 +23,7 @@ android:
     
     cache:
         directories:
+            - $HOME/.gradle/
             - $HOME/.gradle/caches/
             - $HOME/.gradle/wrapper/
             - $HOME/.android/build-cache
@@ -38,7 +39,7 @@ android:
 
 
     before_install:
-        - sudo chmod +x ./gradlew
+        - chmod +x gradlew
         
 
     
