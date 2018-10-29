@@ -8,11 +8,10 @@ android:
         - android-22
         
         #Componentes adicionais
-        - sys-img-armeabi-v7a-android-22
         - extra-android-m2repository
         - extra-android-support
         - extra-google-m2repository
-        - extra-google-google_play_services
+        - sys-img-armeabi-v7a-android-22
     
     licenses:
         - android-sdk-preview-license-.+
