@@ -4,20 +4,24 @@ sudo: false
 
 android:
     components:
-        - build-tools-28.0.3
-        - android-22
+        - tools
+        - platform-tools
+        - tools
+        - build-tools-22.0.1
+        - android-22 #ANDROID_API_LEVEL
+        - android-22 #ANDROID_EMULATOR_LEVEL
         
         #Componentes adicionais
-        - extra-android-m2repository
         - extra-android-support
         - extra-google-m2repository
+        - extra-android-m2repository
         - sys-img-armeabi-v7a-android-22
     
     licenses:
         - android-sdk-preview-license-.+
         - android-sdk-license-.+
         - google-gdk-license-.+
-        - '.+'    
+            
     
     before_cache:
         - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
@@ -36,7 +40,8 @@ android:
         - android-wait-for-emulator
         - adb shell input keyevent 82 &
 
-    script:     
+    script:
+        - mkdir -p build/reports
         - datahora=`TZ=America/Recife date "+%A %d/%m/%Y %T"`' America/Recife'
 
     before_install:
@@ -44,6 +49,5 @@ android:
         - echo -e "\n8933bad161af4178b1185d1a37fbf41ea5269c55" > "$ANDROID_HOME/licenses/android-sdk-license"
         - echo -e "\n84831b9409646a918e30573bab4c9c91346d8abd" > "$ANDROID_HOME/licenses/android-sdk-preview-license"
 
-        
-
-    
+    after_failure:
+        - cat $TRAVIS_BUILD_DIR/app/build/reports/lint-results.xml
