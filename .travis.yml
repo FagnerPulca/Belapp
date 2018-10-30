@@ -7,8 +7,8 @@ android:
         - tools
         - platform-tools
         - tools
-        - build-tools-22.0.1
-        - android-22 #ANDROID_API_LEVEL
+        - build-tools-28.0.2
+        - android-28 #ANDROID_API_LEVEL
         - android-22 #ANDROID_EMULATOR_LEVEL
         
         #Componentes adicionais
@@ -41,7 +41,6 @@ android:
         - adb shell input keyevent 82 &
 
     script:
-        - mkdir -p build/reports
         - datahora=`TZ=America/Recife date "+%A %d/%m/%Y %T"`' America/Recife'
 
     before_install:
@@ -49,5 +48,4 @@ android:
         - echo -e "\n8933bad161af4178b1185d1a37fbf41ea5269c55" > "$ANDROID_HOME/licenses/android-sdk-license"
         - echo -e "\n84831b9409646a918e30573bab4c9c91346d8abd" > "$ANDROID_HOME/licenses/android-sdk-preview-license"
 
-    after_failure:
-        - cat $TRAVIS_BUILD_DIR/app/build/reports/lint-results.xml
+    

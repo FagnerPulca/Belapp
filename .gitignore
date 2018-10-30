@@ -1,0 +1,32 @@
+# Arquivo de construção de aplicação
+*.apk
+*.ap_
+
+#Arquivos de classes java
+*.class
+
+# arquivos gerados
+bin/
+gen/
+out/
+
+# Arquivos Gradle
+.gradle/
+build/
+
+
+# Propriedades Locais
+local.properties
+
+# Arquivos de Log
+*.log
+
+# Interllij
+*.iml
+.idea
+
+
+# Serviçõs (ex: APIs or Firebase)
+google-services.json
+
+
