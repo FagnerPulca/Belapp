@@ -4,9 +4,9 @@ sudo: false
 
 android:
     components:
-        - build-tools-28.0.2
-        - android-28 #ANDROID_API_LEVEL
-        - android-22 #ANDROID_EMULATOR_LEVEL
+        - build-tools-22.0.1
+        - android-22 #ANDROID_API_LEVEL
+        #- android-22 #ANDROID_EMULATOR_LEVEL
         - sys-img-armeabi-v7a-android-22
        
         
@@ -17,6 +17,9 @@ android:
         
     
    licenses:
+        - android-sdk-preview-license-.+
+        - android-sdk-license-.+
+        - google-gdk-license-.+
         - '.+'
     
    before_cache:
