@@ -4,14 +4,10 @@ sudo: false
 
 android:
     components:
-        - tools
-        - platform-tools
-        - tools
-      
         - build-tools-28.0.2
         - android-28 #ANDROID_API_LEVEL
-        - android-24 #ANDROID_EMULATOR_LEVEL
-        - sys-img-armeabi-v7a-android-24
+        - android-22 #ANDROID_EMULATOR_LEVEL
+        - sys-img-armeabi-v7a-android-22
        
         
         #Componentes adicionais
@@ -24,19 +20,8 @@ android:
         - '.+'
             
     
-    before_cache:
-        - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
-        - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
-    
-    cache:
-        directories:
-            - $HOME/.gradle/
-            - $HOME/.gradle/caches/
-            - $HOME/.gradle/wrapper/
-            - $HOME/.android/build-cache
-
-    before_script:
-        - echo no | android create avd --force -n test -t android-24 --abi armeabi-v7a
+   before_script:
+        - echo no | android create avd --force -n test -t android-22 --abi armeabi-v7a
         - emulator -avd test -no-window &
         - android-wait-for-emulator
         - adb shell input keyevent 82 &
@@ -45,19 +30,9 @@ android:
         - datahora=`TZ=America/Recife date "+%A %d/%m/%Y %T"`' America/Recife'
 
     before_install:
-        - yes | sdkmanager --licenses
-        - yes | sdkmanager "platforms;android-28"
-        - echo yes | sdkmanager "extras;m2repository;com;android;support;constraint;constraint-layout;1.0.2"
-        - echo yes | sdkmanager "extras;m2repository;com;android;support;constraint;constraint-layout-solver;1.0.2"
         - mkdir "$ANDROID_HOME/licenses" || true
         - echo -e "\n8933bad161af4178b1185d1a37fbf41ea5269c55" > "$ANDROID_HOME/licenses/android-sdk-license"
         #- echo -e "\nd56f5187479451eabf01fb78af6dfcb131a6481e" > "$ANDROID_HOME/licenses/android-sdk-license"
         - echo -e "\n84831b9409646a918e30573bab4c9c91346d8abd" > "$ANDROID_HOME/licenses/android-sdk-preview-license"
     
-    install:
-      - echo y | android update sdk -u -a -t tools
-      - echo y | android update sdk -u -a -t platform-tools
-      - echo y | android update sdk -u -a -t build-tools-28.0.3
-      - echo y | android update sdk -u -a -t android-24
-      - echo y | android update sdk -u -a -t extra-google-m2repository
-      - echo y | android update sdk -u -a -t extra-android-m2repository
+   
