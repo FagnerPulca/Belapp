@@ -43,6 +43,7 @@ android:
 
     before_install:
         - chmod +x gradlew
+        - yes | sdkmanager "platforms;android-28"
 #        - yes | sdkmanager --licenses
 #        - yes | sdkmanager "platforms;android-28"
 #        - echo yes | sdkmanager "extras;m2repository;com;android;support;constraint;constraint-layout;1.0.2"
