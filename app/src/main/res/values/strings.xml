@@ -20,7 +20,14 @@
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
-    <string name="title_activity_cliente_logado">ClienteLogadoActivity</string>
-    <string name="Slongan">Sua Belesa no mehor lugar</string>
-    <string name="site">belaapp.com.br</string>
+    <string name="title_activity_cliente_logado">Categorias</string>
+    <string name="slogan">Sua Beleza no melhor lugar</string>
+    <string name="site">belapp.com.br</string>
+    <string name="button_login">Entrar</string>
+    <string name="nav_perfil">Meu perfl</string>
+    <string name="nav_notificao">Notificações</string>
+    <string name="nav_agenda">Minha agenda</string>
+    <string name="nav_favoritos">Favoritos</string>
+    <string name="nav_promocoes">Promoções</string>
+    <string name="nav_sair">Sair</string>
 </resources>
