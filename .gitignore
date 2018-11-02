@@ -1,33 +1,33 @@
-# built application files
+# Arquivo de construção de aplicação
 *.apk
 *.ap_
 
-# files for the dex VM
-*.dex
-
-# Java class files
+#Arquivos de classes java
 *.class
 
-# generated files
+# arquivos gerados
 bin/
 gen/
+out/
 
-# Local configuration file (sdk path, etc)
+# Arquivos Gradle
+.gradle/
+build/
+
+
+# Propriedades Locais
 local.properties
 
-# Eclipse project files
-.classpath
-.project
+# Arquivos de Log
+*.log
 
-# Android Studio
-.idea/
-.gradle
-/*/local.properties
-/*/out
-/*/*/build
-/*/*/production
+# Interllij
 *.iml
-*.iws
-*.ipr
-*~
-*.swp
+.idea
+
+
+# Serviçõs (ex: APIs or Firebase)
+google-services.json
+
+
+

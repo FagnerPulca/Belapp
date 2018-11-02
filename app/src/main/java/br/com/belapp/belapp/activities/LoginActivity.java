@@ -1,4 +1,4 @@
-package br.com.belapp.belapp;
+package br.com.belapp.belapp.activities;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -31,6 +31,8 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import br.com.belapp.belapp.R;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
