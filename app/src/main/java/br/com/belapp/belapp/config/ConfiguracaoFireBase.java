@@ -10,19 +10,19 @@ public class ConfiguracaoFireBase {
     private static DatabaseReference dataBaseReferece;
     private static FirebaseAuth autenticacao;
 
-    public static  DatabaseReference getFirebase(){
+    public static DatabaseReference getFirebase() {
 
-        if(dataBaseReferece == null){
+        if (dataBaseReferece == null) {
             dataBaseReferece = FirebaseDatabase.getInstance().getReference();
         }
         return dataBaseReferece;
 
     }
 
-    public static FirebaseAuth getFirebaseAutenticacao(){
+    public static FirebaseAuth getFirebaseAutenticacao() {
 
-        if(autenticacao == null){
-            autenticacao= FirebaseAuth.getInstance();
+        if (autenticacao == null) {
+            autenticacao = FirebaseAuth.getInstance();
         }
         return autenticacao;
 
