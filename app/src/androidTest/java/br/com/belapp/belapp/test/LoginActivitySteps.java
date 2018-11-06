@@ -6,8 +6,8 @@ import android.support.test.rule.ActivityTestRule;
 
 import org.junit.Rule;
 
-import br.com.belapp.belapp.LoginActivity;
 import br.com.belapp.belapp.R;
+import br.com.belapp.belapp.activities.LoginActivity;
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.And;
@@ -46,26 +46,26 @@ public class LoginActivitySteps {
     }
 
     @Given("^I am on login screen")
-    public void I_am_on_login_screen() {
+    public void iamOnLoginScreen() {
         assertNotNull(activity);
     }
 
     @When("^I input an email, test@test.com")
-    public void I_input_an_email() {
-        onView(withId(R.id.email)).perform(typeText("test@test.com"));
+    public void iInputAnEmail() {
+        onView(withId(R.id.edtEmail)).perform(typeText("test@test.com"));
     }
 
     @And("^I input a password, correctPassword")
-    public void I_input_password() {
-        onView(withId(R.id.password)).perform(typeText("correctPassword"), closeSoftKeyboard());
+    public void iInputPassword() {
+        onView(withId(R.id.edtSenha)).perform(typeText("correctPassword"), closeSoftKeyboard());
     }
     @And("^I press submit button$")
-    public void I_press_submit_button() {
-        onView(withId(R.id.email_sign_in_button)).perform(click());
+    public void iPressSubmitButton() {
+        onView(withId(R.id.btnLogar)).perform(click());
     }
 
     @Then("^I should not see auth error")
-    public void I_should_not_see_auth_error() {
+    public void iShouldNotSeeAuthError() {
         onView(withText("sucesso")).
                 inRoot(withDecorView(not(is(activity.getWindow().getDecorView())))).
                 check(matches(isDisplayed()));
