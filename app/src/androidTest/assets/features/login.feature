@@ -1,9 +1,11 @@
-Feature: Login
+#language: pt
+Funcionalidade: Login
 
   @login-feature
-  Scenario: Login
-    Given I am on login screen
-    When I input an email, test@test.com
-    And I input a password, correctPassword
-    And I press submit button
-    Then I should see auth error
+  Cenario: Login Efetuado com sucesso
+    Dado que estou na tela de login
+    Quando eu preencho o campo email teste@teste.com
+    E eu preencho o campo senha senhateste
+    E aperto o botão login
+    Entao devo ver a mensagem, Login efetuado com sucesso!
+
