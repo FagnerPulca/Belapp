@@ -64,9 +64,9 @@ public class LoginActivitySteps {
         onView(withId(R.id.btnLogar)).perform(click());
     }
 
-    @Then("^I should not see auth error")
+    @Then("^I should see auth error")
     public void iShouldNotSeeAuthError() {
-        onView(withText("sucesso")).
+        onView(withText("senha errada ou email invalido !")).
                 inRoot(withDecorView(not(is(activity.getWindow().getDecorView())))).
                 check(matches(isDisplayed()));
     }
