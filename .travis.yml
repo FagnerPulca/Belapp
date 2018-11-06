@@ -25,7 +25,7 @@ android:
     - extra-android-support
     - extra-google-m2repository
     - extra-android-m2repository
-    - sys-img-$ANDROID_ABI-google_apis-$ANDROID_EMULATOR_LEVEL
+    - sys-img-$ANDROID_ABI-android-$ANDROID_EMULATOR_LEVEL
 
 licenses:
   - android-sdk-preview-license-.+
