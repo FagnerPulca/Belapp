@@ -1,7 +1,6 @@
 language: android
 jdk: oraclejdk8
 sudo: false
-install: true
 
 env:
   global:
