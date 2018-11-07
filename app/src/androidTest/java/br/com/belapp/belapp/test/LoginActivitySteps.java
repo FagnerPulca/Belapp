@@ -2,7 +2,7 @@ package br.com.belapp.belapp.test;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.support.test.espresso.Espresso;
+
 import android.support.test.rule.ActivityTestRule;
 
 import org.junit.Rule;
@@ -11,10 +11,7 @@ import br.com.belapp.belapp.R;
 import br.com.belapp.belapp.activities.LoginActivity;
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
-import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
-import cucumber.api.java.en.Then;
-import cucumber.api.java.en.When;
 import cucumber.api.java.pt.E;
 import cucumber.api.java.pt.Entao;
 import cucumber.api.java.pt.Quando;
