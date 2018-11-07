@@ -43,6 +43,13 @@ android {
             testCoverageEnabled true
         }
     }
+
+    productFlavors {
+        flavorDimensions "default"
+        production {
+            minSdkVersion 21
+        }
+    }
 }
 
 dependencies {

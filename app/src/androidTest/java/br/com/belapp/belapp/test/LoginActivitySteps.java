@@ -2,6 +2,7 @@ package br.com.belapp.belapp.test;
 
 import android.app.Activity;
 import android.content.Intent;
+
 import android.support.test.rule.ActivityTestRule;
 
 import org.junit.Rule;
@@ -10,10 +11,10 @@ import br.com.belapp.belapp.R;
 import br.com.belapp.belapp.activities.LoginActivity;
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
-import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
-import cucumber.api.java.en.Then;
-import cucumber.api.java.en.When;
+import cucumber.api.java.pt.E;
+import cucumber.api.java.pt.Entao;
+import cucumber.api.java.pt.Quando;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
@@ -45,28 +46,29 @@ public class LoginActivitySteps {
         activityTestRule.finishActivity();
     }
 
-    @Given("^I am on login screen")
+    @Given("^que estou na tela de login")
     public void iamOnLoginScreen() {
         assertNotNull(activity);
     }
 
-    @When("^I input an email, test@test.com")
-    public void iInputAnEmail() {
-        onView(withId(R.id.edtEmail)).perform(typeText("test@test.com"));
+    @Quando("^eu preencho o campo email teste@teste.com$")
+    public void euPreenchoOCampoEmailCorretamente() {
+        onView(withId(R.id.edtEmail)).perform(typeText("teste@teste.com"));
     }
 
-    @And("^I input a password, correctPassword")
-    public void iInputPassword() {
-        onView(withId(R.id.edtSenha)).perform(typeText("correctPassword"), closeSoftKeyboard());
+    @Quando("^eu preencho o campo senha senhateste$")
+    public void euPreenchoCampoSenhaCorreta() {
+        onView(withId(R.id.edtSenha)).perform(typeText("senhateste"), closeSoftKeyboard());
     }
-    @And("^I press submit button$")
-    public void iPressSubmitButton() {
+
+    @E("^aperto o botão login$")
+    public void apertoBotaoLogin() {
         onView(withId(R.id.btnLogar)).perform(click());
     }
 
-    @Then("^I should see auth error")
-    public void iShouldNotSeeAuthError() {
-        onView(withText("senha errada ou email invalido !")).
+    @Entao("^devo ver a mensagem, Login efetuado com sucesso!$")
+    public void devoVerAMensagemLoginEfetuadoComSucesso() {
+       onView(withText("Login efetuado com sucesso!")).
                 inRoot(withDecorView(not(is(activity.getWindow().getDecorView())))).
                 check(matches(isDisplayed()));
     }

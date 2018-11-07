@@ -16,12 +16,15 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 import br.com.belapp.belapp.R;
 
 
 public class InicialActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    private FirebaseAuth logado = FirebaseAuth.getInstance();
     private TextView AbriActivityLogin;
 
     @Override
@@ -41,11 +44,16 @@ public class InicialActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-
-
-
+        //verifica se esta logado
+        isLogado();
     }
 
+    public void isLogado() {
+        if (logado.getCurrentUser() != null) {
+            abrirTelaPrincipal();
+
+        }
+    }
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -99,5 +107,12 @@ public class InicialActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public void abrirTelaPrincipal() {
+
+        Intent intentAbritPrincipal = new Intent(InicialActivity.this , ClienteLogadoActivity.class);
+        startActivity(intentAbritPrincipal);
+
     }
 }

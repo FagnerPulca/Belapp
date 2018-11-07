@@ -39,25 +39,30 @@ cache:
   - "$HOME/.android/build-cache"
 
 before_install:
-  - yes | sdkmanager "cmake;3.6.4111459"
-  - wget https://dl.google.com/android/repository/android-ndk-r18b-linux-x86_64.zip
-  - unzip android-ndk-r18b-linux-x86_64.zip -d $HOME > /dev/null
-  - export ANDROID_NDK_HOME=$HOME/android-ndk-r18b
-  - export PATH=$PATH:$ANDROID_NDK_HOME
+  - chmod +x gradlew
   - mkdir "$ANDROID_HOME/licenses" || true
+  - touch $HOME/.android/emu-update-last-check.ini
   - echo -e "\n8933bad161af4178b1185d1a37fbf41ea5269c55" > "$ANDROID_HOME/licenses/android-sdk-license"
   - echo -e "\n84831b9409646a918e30573bab4c9c91346d8abd" > "$ANDROID_HOME/licenses/android-sdk-preview-license"
 
-script:
-  - android list targets
-  - echo no | android create avd --force -n test -t "android-"$ANDROID_EMULATOR_LEVEL --abi $ANDROID_ABI --tag $ANDROID_TAG
-  - emulator -avd test -no-window &
-  - mkdir -p build/reports
-#  - ./gradlew dependencyCheckAnalyze
-  - ./gradlew assembleDebugAndroidTest -PdisablePreDex --continue --stacktrace
-  - android-wait-for-emulator
-#  - adb shell input keyevent 82 &
-  - ./gradlew connectedDebugAndroidTest -PdisablePreDex --continue --stacktrace
 
+before_script:
+    - android list targets
+    - echo no | android create avd --force -n test -t "android-"$ANDROID_EMULATOR_LEVEL --abi $ANDROID_ABI --tag $ANDROID_TAG
+    - emulator -avd test  -no-audio -no-window &
+    - android-wait-for-emulator
+
+script:
+
+
+  - mkdir -p build/reports
+#  - ./gradlew dependencyCheckAnalyze build
+  #- ./gradlew assembleDebugAndroidTest -PdisablePreDex --continue --stacktrace
+#  - android-wait-for-emulator
+  - adb shell input keyevent 82 &
+  #- ./gradlew connectedDebugAndroidTest -PdisablePreDex --continue --stacktrace
+   - datahora=`TZ=America/Recife date "+%A %d/%m/%Y %T"`' America/Recife'
+
+install: travis_wait 30
 after_failure:
 - cat $TRAVIS_BUILD_DIR/app/build/reports/lint-results.xml

@@ -14,11 +14,13 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 import br.com.belapp.belapp.R;
 
 public class ClienteLogadoActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-
+        private  FirebaseAuth logado = FirebaseAuth.getInstance();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,7 +37,13 @@ public class ClienteLogadoActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
     }
+
+
+
+
+
 
     @Override
     public void onBackPressed() {
@@ -87,6 +95,7 @@ public class ClienteLogadoActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_sair) {
 
+            logado.signOut();
             Intent intentInicialActivity = new Intent(ClienteLogadoActivity.this, InicialActivity.class);
             startActivity(intentInicialActivity );
 
@@ -96,4 +105,6 @@ public class ClienteLogadoActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+
 }

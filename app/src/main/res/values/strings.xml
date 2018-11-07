@@ -23,4 +23,6 @@
     <string name="title_activity_cliente_logado">ClienteLogadoActivity</string>
     <string name="Slongan">Sua Belesa no mehor lugar</string>
     <string name="site">belaapp.com.br</string>
+    <string name="sucess_login_efetuado">Login efetuado com sucesso!</string>
+    <string name="error_login_invalido">Senha errada ou email invalido!</string>
 </resources>
