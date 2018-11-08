@@ -91,7 +91,8 @@ public class InicialActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_cadastrar) {
-            // Handle the cadastrar action
+            Intent intentAbrirTelaCadastroBasico = new Intent(InicialActivity.this, CadastroBasicoActivity.class);
+            startActivity(intentAbrirTelaCadastroBasico);
 
         } else if (id == R.id.nav_logar) {
 
