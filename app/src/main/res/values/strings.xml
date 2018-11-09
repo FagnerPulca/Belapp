@@ -30,4 +30,10 @@
     <string name="nav_favoritos">Favoritos</string>
     <string name="nav_promocoes">Promoções</string>
     <string name="nav_sair">Sair</string>
+    <string name="button_cadastrar">Cadastrar</string>
+    <string name="success_cadastro">Cadastro realizado com sucesso</string>
+    <string name="error_cadastro">Erro ao cadastrar</string>
+    <string name="tv_ou">OU</string>
+    <string name="tv_formulario">Preencha o Formulário</string>
+
 </resources>

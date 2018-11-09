@@ -7,23 +7,23 @@
         <item
             android:id="@+id/nav_perfil"
             android:icon="@android:drawable/ic_menu_myplaces"
-            android:title="Meu Perfil" />
+            android:title="@string/nav_perfil" />
         <item
             android:id="@+id/nav_notificacao"
             android:icon="@android:drawable/ic_popup_reminder"
-            android:title="Notificações" />
+            android:title="@string/nav_notificao" />
         <item
             android:id="@+id/nav_agenda"
             android:icon="@android:drawable/ic_menu_month"
-            android:title="Minha Agenda" />
+            android:title="@string/nav_agenda" />
         <item
             android:id="@+id/nav_favoritos"
             android:icon="@android:drawable/btn_star_big_off"
-            android:title="Favoritos" />
+            android:title="@string/nav_favoritos" />
         <item
             android:id="@+id/nav_promocoes"
             android:icon="@android:drawable/ic_dialog_alert"
-            android:title="Promoções" />
+            android:title="@string/nav_promocoes" />
     </group>
 
     <item android:title="">
@@ -32,7 +32,7 @@
             <item
                 android:id="@+id/nav_sair"
                 android:icon="@drawable/ic_menu_send"
-                android:title="Sair" />
+                android:title="@string/nav_sair" />
         </menu>
     </item>
 
