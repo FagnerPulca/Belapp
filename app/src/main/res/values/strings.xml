@@ -25,4 +25,11 @@
     <string name="site">belaapp.com.br</string>
     <string name="sucess_login_efetuado">Login efetuado com sucesso!</string>
     <string name="error_login_invalido">Senha errada ou email invalido!</string>
+    <string name="tv_ou">OU</string>
+    <string name="tv_formulario">Preencha o Formulário</string>
+    <string name="button_cadastrar">Cadastrar</string>
+    <string name="et_nome">Nome</string>
+    <string name="et_email">Email</string>
+    <string name="et_telefone">Telefone</string>
+    <string name="et_senha">Senha</string>
 </resources>
