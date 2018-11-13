@@ -30,7 +30,7 @@
             android:name=".activities.ClienteLogadoActivity"
             android:label="@string/title_activity_cliente_logado"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".Busca_view"></activity>
+        <activity android:name=".activities.BuscaActivity" />
     </application>
 
 </manifest>
