@@ -1,12 +1,10 @@
 buildscript {
     repositories {
-        maven { url 'https://maven.google.com' }
         mavenCentral()
     }
 
     dependencies {
         classpath 'org.jacoco:org.jacoco.core:0.7.9'
-        classpath 'com.android.tools.build:gradle:3.2.1'
     }
 }
 
