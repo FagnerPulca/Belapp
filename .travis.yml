@@ -1,12 +1,13 @@
 language: android
 jdk: oraclejdk8
 sudo: false
+install: true
 
 env:
   global:
-    - ANDROID_API_LEVEL=28
-    - ANDROID_EMULATOR_LEVEL=25
-    - ANDROID_BUILD_TOOLS_VERSION=28.0.3
+    - ANDROID_API_LEVEL=25
+    - ANDROID_EMULATOR_LEVEL=22
+    - ANDROID_BUILD_TOOLS_VERSION=25.0.3
     - ADB_INSTALL_TIMEOUT=20
     - ANDROID_ABI=armeabi-v7a
     - ANDROID_TAG=google_apis
@@ -25,12 +26,18 @@ android:
     - extra-android-support
     - extra-google-m2repository
     - extra-android-m2repository
-    - sys-img-$ANDROID_ABI-google_apis-$ANDROID_EMULATOR_LEVEL
+    #- sys-img-$ANDROID_ABI-google_apis-$ANDROID_EMULATOR_LEVEL
+    - sys-img-armeabi-v7a-android-26
+    - sys-img-armeabi-v7a-android-22
 
 licenses:
   - android-sdk-preview-license-.+
   - android-sdk-license-.+
   - google-gdk-license-.+
+  - '.+'
+before_cache:
+    - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
+    - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
 
 cache:
   directories:
@@ -47,21 +54,21 @@ before_install:
 
 
 before_script:
-    - android list targets
-    - echo no | android create avd --force -n test -t "android-"$ANDROID_EMULATOR_LEVEL --abi $ANDROID_ABI --tag $ANDROID_TAG
-    - emulator -avd test  -no-audio -no-window &
-    - android-wait-for-emulator
+#    - android list targets
+  - echo no | android create avd --force -n test -t "android-"$ANDROID_EMULATOR_LEVEL --abi $ANDROID_ABI #--tag $ANDROID_TAG
+  - emulator -avd test  -no-audio -no-window &
+  - android-wait-for-emulator
+  - adb shell input keyevent 82 &
 
 script:
 
-
+   - datahora=`TZ=America/Recife date "+%A %d/%m/%Y %T"`' America/Recife'
   - mkdir -p build/reports
 #  - ./gradlew dependencyCheckAnalyze build
   #- ./gradlew assembleDebugAndroidTest -PdisablePreDex --continue --stacktrace
 #  - android-wait-for-emulator
   - adb shell input keyevent 82 &
-  #- ./gradlew connectedDebugAndroidTest -PdisablePreDex --continue --stacktrace
-   - datahora=`TZ=America/Recife date "+%A %d/%m/%Y %T"`' America/Recife'
+  - ./gradlew build connectedCheck -PdisablePreDex --continue --stacktrace
 
 install: travis_wait 30
 after_failure:
