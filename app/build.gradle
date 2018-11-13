@@ -5,6 +5,7 @@ buildscript {
 
     dependencies {
         classpath 'org.jacoco:org.jacoco.core:0.7.9'
+        classpath 'com.android.tools.build:gradle:3.2.1'
     }
 }
 
@@ -71,9 +72,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-core:16.0.1'
     implementation 'com.google.firebase:firebase-database:15.0.1'
     implementation 'com.google.firebase:firebase-auth:15.0.0'
-    
-    classpath 'com.android.tools.build:gradle:3.2.1'
-
+   
 }
 
 apply plugin: 'com.google.gms.google-services'
