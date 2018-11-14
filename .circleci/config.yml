@@ -29,25 +29,6 @@ jobs:
           destination: reports
       - store_test_results:
           path: app/build/test-results
-#
-      #Configurations of Firebase Test Lab
-     - run:
-         name: Assemble APKs
-         command: ./gradlew assembleAndroidTest assemble
-     - run:
-         name: Dump Google Cloud Credentials to file
-         command: echo ${GOOGLE_AUTH} > ${HOME}/gcp-key.json
-     - run: gcloud auth active-service-account --key-file ${HOME}/gcp-key.json
-     - run: gcloud --quiet config set project ${GOOGLE_PROJET_ID}
-     - run:
-         name: Configure environment
-         command: |
-           echo 'export APK_PATH=`find . -path "*.apk" ! -path "*unaligned.apk" ! -path "*Test*.apk" -print -quit`' >> $BASH_ENV
-           echo 'export TEST_APK_PATH=`find "." "-path" "*Test*.apk" -print -quit`' >> $BASH_ENV
-     - run:
-         name: Run UI Tests
-         command: gcloud firebase test android run --type instrumentation --app ${APK_PATH} --test ${TEST_APK_PATH} --device model=Nexus6P,version=27,locale=en,orientation=portrait --timeout 30m
-         no_output_timeout: 30m
 #          
       # See https://circleci.com/docs/2.0/deployment-integrations/ for deploy examples
 
