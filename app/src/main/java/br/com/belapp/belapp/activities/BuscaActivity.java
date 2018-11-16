@@ -18,6 +18,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+
 import br.com.belapp.belapp.R;
 import br.com.belapp.belapp.model.Cliente;
 import br.com.belapp.belapp.model.ConfiguracaoFireBase;
@@ -31,7 +33,7 @@ public class BuscaActivity extends AppCompatActivity {
     EditText busca_txt;
     ListView resultados_busca;
     DatabaseReference firebaseDatabase;
-    Estabelecimento estabelecimento;
+    ArrayList<Estabelecimento> estabelecimentos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +45,7 @@ public class BuscaActivity extends AppCompatActivity {
         busca_txt = (EditText)findViewById(R.id.texto_busca);
         resultados_busca = (ListView)findViewById(R.id.list_view_resultados);
 
-        busca_btn.setOnClickListener(new View.OnClickListener() {
+        /*busca_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(!busca_txt.getText().toString().equals("")){
@@ -54,10 +56,12 @@ public class BuscaActivity extends AppCompatActivity {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             if(dataSnapshot.exists()) {
-                                Estabelecimento estabelecimento = dataSnapshot.getValue(Estabelecimento.class);
+                                estabelecimentos = new ArrayList<Estabelecimento>();
+                                estabelecimentos = dataSnapshot.getValue(Estabelecimento.class);
                                 String nome = estabelecimento.getmNome();
                                 System.out.println("retorno : " + nome);
                             }
+
                         }
 
                         @Override
@@ -69,6 +73,6 @@ public class BuscaActivity extends AppCompatActivity {
                 }
 
             }
-        });
+        });*/
     }
 }
