@@ -8,9 +8,10 @@ public class Endereco {
     String mCidade;
     String mComplemento;
     String mCep;
-    String mLocalizacao;
+    double mLatitude;
+    double mLongitude;
 
-    public Endereco(String mEId, String mRua, String mNumero, String mBairro, String mCidade, String mComplemento, String mCep, String mLocalizacao) {
+    public Endereco(String mEId, String mRua, String mNumero, String mBairro, String mCidade, String mComplemento, String mCep, double mLatitude, double mLongitude) {
         this.mEId = mEId;
         this.mRua = mRua;
         this.mNumero = mNumero;
@@ -18,7 +19,24 @@ public class Endereco {
         this.mCidade = mCidade;
         this.mComplemento = mComplemento;
         this.mCep = mCep;
-        this.mLocalizacao = mLocalizacao;
+        this.mLatitude = mLatitude;
+        this.mLongitude = mLongitude;
+    }
+
+    public double getmLatitude() {
+        return mLatitude;
+    }
+
+    public void setmLatitude(double mLatitude) {
+        this.mLatitude = mLatitude;
+    }
+
+    public double getmLongitude() {
+        return mLongitude;
+    }
+
+    public void setmLongitude(double mLongitude) {
+        this.mLongitude = mLongitude;
     }
 
     public String getmEId() {
@@ -75,13 +93,5 @@ public class Endereco {
 
     public void setmCep(String mCep) {
         this.mCep = mCep;
-    }
-
-    public String getmLocalizacao() {
-        return mLocalizacao;
-    }
-
-    public void setmLocalizacao(String mLocalizacao) {
-        this.mLocalizacao = mLocalizacao;
     }
 }

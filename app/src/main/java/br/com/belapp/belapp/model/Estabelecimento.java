@@ -13,10 +13,9 @@ public class Estabelecimento {
     String mNome;
     String mTelefone;
     String mDescricao;
-    String mMediaAvaliacoes;
+    String mMediaAvaliacoes; //campo derivado
     String mGaleria;
     Endereco mEndereco;
-    String mLocalizacao;
     ArrayList<Servico> mServicos;
     ArrayList<Agenda> mAgenda;
     ArrayList<Promocoes> mPromocoes;
@@ -24,9 +23,27 @@ public class Estabelecimento {
     ArrayList<String> mAvaliacoes;
     private DatabaseReference mDataBase;
 
+    public Estabelecimento(String mEId, String mNome, String mTelefone, Endereco mEndereco, ArrayList<Servico> mServicos, ArrayList<Profissional> mProfissionais) {
+        this.mEId = mEId;
+        this.mNome = mNome;
+        this.mTelefone = mTelefone;
+        this.mEndereco = mEndereco;
+        this.mServicos = mServicos;
+        this.mProfissionais = mProfissionais;
+    }
+
+    public void addEstabelecimento2(String mEId, String mNome, String mTelefone, Endereco mEndereco,
+                                    ArrayList<Servico> mServicos, ArrayList<Profissional> mProfissionais) {
+
+        Estabelecimento estabelecimento = new Estabelecimento(mEId, mNome, mTelefone, mEndereco,
+                mServicos, mProfissionais);
+
+        mDataBase = FirebaseDatabase.getInstance().getReference();
+        mDataBase.child("estabelecimentos").push().setValue(estabelecimento);
+    }
 
     public Estabelecimento(String mEId, String mNome, String mTelefone, String mDescricao, String mMediaAvaliacoes,
-                           String mGaleria, Endereco mEndereco, String mLocalizacao, ArrayList<Servico> mServicos, ArrayList<Agenda> mAgenda,
+                           String mGaleria, Endereco mEndereco, ArrayList<Servico> mServicos, ArrayList<Agenda> mAgenda,
                            ArrayList<Promocoes> mPromocoes, ArrayList<Profissional> mProfissionais, ArrayList<String> mAvaliacoes) {
         this.mEId = mEId;
         this.mNome = mNome;
@@ -35,7 +52,6 @@ public class Estabelecimento {
         this.mMediaAvaliacoes = mMediaAvaliacoes;
         this.mGaleria = mGaleria;
         this.mEndereco = mEndereco;
-        this.mLocalizacao = mLocalizacao;
         this.mServicos = mServicos;
         this.mAgenda = mAgenda;
         this.mPromocoes = mPromocoes;
@@ -44,11 +60,11 @@ public class Estabelecimento {
     }
 
     public void addEstabelecimento(String eid, String nome, String telefone, String descricao, String mediaAvaliacoes,
-                                   String galeria, Endereco endereco, String localizacao, ArrayList<Servico> servicos_arl, ArrayList<Agenda> agenda_arl,
+                                   String galeria, Endereco endereco, ArrayList<Servico> servicos_arl, ArrayList<Agenda> agenda_arl,
                                    ArrayList<Promocoes> promocoes_arl, ArrayList<Profissional> profissionais_arl, ArrayList<String> avaliacoes_arl) {
 
         Estabelecimento estabelecimento = new Estabelecimento(eid, nome, telefone, descricao, mediaAvaliacoes,
-                galeria, endereco, localizacao, servicos_arl, agenda_arl, promocoes_arl, profissionais_arl, avaliacoes_arl);
+                galeria, endereco, servicos_arl, agenda_arl, promocoes_arl, profissionais_arl, avaliacoes_arl);
 
         mDataBase = FirebaseDatabase.getInstance().getReference();
         mDataBase.child("estabelecimentos").push().setValue(estabelecimento);
@@ -108,14 +124,6 @@ public class Estabelecimento {
 
     public void setmEndereco(Endereco mEndereco) {
         this.mEndereco = mEndereco;
-    }
-
-    public String getmLocalizacao() {
-        return mLocalizacao;
-    }
-
-    public void setmLocalizacao(String mLocalizacao) {
-        this.mLocalizacao = mLocalizacao;
     }
 
     public ArrayList<Servico> getmServicos() {
