@@ -1,6 +1,5 @@
 package br.com.belapp.belapp.model;
 
-import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -15,7 +14,7 @@ public class Estabelecimento {
     String mDescricao;
     String mMediaAvaliacoes;
     String mGaleria;
-    Endereco mEndereco;
+    String mEndereco_ID;
     String mLocalizacao;
     ArrayList<Servico> mServicos;
     ArrayList<Agenda> mAgenda;
@@ -24,17 +23,19 @@ public class Estabelecimento {
     ArrayList<String> mAvaliacoes;
     private DatabaseReference mDataBase;
 
+    public Estabelecimento() {
+    }
 
-    public Estabelecimento(String mEId, String mNome, String mTelefone, String mDescricao, String mMediaAvaliacoes,
-                           String mGaleria, Endereco mEndereco, String mLocalizacao, ArrayList<Servico> mServicos, ArrayList<Agenda> mAgenda,
+    public Estabelecimento(String mNome, String mTelefone, String mDescricao, String mMediaAvaliacoes,
+                           String mGaleria, String mEndereco, String mLocalizacao, ArrayList<Servico> mServicos, ArrayList<Agenda> mAgenda,
                            ArrayList<Promocoes> mPromocoes, ArrayList<Profissional> mProfissionais, ArrayList<String> mAvaliacoes) {
-        this.mEId = mEId;
+        //this.mEId = mEId;
         this.mNome = mNome;
         this.mTelefone = mTelefone;
         this.mDescricao = mDescricao;
         this.mMediaAvaliacoes = mMediaAvaliacoes;
         this.mGaleria = mGaleria;
-        this.mEndereco = mEndereco;
+        this.mEndereco_ID = mEndereco;
         this.mLocalizacao = mLocalizacao;
         this.mServicos = mServicos;
         this.mAgenda = mAgenda;
@@ -43,11 +44,11 @@ public class Estabelecimento {
         this.mAvaliacoes = mAvaliacoes;
     }
 
-    public void addEstabelecimento(String eid, String nome, String telefone, String descricao, String mediaAvaliacoes,
-                                   String galeria, Endereco endereco, String localizacao, ArrayList<Servico> servicos_arl, ArrayList<Agenda> agenda_arl,
+    public void addEstabelecimento(String nome, String telefone, String descricao, String mediaAvaliacoes,
+                                   String galeria, String endereco, String localizacao, ArrayList<Servico> servicos_arl, ArrayList<Agenda> agenda_arl,
                                    ArrayList<Promocoes> promocoes_arl, ArrayList<Profissional> profissionais_arl, ArrayList<String> avaliacoes_arl) {
 
-        Estabelecimento estabelecimento = new Estabelecimento(eid, nome, telefone, descricao, mediaAvaliacoes,
+        Estabelecimento estabelecimento = new Estabelecimento(nome, telefone, descricao, mediaAvaliacoes,
                 galeria, endereco, localizacao, servicos_arl, agenda_arl, promocoes_arl, profissionais_arl, avaliacoes_arl);
 
         mDataBase = FirebaseDatabase.getInstance().getReference();
@@ -102,12 +103,12 @@ public class Estabelecimento {
         this.mGaleria = mGaleria;
     }
 
-    public Endereco getmEndereco() {
-        return mEndereco;
+    public String getmEndereco_ID() {
+        return mEndereco_ID;
     }
 
-    public void setmEndereco(Endereco mEndereco) {
-        this.mEndereco = mEndereco;
+    public void setmEndereco_ID(String mEndereco_ID) {
+        this.mEndereco_ID = mEndereco_ID;
     }
 
     public String getmLocalizacao() {

@@ -1,9 +1,12 @@
 package br.com.belapp.belapp.activities;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -11,6 +14,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -21,24 +25,51 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+
+import br.com.belapp.belapp.DAO.EstabelecimentoDAO;
 import br.com.belapp.belapp.R;
+import br.com.belapp.belapp.model.Agenda;
+import br.com.belapp.belapp.model.Endereco;
+import br.com.belapp.belapp.model.Estabelecimento;
+import br.com.belapp.belapp.model.Profissional;
+import br.com.belapp.belapp.model.Promocoes;
+import br.com.belapp.belapp.model.Servico;
 import br.com.belapp.belapp.presenter.LocalizacaoCliente;
 
 
 public class InicialActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    //para pegar dados de  localização via dispositivo
+    private LocationManager locationMangaer=null;
+    private LocationListener locationListener=null;
+
+
+
+    private static final String TAG = "Debug";
+    private Boolean flag = false;
+
+
+
     private FirebaseAuth logado = FirebaseAuth.getInstance();
     private TextView AbriActivityLogin;
     ImageButton btnBarba, btnCabelo, btnDepilacao, btnOlho, btnSobrancelha, btnUnha;
     LocalizacaoCliente localCliente;
 
+    @SuppressLint("MissingPermission")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,6 +90,11 @@ public class InicialActivity extends AppCompatActivity
         //verifica se esta logado
         isLogado();
 
+        locationMangaer = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+        locationListener = new MyLocationListener();
+
+        locationMangaer.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 10,locationListener);
+
         btnBarba = findViewById(R.id.ibBarba);
         btnCabelo = findViewById(R.id.ibCabelo);
         btnDepilacao = findViewById(R.id.ibDepilacao);
@@ -67,6 +103,9 @@ public class InicialActivity extends AppCompatActivity
         btnUnha = findViewById(R.id.ibUnha);
 
         pedirPermissoes();
+//        EstabelecimentoDAO estabelecimentoDAO = new EstabelecimentoDAO();
+//        estabelecimentoDAO.inserirEstabelecimento();
+
 
         btnBarba.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,9 +133,20 @@ public class InicialActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(InicialActivity.this, SaloesActivity.class);
+                double lati = 0;
+                double longi = 0;
+                try
+                {
+                    lati = localCliente.getLatitude();
+                    longi = localCliente.getLongitude();
+                }
+                catch(Exception e)
+                {
+                    System.out.println("error-->"+e.getMessage());
+                }
                 intent.putExtra("categoria", "Depilação");
-                intent.putExtra("latitude", localCliente.getLatitude());
-                intent.putExtra("longitude", localCliente.getLongitude());
+                intent.putExtra("latitude", lati);
+                intent.putExtra("longitude", longi);
                 startActivity(intent);
                 Toast.makeText(InicialActivity.this, "Depilação", Toast.LENGTH_SHORT).show();
             }
@@ -265,5 +315,63 @@ public class InicialActivity extends AppCompatActivity
         Intent intentAbritPrincipal = new Intent(InicialActivity.this , ClienteLogadoActivity.class);
         startActivity(intentAbritPrincipal);
 
+    }
+
+
+
+    /*----------Listener class to get coordinates ------------- */
+    private class MyLocationListener implements LocationListener {
+        @Override
+        public void onLocationChanged(Location loc) {
+
+            //editLocation.setText("");
+          //  pb.setVisibility(View.INVISIBLE);
+            Toast.makeText(getBaseContext(),"Location changed : Lat: " +
+                            loc.getLatitude()+ " Lng: " + loc.getLongitude(),
+                    Toast.LENGTH_SHORT).show();
+            String longitude = "Longitude: " +loc.getLongitude();
+            Log.v(TAG, longitude);
+            String latitude = "Latitude: " +loc.getLatitude();
+            Log.v(TAG, latitude);
+
+            /*----------to get City-Name from coordinates ------------- */
+            String cityName=null;
+            Geocoder gcd = new Geocoder(getBaseContext(),
+                    Locale.getDefault());
+            List<Address> addresses;
+            try
+            {
+             addresses = gcd.getFromLocation(loc.getLatitude(), loc
+                        .getLongitude(), 1);
+                if (addresses.size() > 0)
+                    System.out.println(addresses.get(0).getLocality());
+                    cityName=addresses.get(0).getLocality();
+            }
+            catch (IOException e)
+            {
+                e.printStackTrace();
+            }
+
+            String s = longitude+"\n"+latitude +
+                    "\n\nMy Currrent City is: "+cityName;
+            //editLocation.setText(s);
+            System.out.println("localização : "+s);
+        }
+
+        @Override
+        public void onProviderDisabled(String provider) {
+            // TODO Auto-generated method stub
+        }
+
+        @Override
+        public void onProviderEnabled(String provider) {
+            // TODO Auto-generated method stub
+        }
+
+        @Override
+        public void onStatusChanged(String provider,
+                                    int status, Bundle extras) {
+            // TODO Auto-generated method stub
+        }
     }
 }

@@ -33,7 +33,8 @@ public class BuscaActivity extends AppCompatActivity {
     EditText busca_txt;
     ListView resultados_busca;
     DatabaseReference firebaseDatabase;
-    ArrayList<Estabelecimento> estabelecimentos;
+    //ArrayList<Estabelecimento> estabelecimentos;
+    Estabelecimento estabelecimento;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +46,7 @@ public class BuscaActivity extends AppCompatActivity {
         busca_txt = (EditText)findViewById(R.id.texto_busca);
         resultados_busca = (ListView)findViewById(R.id.list_view_resultados);
 
-        /*busca_btn.setOnClickListener(new View.OnClickListener() {
+        busca_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(!busca_txt.getText().toString().equals("")){
@@ -56,8 +57,9 @@ public class BuscaActivity extends AppCompatActivity {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             if(dataSnapshot.exists()) {
-                                estabelecimentos = new ArrayList<Estabelecimento>();
-                                estabelecimentos = dataSnapshot.getValue(Estabelecimento.class);
+                                //estabelecimentos = new ArrayList<Estabelecimento>();
+                                Estabelecimento estabelecimento = new Estabelecimento();
+                                estabelecimento = dataSnapshot.getValue(Estabelecimento.class);
                                 String nome = estabelecimento.getmNome();
                                 System.out.println("retorno : " + nome);
                             }
@@ -73,6 +75,6 @@ public class BuscaActivity extends AppCompatActivity {
                 }
 
             }
-        });*/
+        });
     }
 }

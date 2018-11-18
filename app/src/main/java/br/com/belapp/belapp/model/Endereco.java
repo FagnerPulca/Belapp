@@ -1,5 +1,8 @@
 package br.com.belapp.belapp.model;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 public class Endereco {
     String mEId;
     String mRua;
@@ -9,9 +12,13 @@ public class Endereco {
     String mComplemento;
     String mCep;
     String mLocalizacao;
+    private DatabaseReference mDataBase;
 
-    public Endereco(String mEId, String mRua, String mNumero, String mBairro, String mCidade, String mComplemento, String mCep, String mLocalizacao) {
-        this.mEId = mEId;
+    public Endereco() {
+    }
+
+    public Endereco(String mRua, String mNumero, String mBairro, String mCidade, String mComplemento, String mCep, String mLocalizacao) {
+        //this.mEId = mEId;
         this.mRua = mRua;
         this.mNumero = mNumero;
         this.mBairro = mBairro;
@@ -21,11 +28,21 @@ public class Endereco {
         this.mLocalizacao = mLocalizacao;
     }
 
+    public String addEndereco( Endereco end) {
+
+        mDataBase = FirebaseDatabase.getInstance().getReference();
+        DatabaseReference newPostRef = mDataBase.child("enderecos").push();
+        newPostRef.setValue(end);
+        String chave = newPostRef.getKey();
+      return chave;
+    }
+
     public String getmEId() {
         return mEId;
     }
 
     public void setmEId(String mEId) {
+        //this.mEId = mDataBase.getKey();
         this.mEId = mEId;
     }
 
@@ -85,3 +102,5 @@ public class Endereco {
         this.mLocalizacao = mLocalizacao;
     }
 }
+
+
