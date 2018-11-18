@@ -93,7 +93,7 @@ public class InicialActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_cadastrar) {
-            Intent intentAbrirTelaCadastro = new Intent(InicialActivity.this,CadastroBasicoActivity.class);
+            Intent intentAbrirTelaCadastro = new Intent(InicialActivity.this,facebookActivity.class);
             startActivity(intentAbrirTelaCadastro);
 
         } else if (id == R.id.nav_logar) {
