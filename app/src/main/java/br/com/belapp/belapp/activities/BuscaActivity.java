@@ -49,30 +49,7 @@ public class BuscaActivity extends AppCompatActivity {
         busca_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!busca_txt.getText().toString().equals("")){
 
-                    String busca_str = busca_txt.getText().toString();
-
-                    firebaseDatabase.child("estabelecimentos").push().child("nome").startAt(busca_str).addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            if(dataSnapshot.exists()) {
-                                //estabelecimentos = new ArrayList<Estabelecimento>();
-                                Estabelecimento estabelecimento = new Estabelecimento();
-                                estabelecimento = dataSnapshot.getValue(Estabelecimento.class);
-                                String nome = estabelecimento.getmNome();
-                                System.out.println("retorno : " + nome);
-                            }
-
-                        }
-
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
-                            Log.e("TAG", databaseError.getMessage());
-                        }
-                    });
-
-                }
 
             }
         });

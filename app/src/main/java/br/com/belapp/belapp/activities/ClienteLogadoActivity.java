@@ -72,30 +72,19 @@ public class ClienteLogadoActivity extends AppCompatActivity
         permissionsToRequest = findUnAskedPermissions(permissions);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-
-
             if (permissionsToRequest.size() > 0)
                 requestPermissions((String[]) permissionsToRequest.toArray(new String[permissionsToRequest.size()]), ALL_PERMISSIONS_RESULT);
         }
-
         localizao = new MyServiceLocation(ClienteLogadoActivity.this);
 
 
-
-
         if (localizao.canGetLocation()) {
-
-
             double longitude = localizao.getLongitude();
             double latitude = localizao.getLatitude();
-
             Toast.makeText(getApplicationContext(), "Longitude:" + Double.toString(longitude) + "\nLatitude:" + Double.toString(latitude), Toast.LENGTH_SHORT).show();
         } else {
-
             localizao.showSettingsAlert();
         }
-
-
 
 
         btnBarba = findViewById(R.id.ibBarba);
@@ -105,15 +94,14 @@ public class ClienteLogadoActivity extends AppCompatActivity
         btnSobrancelha = findViewById(R.id.ibSobrancelha);
         btnUnha = findViewById(R.id.ibUnha);
 
-        pedirPermissoes();
 
         btnBarba.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(ClienteLogadoActivity.this, SaloesActivity.class);
                 intent.putExtra("categoria", "Barba");
-                intent.putExtra("latitude", localCliente.getLatitude());
-                intent.putExtra("longitude", localCliente.getLongitude());
+                intent.putExtra("latitude", localizao.getLatitude());
+                intent.putExtra("longitude", localizao.getLongitude());
                 startActivity(intent);
                 Toast.makeText(ClienteLogadoActivity.this, "Barba22", Toast.LENGTH_SHORT).show();
             }
@@ -123,8 +111,8 @@ public class ClienteLogadoActivity extends AppCompatActivity
             public void onClick(View v) {
                 Intent intent = new Intent(ClienteLogadoActivity.this, SaloesActivity.class);
                 intent.putExtra("categoria", "Cabelo");
-                intent.putExtra("latitude", localCliente.getLatitude());
-                intent.putExtra("longitude", localCliente.getLongitude());
+                intent.putExtra("latitude", localizao.getLatitude());
+                intent.putExtra("longitude", localizao.getLongitude());
                 startActivity(intent);
                 Toast.makeText(ClienteLogadoActivity.this, "Cabelo", Toast.LENGTH_SHORT).show();
             }
@@ -134,8 +122,8 @@ public class ClienteLogadoActivity extends AppCompatActivity
             public void onClick(View v) {
                 Intent intent = new Intent(ClienteLogadoActivity.this, SaloesActivity.class);
                 intent.putExtra("categoria", "Depilação");
-                intent.putExtra("latitude", localCliente.getLatitude());
-                intent.putExtra("longitude", localCliente.getLongitude());
+                intent.putExtra("latitude", localizao.getLatitude());
+                intent.putExtra("longitude", localizao.getLongitude());
                 startActivity(intent);
                 Toast.makeText(ClienteLogadoActivity.this, "Depilação", Toast.LENGTH_SHORT).show();
             }
@@ -145,8 +133,8 @@ public class ClienteLogadoActivity extends AppCompatActivity
             public void onClick(View v) {
                 Intent intent = new Intent(ClienteLogadoActivity.this, SaloesActivity.class);
                 intent.putExtra("categoria", "Olho");
-                intent.putExtra("latitude", localCliente.getLatitude());
-                intent.putExtra("longitude", localCliente.getLongitude());
+                intent.putExtra("latitude", localizao.getLatitude());
+                intent.putExtra("longitude", localizao.getLongitude());
                 startActivity(intent);
                 Toast.makeText(ClienteLogadoActivity.this, "Olho", Toast.LENGTH_SHORT).show();
             }
@@ -156,8 +144,8 @@ public class ClienteLogadoActivity extends AppCompatActivity
             public void onClick(View v) {
                 Intent intent = new Intent(ClienteLogadoActivity.this, SaloesActivity.class);
                 intent.putExtra("categoria", "Sobrancelha");
-                intent.putExtra("latitude", localCliente.getLatitude());
-                intent.putExtra("longitude", localCliente.getLongitude());
+                intent.putExtra("latitude", localizao.getLatitude());
+                intent.putExtra("longitude", localizao.getLongitude());
                 startActivity(intent);
                 Toast.makeText(ClienteLogadoActivity.this, "Sobrancelha", Toast.LENGTH_SHORT).show();
             }
@@ -167,59 +155,13 @@ public class ClienteLogadoActivity extends AppCompatActivity
             public void onClick(View v) {
                 Intent intent = new Intent(ClienteLogadoActivity.this, SaloesActivity.class);
                 intent.putExtra("categoria", "Unha");
-                intent.putExtra("latitude", localCliente.getLatitude());
-                intent.putExtra("longitude", localCliente.getLongitude());
+                intent.putExtra("latitude", localizao.getLatitude());
+                intent.putExtra("longitude", localizao.getLongitude());
                 startActivity(intent);
                 Toast.makeText(ClienteLogadoActivity.this, "Unha", Toast.LENGTH_SHORT).show();
             }
         });
 
-    }
-
-    //pede permissão para usar o GPS
-    private void pedirPermissoes() {
-
-        if (ActivityCompat.checkSelfPermission(this, ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(this, ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-
-            ActivityCompat.requestPermissions(this, new String[]{ACCESS_FINE_LOCATION}, 1);
-        }
-        else
-            configurarServico();
-    }
-
-
-
-    //métodos que controlam o funcionamento do GPS
-    public void configurarServico(){
-        try {
-            LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-
-            LocationListener locationListener = new LocationListener() {
-                //roda a cada vez que a localização é atualizada
-                public void onLocationChanged(Location location) {
-                    atualizar(location);
-                }
-
-                public void onStatusChanged(String provider, int status, Bundle extras) { }
-
-                public void onProviderEnabled(String provider) { }
-
-                public void onProviderDisabled(String provider) { }
-            };
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
-        }catch(SecurityException ex){
-            Toast.makeText(this, ex.getMessage(), Toast.LENGTH_LONG).show();
-        }
-    }
-
-    //guarda a coordenadas do GPS
-    public void atualizar(Location location)
-    {
-        localCliente = new LocalizacaoCliente();
-        localCliente.setLatitude(location.getLatitude());
-        localCliente.setLongitude(location.getLongitude());
-        //Toast.makeText(this, String.valueOf(localCliente.getLatitude())+" "+String.valueOf(localCliente.getLongitude()), Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -324,7 +266,6 @@ public class ClienteLogadoActivity extends AppCompatActivity
 
                 if (permissionsRejected.size() > 0) {
 
-
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                         if (shouldShowRequestPermissionRationale((String) permissionsRejected.get(0))) {
                             showMessageOKCancel("These permissions are mandatory for the application. Please allow access.",
@@ -339,12 +280,10 @@ public class ClienteLogadoActivity extends AppCompatActivity
                             return;
                         }
                     }
-
                 }
 
                 break;
         }
-
     }
 
     private void showMessageOKCancel(String message, DialogInterface.OnClickListener okListener) {
