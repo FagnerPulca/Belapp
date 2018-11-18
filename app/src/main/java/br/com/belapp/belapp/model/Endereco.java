@@ -1,8 +1,5 @@
 package br.com.belapp.belapp.model;
 
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-
 public class Endereco {
     String mEId;
     String mRua;
@@ -13,6 +10,8 @@ public class Endereco {
     String mCep;
     String mLocalizacao;
     private DatabaseReference mDataBase;
+    double mLatitude;
+    double mLongitude;
 
     public Endereco() {
     }
@@ -42,7 +41,6 @@ public class Endereco {
     }
 
     public void setmEId(String mEId) {
-        //this.mEId = mDataBase.getKey();
         this.mEId = mEId;
     }
 
@@ -102,5 +100,3 @@ public class Endereco {
         this.mLocalizacao = mLocalizacao;
     }
 }
-
-

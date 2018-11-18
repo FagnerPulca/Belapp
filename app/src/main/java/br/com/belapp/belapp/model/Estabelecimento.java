@@ -1,5 +1,6 @@
 package br.com.belapp.belapp.model;
 
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -29,7 +30,7 @@ public class Estabelecimento {
     public Estabelecimento(String mNome, String mTelefone, String mDescricao, String mMediaAvaliacoes,
                            String mGaleria, String mEndereco, String mLocalizacao, ArrayList<Servico> mServicos, ArrayList<Agenda> mAgenda,
                            ArrayList<Promocoes> mPromocoes, ArrayList<Profissional> mProfissionais, ArrayList<String> mAvaliacoes) {
-        //this.mEId = mEId;
+        this.mEId = mEId;
         this.mNome = mNome;
         this.mTelefone = mTelefone;
         this.mDescricao = mDescricao;
@@ -103,12 +104,12 @@ public class Estabelecimento {
         this.mGaleria = mGaleria;
     }
 
-    public String getmEndereco_ID() {
-        return mEndereco_ID;
+    public Endereco getmEndereco() {
+        return mEndereco;
     }
 
-    public void setmEndereco_ID(String mEndereco_ID) {
-        this.mEndereco_ID = mEndereco_ID;
+    public void setmEndereco(Endereco mEndereco) {
+        this.mEndereco = mEndereco;
     }
 
     public String getmLocalizacao() {
