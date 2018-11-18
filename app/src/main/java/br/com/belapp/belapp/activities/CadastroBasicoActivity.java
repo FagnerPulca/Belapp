@@ -12,6 +12,9 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
+import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 
 import br.com.belapp.belapp.model.ConfiguracaoFireBase;
 import br.com.belapp.belapp.model.Cliente;
@@ -56,7 +59,7 @@ public class CadastroBasicoActivity extends AppCompatActivity {
     }
 
     //método para validar campos
-    public void validarCampos(String textoNome,  String textoEmail, String textoTelefone,String textoSenha ) {
+    public void validarCampos(String textoNome, String textoEmail, String textoTelefone, String textoSenha) {
 
         if (!textoNome.isEmpty()) {
             if (!textoEmail.isEmpty()) {
@@ -99,20 +102,36 @@ public class CadastroBasicoActivity extends AppCompatActivity {
 
         autenticacao.createUserWithEmailAndPassword(cliente.getmEmail(), cliente.getmSenha()).
                 addOnCompleteListener(CadastroBasicoActivity.this, new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful()) {
-                    Toast.makeText(CadastroBasicoActivity.this,
-                            "Sucesso ao cadastrar usuario !",
-                            Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(CadastroBasicoActivity.this,
-                            "Eroo ao cadastrar usuario  !"+cliente.getmEmail()+cliente.getmSenha(),
-                            Toast.LENGTH_SHORT).show();
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(CadastroBasicoActivity.this,
+                                    "Sucesso ao cadastrar usuario !",
+                                    Toast.LENGTH_SHORT).show();
+                        } else {
+                            //tratamento de exceções do cadastro
+                            String excecao = "";
+                            try {
+                                throw task.getException();
+                            } catch (FirebaseAuthWeakPasswordException e) {
+                                excecao = "digite uma senha mais forte";
 
-                }
-            }
-        });
+                            } catch (FirebaseAuthInvalidCredentialsException e) {
+                                excecao ="Por favor digite u email valido!";
+                            } catch (FirebaseAuthUserCollisionException e) {
+                                excecao ="já existe cadastro para esse email  ";
+                            }catch (Exception e){
+                                excecao= "Erro a cadastrar usuario"+e.getMessage();
+                                e.printStackTrace();
+                            }
+
+                                    Toast.makeText(CadastroBasicoActivity.this,
+                                            excecao,
+                                            Toast.LENGTH_SHORT).show();
+
+                        }
+                    }
+                });
     }
 
 
