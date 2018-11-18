@@ -27,6 +27,7 @@ import com.google.firebase.auth.FirebaseUser;
 import java.util.Arrays;
 
 import br.com.belapp.belapp.R;
+import br.com.belapp.belapp.model.Cliente;
 import br.com.belapp.belapp.model.ConfiguracaoFireBase;
 
 public class FacebookLoginActivity extends AppCompatActivity implements View.OnClickListener {
@@ -98,8 +99,8 @@ public class FacebookLoginActivity extends AppCompatActivity implements View.OnC
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
-                            Toast.makeText(FacebookLoginActivity.this,R.string.sucess_login_efetuado,Toast.LENGTH_SHORT).show();
                             FirebaseUser usuario = mAutenticacao.getCurrentUser();
+                            cadastrarUsuario(credencial,usuario);
                             abrirTelaPrincipal(usuario);
                         } else {
                             // If sign in fails, display a message to the user.
@@ -124,12 +125,27 @@ public class FacebookLoginActivity extends AppCompatActivity implements View.OnC
     }
 
     private void abrirTelaPrincipal(FirebaseUser usuario) {
-
         Intent intentAbritPrincipal = new Intent(FacebookLoginActivity.this, ClienteLogadoActivity.class);
-        String[] dados = new String[2];
-        dados[0] = usuario.getDisplayName();
-        dados[1] = usuario.getEmail();
-        intentAbritPrincipal.putExtra("dados",dados);
         startActivity(intentAbritPrincipal);
+    }
+
+    private void cadastrarUsuario(final AuthCredential credencial, final FirebaseUser usuario){
+        mAutenticacao.signInWithCredential(credencial)
+                .addOnCompleteListener(FacebookLoginActivity.this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if(task.isSuccessful()){
+                            //Toast.makeText(FacebookLoginActivity.this, "Sucesso ao cadastrar o usuário", Toast.LENGTH_LONG).show();
+                            //Criando cliente
+                            Cliente cliente = new Cliente();
+                            cliente.setmNome(usuario.getDisplayName());
+                            cliente.setmEmail(usuario.getEmail());
+                            //Salvar no BD
+                            cliente.salvar(usuario.getUid());
+                        } else {
+                            Toast.makeText(FacebookLoginActivity.this, task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
     }
 }
