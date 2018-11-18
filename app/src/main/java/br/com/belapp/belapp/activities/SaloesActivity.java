@@ -1,5 +1,6 @@
 package br.com.belapp.belapp.activities;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -67,6 +68,8 @@ public class SaloesActivity extends AppCompatActivity implements SalaoAdapter.It
 
     @Override
     public void onItemClicked(int index) {
+        Intent intent = new Intent(SaloesActivity.this, PagSalaoActivity.class);
+        startActivity(intent);
         Toast.makeText(this, "Salao: "+lista2.get(index).getNome(),Toast.LENGTH_SHORT).show();
     }
 }

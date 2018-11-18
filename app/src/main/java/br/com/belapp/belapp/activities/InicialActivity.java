@@ -2,7 +2,10 @@ package br.com.belapp.belapp.activities;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
@@ -10,6 +13,7 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -48,6 +52,10 @@ import br.com.belapp.belapp.model.Profissional;
 import br.com.belapp.belapp.model.Promocoes;
 import br.com.belapp.belapp.model.Servico;
 import br.com.belapp.belapp.presenter.LocalizacaoCliente;
+import br.com.belapp.belapp.servicos.MyServiceLocation;
+
+import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
+import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 
 
 public class InicialActivity extends AppCompatActivity
@@ -56,7 +64,14 @@ public class InicialActivity extends AppCompatActivity
     //para pegar dados de  localização via dispositivo
     private LocationManager locationMangaer=null;
     private LocationListener locationListener=null;
+    LocalizacaoCliente localCliente;
+    //logalização
+    MyServiceLocation localizao;
+    private ArrayList permissionsToRequest;
+    private ArrayList permissionsRejected = new ArrayList();
+    private ArrayList permissions = new ArrayList();
 
+    private final static int ALL_PERMISSIONS_RESULT = 101;
 
 
     private static final String TAG = "Debug";
@@ -67,7 +82,6 @@ public class InicialActivity extends AppCompatActivity
     private FirebaseAuth logado = FirebaseAuth.getInstance();
     private TextView AbriActivityLogin;
     ImageButton btnBarba, btnCabelo, btnDepilacao, btnOlho, btnSobrancelha, btnUnha;
-    LocalizacaoCliente localCliente;
 
     @SuppressLint("MissingPermission")
     @Override
@@ -95,6 +109,26 @@ public class InicialActivity extends AppCompatActivity
 
         locationMangaer.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 10,locationListener);
 
+        permissions.add(ACCESS_FINE_LOCATION);
+        permissions.add(ACCESS_COARSE_LOCATION);
+
+        permissionsToRequest = findUnAskedPermissions(permissions);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (permissionsToRequest.size() > 0)
+                requestPermissions((String[]) permissionsToRequest.toArray(new String[permissionsToRequest.size()]), ALL_PERMISSIONS_RESULT);
+        }
+        localizao = new MyServiceLocation(InicialActivity.this);
+
+
+        if (localizao.canGetLocation()) {
+            double longitude = localizao.getLongitude();
+            double latitude = localizao.getLatitude();
+            Toast.makeText(getApplicationContext(), "Longitude:" + Double.toString(longitude) + "\nLatitude:" + Double.toString(latitude), Toast.LENGTH_SHORT).show();
+        } else {
+            localizao.showSettingsAlert();
+        }
+
         btnBarba = findViewById(R.id.ibBarba);
         btnCabelo = findViewById(R.id.ibCabelo);
         btnDepilacao = findViewById(R.id.ibDepilacao);
@@ -102,7 +136,6 @@ public class InicialActivity extends AppCompatActivity
         btnSobrancelha = findViewById(R.id.ibSobrancelha);
         btnUnha = findViewById(R.id.ibUnha);
 
-        pedirPermissoes();
 //        EstabelecimentoDAO estabelecimentoDAO = new EstabelecimentoDAO();
 //        estabelecimentoDAO.inserirEstabelecimento();
 
@@ -112,8 +145,8 @@ public class InicialActivity extends AppCompatActivity
             public void onClick(View v) {
                 Intent intent = new Intent(InicialActivity.this, SaloesActivity.class);
                 intent.putExtra("categoria", "Barba");
-                intent.putExtra("latitude", localCliente.getLatitude());
-                intent.putExtra("longitude", localCliente.getLongitude());
+                intent.putExtra("latitude", localizao.getLatitude());
+                intent.putExtra("longitude", localizao.getLongitude());
                 startActivity(intent);
                 Toast.makeText(InicialActivity.this, "Barba", Toast.LENGTH_SHORT).show();
             }
@@ -123,8 +156,8 @@ public class InicialActivity extends AppCompatActivity
             public void onClick(View v) {
                 Intent intent = new Intent(InicialActivity.this, SaloesActivity.class);
                 intent.putExtra("categoria", "Cabelo");
-                intent.putExtra("latitude", localCliente.getLatitude());
-                intent.putExtra("longitude", localCliente.getLongitude());
+                intent.putExtra("latitude", localizao.getLatitude());
+                intent.putExtra("longitude", localizao.getLongitude());
                 startActivity(intent);
                 Toast.makeText(InicialActivity.this, "Cabelo", Toast.LENGTH_SHORT).show();
             }
@@ -133,7 +166,7 @@ public class InicialActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(InicialActivity.this, SaloesActivity.class);
-                double lati = 0;
+                /*double lati = 0;
                 double longi = 0;
                 try
                 {
@@ -143,10 +176,10 @@ public class InicialActivity extends AppCompatActivity
                 catch(Exception e)
                 {
                     System.out.println("error-->"+e.getMessage());
-                }
+                }*/
                 intent.putExtra("categoria", "Depilação");
-                intent.putExtra("latitude", lati);
-                intent.putExtra("longitude", longi);
+                intent.putExtra("latitude", localizao.getLatitude());
+                intent.putExtra("longitude", localizao.getLongitude());
                 startActivity(intent);
                 Toast.makeText(InicialActivity.this, "Depilação", Toast.LENGTH_SHORT).show();
             }
@@ -156,8 +189,8 @@ public class InicialActivity extends AppCompatActivity
             public void onClick(View v) {
                 Intent intent = new Intent(InicialActivity.this, SaloesActivity.class);
                 intent.putExtra("categoria", "Olho");
-                intent.putExtra("latitude", localCliente.getLatitude());
-                intent.putExtra("longitude", localCliente.getLongitude());
+                intent.putExtra("latitude", localizao.getLatitude());
+                intent.putExtra("longitude", localizao.getLongitude());
                 startActivity(intent);
                 Toast.makeText(InicialActivity.this, "Olho", Toast.LENGTH_SHORT).show();
             }
@@ -167,8 +200,8 @@ public class InicialActivity extends AppCompatActivity
             public void onClick(View v) {
                 Intent intent = new Intent(InicialActivity.this, SaloesActivity.class);
                 intent.putExtra("categoria", "Sobrancelha");
-                intent.putExtra("latitude", localCliente.getLatitude());
-                intent.putExtra("longitude", localCliente.getLongitude());
+                intent.putExtra("latitude", localizao.getLatitude());
+                intent.putExtra("longitude", localizao.getLongitude());
                 startActivity(intent);
                 Toast.makeText(InicialActivity.this, "Sobrancelha", Toast.LENGTH_SHORT).show();
             }
@@ -178,72 +211,12 @@ public class InicialActivity extends AppCompatActivity
             public void onClick(View v) {
                 Intent intent = new Intent(InicialActivity.this, SaloesActivity.class);
                 intent.putExtra("categoria", "Unha");
-                intent.putExtra("latitude", localCliente.getLatitude());
-                intent.putExtra("longitude", localCliente.getLongitude());
+                intent.putExtra("latitude", localizao.getLatitude());
+                intent.putExtra("longitude", localizao.getLongitude());
                 startActivity(intent);
                 Toast.makeText(InicialActivity.this, "Unha", Toast.LENGTH_SHORT).show();
             }
         });
-    }
-
-    //pede permissão para usar o GPS
-    private void pedirPermissoes() {
-
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-        }
-        else
-            configurarServico();
-    }
-
-    //trata a permissão de uso do GPS
-    @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           String permissions[], int[] grantResults) {
-        switch (requestCode) {
-            case 1: {
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    configurarServico();
-                } else {
-                    Toast.makeText(this, "Não vai funcionar!!!", Toast.LENGTH_LONG).show();
-                }
-                return;
-            }
-        }
-    }
-
-    //métodos que controlam o funcionamento do GPS
-    public void configurarServico(){
-        try {
-            LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-
-            LocationListener locationListener = new LocationListener() {
-                //roda a cada vez que a localização é atualizada
-                public void onLocationChanged(Location location) {
-                    atualizar(location);
-                }
-
-                public void onStatusChanged(String provider, int status, Bundle extras) { }
-
-                public void onProviderEnabled(String provider) { }
-
-                public void onProviderDisabled(String provider) { }
-            };
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
-        }catch(SecurityException ex){
-            Toast.makeText(this, ex.getMessage(), Toast.LENGTH_LONG).show();
-        }
-    }
-
-    //guarda a coordenadas do GPS
-    public void atualizar(Location location)
-    {
-        localCliente = new LocalizacaoCliente();
-        localCliente.setLatitude(location.getLatitude());
-        localCliente.setLongitude(location.getLongitude());
-        //Toast.makeText(this, String.valueOf(localCliente.getLatitude())+" "+String.valueOf(localCliente.getLongitude()), Toast.LENGTH_SHORT).show();
     }
 
     public void isLogado() {
@@ -373,5 +346,81 @@ public class InicialActivity extends AppCompatActivity
                                     int status, Bundle extras) {
             // TODO Auto-generated method stub
         }
+    }
+
+    private ArrayList findUnAskedPermissions(ArrayList wanted) {
+        ArrayList result = new ArrayList();
+
+        for (Object perm : wanted) {
+            if (!hasPermission((String) perm)) {
+                result.add(perm);
+            }
+        }
+
+        return result;
+    }
+
+    private boolean hasPermission(Object permission) {
+        if (canMakeSmores()) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                return (checkSelfPermission((String) permission) == PackageManager.PERMISSION_GRANTED);
+            }
+        }
+        return true;
+    }
+
+    private boolean canMakeSmores() {
+        return (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP_MR1);
+    }
+
+
+    @TargetApi(Build.VERSION_CODES.M)
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+
+        switch (requestCode) {
+
+            case ALL_PERMISSIONS_RESULT:
+                for (Object perms : permissionsToRequest) {
+                    if (!hasPermission(perms)) {
+                        permissionsRejected.add(perms);
+                    }
+                }
+
+                if (permissionsRejected.size() > 0) {
+
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        if (shouldShowRequestPermissionRationale((String) permissionsRejected.get(0))) {
+                            showMessageOKCancel("These permissions are mandatory for the application. Please allow access.",
+                                    new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                                                requestPermissions((String[]) permissionsRejected.toArray(new String[permissionsRejected.size()]), ALL_PERMISSIONS_RESULT);
+                                            }
+                                        }
+                                    });
+                            return;
+                        }
+                    }
+                }
+
+                break;
+        }
+    }
+
+    private void showMessageOKCancel(String message, DialogInterface.OnClickListener okListener) {
+        new AlertDialog.Builder(InicialActivity.this)
+                .setMessage(message)
+                .setPositiveButton("OK", okListener)
+                .setNegativeButton("Cancel", null)
+                .create()
+                .show();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        localizao.stopListener();
     }
 }
