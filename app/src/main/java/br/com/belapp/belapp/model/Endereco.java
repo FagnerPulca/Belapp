@@ -1,5 +1,8 @@
 package br.com.belapp.belapp.model;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 public class Endereco {
     String mEId;
     String mRua;

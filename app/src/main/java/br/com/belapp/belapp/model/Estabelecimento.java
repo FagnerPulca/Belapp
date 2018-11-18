@@ -104,12 +104,12 @@ public class Estabelecimento {
         this.mGaleria = mGaleria;
     }
 
-    public Endereco getmEndereco() {
-        return mEndereco;
+    public String getmEndereco_ID() {
+        return mEndereco_ID;
     }
 
-    public void setmEndereco(Endereco mEndereco) {
-        this.mEndereco = mEndereco;
+    public void setmEndereco(String mEndereco) {
+        this.mEndereco_ID = mEndereco;
     }
 
     public String getmLocalizacao() {
