@@ -16,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
 
 import br.com.belapp.belapp.R;
@@ -39,7 +40,7 @@ public class ClienteLogadoActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        personalizarCabecalho(navigationView);
+        //personalizarCabecalho(navigationView);
 
     }
 
@@ -113,6 +114,7 @@ public class ClienteLogadoActivity extends AppCompatActivity
         } else if (id == R.id.nav_sair) {
 
             logado.signOut();
+            LoginManager.getInstance().logOut();
             Intent intentInicialActivity = new Intent(ClienteLogadoActivity.this, InicialActivity.class);
             startActivity(intentInicialActivity );
 
