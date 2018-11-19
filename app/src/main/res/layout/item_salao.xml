@@ -12,8 +12,8 @@
 
         <ImageView
             android:id="@+id/ivFotoSalao"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
             android:layout_weight="1"
             app:srcCompat="@drawable/salao_teste" />
 
@@ -28,10 +28,19 @@
                 android:id="@+id/tvNomeSalao"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="TextView" />
+                android:text="TextView"
+                android:textSize="24sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/tvEnderecoSalao"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="TextView"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/tvDistancia"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="TextView" />

@@ -12,6 +12,7 @@
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
 
     <application
+        android:name=".presenter.ApplicationClass"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -35,7 +36,8 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".activities.BuscaActivity" />
         <activity android:name=".activities.SaloesActivity" />
-        <activity android:name=".activities.PagSalaoActivity"></activity>
+        <activity android:name=".activities.PagSalaoActivity" />
+        <activity android:name=".activities.FuncionariosActivity"></activity>
     </application>
 
 </manifest>

@@ -25,4 +25,7 @@
     <string name="site">belaapp.com.br</string>
     <string name="sucess_login_efetuado">Login efetuado com sucesso!</string>
     <string name="error_login_invalido">Senha errada ou email invalido!</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
