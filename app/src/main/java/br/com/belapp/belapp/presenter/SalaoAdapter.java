@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.text.BreakIterator;
 import java.util.ArrayList;
 
 import br.com.belapp.belapp.R;
@@ -31,7 +32,7 @@ public class SalaoAdapter extends RecyclerView.Adapter<SalaoAdapter.ViewHolder> 
 
     public class ViewHolder extends RecyclerView.ViewHolder{
         ImageView ivFotoSalao;
-        TextView tvNomeSalao, tvEnderecoSalao;
+        TextView tvNomeSalao, tvEnderecoSalao,tvDistancia;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
