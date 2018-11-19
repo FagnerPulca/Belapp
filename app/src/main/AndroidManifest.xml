@@ -32,9 +32,6 @@
             android:label="@string/title_activity_cliente_logado"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".activities.CadastroBasicoActivity" />
-        <activity
-            android:name=".activities.facebookActivity"
-            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation" />
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"

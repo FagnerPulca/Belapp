@@ -52,11 +52,12 @@ public class ClienteLogadoActivity extends AppCompatActivity
         TextView subtitulo = header.findViewById(R.id.tvSubtituloNavegadorLogado);
 
         FirebaseUser usuario = logado.getCurrentUser();
-
-        String nome = usuario.getDisplayName();
-        String email = usuario.getEmail();
-        if(nome != null) titulo.setText(nome);
-        if(email != null) subtitulo.setText(email);
+        if(usuario != null) {
+            String nome = usuario.getDisplayName();
+            String email = usuario.getEmail();
+            if (nome != null) titulo.setText(nome);
+            if (email != null) subtitulo.setText(email);
+        }
     }
 
 
@@ -64,7 +65,7 @@ public class ClienteLogadoActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -119,7 +120,7 @@ public class ClienteLogadoActivity extends AppCompatActivity
 
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
