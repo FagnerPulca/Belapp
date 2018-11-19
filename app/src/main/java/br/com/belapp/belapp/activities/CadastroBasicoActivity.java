@@ -24,7 +24,7 @@ import br.com.belapp.belapp.model.ConfiguracaoFireBase;
 
 public class CadastroBasicoActivity extends AppCompatActivity {
 
-    private ImageView mBotaoFacebook;
+    private ImageView mBotaoFacebook , mBotaoGoogle;
     private EditText mCampoNome, mCampoSenha, mCampoEmail, mCampoTelefone;
     private Button mBotaoCadastrar;
     private Cliente cliente;
@@ -36,6 +36,16 @@ public class CadastroBasicoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_cadastro_basico);
         //Cadastro com Facebook
         mBotaoFacebook = findViewById(R.id.ivConectarFacebook);
+        mBotaoGoogle = findViewById(R.id.ivConectarGoogle);
+
+        mBotaoGoogle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent loginGoogle = new Intent(CadastroBasicoActivity.this,GoogleLoginActivity.class);
+                startActivity(loginGoogle);
+            }
+        });
+
 
         mBotaoFacebook.setOnClickListener(new View.OnClickListener() {
             @Override

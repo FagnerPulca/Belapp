@@ -45,7 +45,8 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar"
             tools:replace="android:theme" />
         <activity android:name=".activities.FacebookLoginActivity" />
-        <activity android:name=".activities.EditarActivity"></activity>
+        <activity android:name=".activities.EditarActivity" />
+        <activity android:name=".activities.GoogleLoginActivity"></activity>
     </application>
 
 </manifest>
