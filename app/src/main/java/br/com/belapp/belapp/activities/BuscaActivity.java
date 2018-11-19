@@ -1,57 +1,82 @@
 package br.com.belapp.belapp.activities;
 
-import android.app.DownloadManager;
-import android.nfc.Tag;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
-
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
+import br.com.belapp.belapp.DAO.EstabelecimentoDAO;
 import br.com.belapp.belapp.R;
-import br.com.belapp.belapp.model.Cliente;
-import br.com.belapp.belapp.model.ConfiguracaoFireBase;
 import br.com.belapp.belapp.model.Estabelecimento;
+import br.com.belapp.belapp.presenter.ClickRecyclerView_Interface;
+import br.com.belapp.belapp.presenter.EstabelecimentoAdapter;
 
-import static android.webkit.ConsoleMessage.MessageLevel.LOG;
+public class BuscaActivity extends AppCompatActivity implements ClickRecyclerView_Interface {
 
-public class BuscaActivity extends AppCompatActivity {
+
+    private  ArrayList<Estabelecimento> listaEstabelecimentos;
+    EstabelecimentoAdapter novoadapter;
+    ListView estabelecimentos_LVW;
+    // RecyclerTesteAdapter adapter;
+   // private List<Pessoa> pessoasListas = new ArrayList<>();
+
+
 
     Button busca_btn;
-    EditText busca_txt;
-    ListView resultados_busca;
-    DatabaseReference firebaseDatabase;
-    //ArrayList<Estabelecimento> estabelecimentos;
-    Estabelecimento estabelecimento;
+
+    EstabelecimentoDAO novoEsDao;
+    String res;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_busca);
-        firebaseDatabase = FirebaseDatabase.getInstance().getReference();
 
+        listaEstabelecimentos = new ArrayList<>();
+        estabelecimentos_LVW = (ListView) findViewById(R.id.listview_resp);
         busca_btn = (Button)findViewById(R.id.buscar_btn);
-        busca_txt = (EditText)findViewById(R.id.texto_busca);
-        resultados_busca = (ListView)findViewById(R.id.list_view_resultados);
+
+        novoEsDao = new EstabelecimentoDAO();
+
+        try
+        {
+            listaEstabelecimentos = novoEsDao.getEstabelecimentos();
+        }
+        catch (Exception e)
+        {
+          System.out.println(e.getMessage());
+        }
+
+
+        //chamada da implementação de listview
+        novoadapter = new EstabelecimentoAdapter(listaEstabelecimentos, this);
+
+        estabelecimentos_LVW .setAdapter(novoadapter);
+
 
         busca_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
+                System.out.println("Tamanho do list: " + listaEstabelecimentos.size());
 
             }
         });
+
+    }
+
+    @Override
+    protected void onStart()
+    {
+      super.onStart();
+    }
+
+
+    @Override
+    public void onCustomClick(Object object) {
+
     }
 }

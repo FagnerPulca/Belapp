@@ -10,23 +10,83 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import br.com.belapp.belapp.R;
 import br.com.belapp.belapp.model.Estabelecimento;
 import br.com.belapp.belapp.model.Teste;
 
-public class SalaoAdapter extends RecyclerView.Adapter<SalaoAdapter.ViewHolder> {
+public class SalaoAdapter extends RecyclerView.Adapter<SalaoAdapter.RecyclerTesteViewHolder>
+{
 
-    private ArrayList<Teste> lista;
-    ItemClicked activity;
+    public static ClickRecyclerView_Interface clickRecyclerViewInterface;
+    Context mctx;
+    private List<Estabelecimento> mList;
+
+    public SalaoAdapter(Context ctx, List<Estabelecimento> list, ClickRecyclerView_Interface clickRecyclerViewInterface) {
+            this.mctx = ctx;
+            this.mList = list;
+            this.clickRecyclerViewInterface = clickRecyclerViewInterface;
+            }
+
+    @Override
+    public RecyclerTesteViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+            View itemView = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_salao, viewGroup, false);
+            return new RecyclerTesteViewHolder(itemView);
+            }
+
+    @Override
+    public void onBindViewHolder(RecyclerTesteViewHolder viewHolder, int i)
+    {
+            Estabelecimento novoEstabe = mList.get(i);
+
+            viewHolder.Descricao.setText(novoEstabe.getmDescricao());
+            viewHolder.viewNome.setText(novoEstabe.getmNome());
+
+    }
+
+    @Override
+    public int getItemCount()
+    {
+            return mList.size();
+    }
+
+
+    protected class RecyclerTesteViewHolder extends RecyclerView.ViewHolder
+    {
+
+        protected TextView viewNome;
+        protected TextView Descricao;
+
+        public RecyclerTesteViewHolder(final View itemView)
+        {
+            super(itemView);
+
+            viewNome = (TextView) itemView.findViewById(R.id.tvNomeSalao);
+            Descricao = (TextView) itemView.findViewById(R.id.tvEnderecoSalao);
+            //Setup the click listener
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    clickRecyclerViewInterface.onCustomClick(mList.get(getLayoutPosition()));
+
+                }
+            });
+        }
+    }
+} /*RecyclerView.Adapter<SalaoAdapter.ViewHolder> {
+
+    private ArrayList<Estabelecimento> lista;
+    Context activity;
 
     public interface ItemClicked{
         void onItemClicked(int index);
     }
 
-    public SalaoAdapter (Context context, ArrayList<Teste> list){
-        lista = list;
-        activity = (ItemClicked) context;
+    public SalaoAdapter (Context context, List<Estabelecimento> list){
+        lista = (ArrayList<Estabelecimento>) list;
+        activity =  context;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
@@ -40,12 +100,12 @@ public class SalaoAdapter extends RecyclerView.Adapter<SalaoAdapter.ViewHolder> 
             tvNomeSalao = itemView.findViewById(R.id.tvNomeSalao);
             tvEnderecoSalao = itemView.findViewById(R.id.tvEnderecoSalao);
 
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    activity.onItemClicked(lista.indexOf((Teste) v.getTag()));
-                }
-            });
+//            itemView.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    activity. (lista.indexOf((Teste) v.getTag()));
+//                }
+//            });
         }
     }
 
@@ -60,8 +120,8 @@ public class SalaoAdapter extends RecyclerView.Adapter<SalaoAdapter.ViewHolder> 
     public void onBindViewHolder(@NonNull SalaoAdapter.ViewHolder viewHolder, int i) {
         viewHolder.itemView.setTag(lista.get(i));
 
-        viewHolder.tvNomeSalao.setText(lista.get(i).getNome());
-        viewHolder.tvEnderecoSalao.setText(lista.get(i).getInfo());
+        viewHolder.tvNomeSalao.setText(lista.get(i).getmNome());
+        viewHolder.tvEnderecoSalao.setText(lista.get(i).getmDescricao());
 
         viewHolder.ivFotoSalao.setImageResource(R.drawable.salao_teste);
     }
@@ -71,3 +131,4 @@ public class SalaoAdapter extends RecyclerView.Adapter<SalaoAdapter.ViewHolder> 
         return lista.size();
     }
 }
+*/

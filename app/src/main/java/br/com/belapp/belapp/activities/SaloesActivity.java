@@ -1,6 +1,5 @@
 package br.com.belapp.belapp.activities;
 
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -8,14 +7,16 @@ import android.support.v7.widget.RecyclerView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.ArrayList;
 
 import br.com.belapp.belapp.R;
 import br.com.belapp.belapp.model.Estabelecimento;
 import br.com.belapp.belapp.model.Teste;
-import br.com.belapp.belapp.presenter.SalaoAdapter;
+import br.com.belapp.belapp.presenter.ClickRecyclerView_Interface;
 
-public class SaloesActivity extends AppCompatActivity implements SalaoAdapter.ItemClicked{
+public class SaloesActivity extends AppCompatActivity implements ClickRecyclerView_Interface {
 
     TextView tvTeste, tvLatitude, tvLongitude;
 
@@ -24,6 +25,9 @@ public class SaloesActivity extends AppCompatActivity implements SalaoAdapter.It
     RecyclerView.LayoutManager layoutManager;
     ArrayList<Teste> lista;
     ArrayList<Teste> lista2;
+    FirebaseDatabase firebaseDatabase;
+    Estabelecimento estabelecimento;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,30 +50,33 @@ public class SaloesActivity extends AppCompatActivity implements SalaoAdapter.It
 
         layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
-        lista = new ArrayList<Teste>();
-        lista2 = new ArrayList<Teste>();
-        lista.add(new Teste("00","Salao Beauty", "Barba"));
-        lista.add(new Teste("01","Salao Great", "Cabelo"));
-        lista.add(new Teste("02","Salao Beauty", "Barba"));
-        lista.add(new Teste("03","Salao Great", "Olho"));
-        lista.add(new Teste("04","Salao Beauty", "Unha"));
-        lista.add(new Teste("05","Salao Great", "Olho"));
-
-        for (int i = 0; i < ((Integer) lista.size()); i++){
-            if (lista.get(i).getCateg().equals(categoria)){
-                lista2.add(lista.get(i));
-            }
-        }
-
-        myAdapter = new SalaoAdapter(this, lista2);
-        recyclerView.setAdapter(myAdapter);
+//        lista = new ArrayList<Teste>();
+//        lista2 = new ArrayList<Teste>();
+//        lista.add(new Teste("00","Salao Beauty", "Barba"));
+//        lista.add(new Teste("01","Salao Great", "Cabelo"));
+//        lista.add(new Teste("02","Salao Beauty", "Barba"));
+//        lista.add(new Teste("03","Salao Great", "Olho"));
+//        lista.add(new Teste("04","Salao Beauty", "Unha"));
+//        lista.add(new Teste("05","Salao Great", "Olho"));
+//
+//        for (int i = 0; i < ((Integer) lista.size()); i++){
+//            if (lista.get(i).getCateg().equals(categoria)){
+//                lista2.add(lista.get(i));
+//            }
+//        }
+//
+//        myAdapter = new SalaoAdapter(this, lista2);
+//        recyclerView.setAdapter(myAdapter);
     }
 
 
+
+
     @Override
-    public void onItemClicked(int index) {
-        Intent intent = new Intent(SaloesActivity.this, PagSalaoActivity.class);
-        startActivity(intent);
-        Toast.makeText(this, "Salao: "+lista2.get(index).getNome(),Toast.LENGTH_SHORT).show();
+    public void onCustomClick(Object object)
+    {
+        Estabelecimento novo = (Estabelecimento) object;
+        String nome = novo.getmNome();
+        Toast.makeText(this, "Vc clickou em :"+nome, Toast.LENGTH_LONG).show();
     }
 }
