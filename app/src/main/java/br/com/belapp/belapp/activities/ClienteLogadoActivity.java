@@ -102,7 +102,8 @@ public class ClienteLogadoActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_perfil) {
-            // Handle the camera action
+            Intent intentEditarActivity = new Intent(ClienteLogadoActivity.this, EditarActivity.class);
+            startActivity(intentEditarActivity );
         } else if (id == R.id.nav_notificacao) {
 
         } else if (id == R.id.nav_agenda) {

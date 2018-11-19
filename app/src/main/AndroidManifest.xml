@@ -44,7 +44,8 @@
             android:label="@string/app_name"
             android:theme="@android:style/Theme.Translucent.NoTitleBar"
             tools:replace="android:theme" />
-        <activity android:name=".activities.FacebookLoginActivity"></activity>
+        <activity android:name=".activities.FacebookLoginActivity" />
+        <activity android:name=".activities.EditarActivity"></activity>
     </application>
 
 </manifest>
