@@ -103,7 +103,7 @@ public class ClienteLogadoActivity extends AppCompatActivity
                 intent.putExtra("latitude", localizao.getLatitude());
                 intent.putExtra("longitude", localizao.getLongitude());
                 startActivity(intent);
-                Toast.makeText(ClienteLogadoActivity.this, "Barba22", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ClienteLogadoActivity.this, "Barba", Toast.LENGTH_SHORT).show();
             }
         });
         btnCabelo.setOnClickListener(new View.OnClickListener() {

@@ -18,36 +18,38 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <ImageView
-            android:id="@+id/ivServicos"
+        <ImageButton
+            android:id="@+id/ibServicos"
             android:layout_width="wrap_content"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:clickable="true"
             app:srcCompat="@drawable/servicos_teste" />
 
-        <ImageView
-            android:id="@+id/ivInformacoes"
+        <ImageButton
+            android:id="@+id/ibInformacoes"
             android:layout_width="wrap_content"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:clickable="true"
             app:srcCompat="@drawable/informacoes_teste" />
 
-        <ImageView
-            android:id="@+id/ivAvaliacoes"
+        <ImageButton
+            android:id="@+id/ibAvaliacoes"
             android:layout_width="wrap_content"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:clickable="true"
             app:srcCompat="@drawable/avaliacao_teste" />
 
-        <ImageView
-            android:id="@+id/ivGaleria"
+        <ImageButton
+            android:id="@+id/ibGaleria"
             android:layout_width="wrap_content"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:clickable="true"
             app:srcCompat="@drawable/galeria_teste" />
     </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rvServicos"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
 </LinearLayout>
