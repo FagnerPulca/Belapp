@@ -37,7 +37,8 @@
         <activity android:name=".activities.BuscaActivity" />
         <activity android:name=".activities.SaloesActivity" />
         <activity android:name=".activities.PagSalaoActivity" />
-        <activity android:name=".activities.FuncionariosActivity"></activity>
+        <activity android:name=".activities.FuncionariosActivity" />
+        <activity android:name=".activities.TelaBuscaActivity"></activity>
     </application>
 
 </manifest>

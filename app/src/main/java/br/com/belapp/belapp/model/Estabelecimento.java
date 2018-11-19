@@ -15,8 +15,10 @@ public class Estabelecimento {
     String mDescricao;
     String mMediaAvaliacoes;
     String mGaleria;
-    String mEndereco_ID;
+    Endereco mEndereco_ID;
     String mLocalizacao;
+    double mLaititude;
+    double mLongitude;
     ArrayList<Servico> mServicos;
     ArrayList<Agenda> mAgenda;
     ArrayList<Promocoes> mPromocoes;
@@ -28,7 +30,8 @@ public class Estabelecimento {
     }
 
     public Estabelecimento(String mNome, String mTelefone, String mDescricao, String mMediaAvaliacoes,
-                           String mGaleria, String mEndereco, String mLocalizacao, ArrayList<Servico> mServicos, ArrayList<Agenda> mAgenda,
+                           String mGaleria, Endereco mEndereco, String mLocalizacao, double mLaititude, double mLongitude,
+                           ArrayList<Servico> mServicos, ArrayList<Agenda> mAgenda,
                            ArrayList<Promocoes> mPromocoes, ArrayList<Profissional> mProfissionais, ArrayList<String> mAvaliacoes) {
         this.mEId = mEId;
         this.mNome = mNome;
@@ -38,6 +41,8 @@ public class Estabelecimento {
         this.mGaleria = mGaleria;
         this.mEndereco_ID = mEndereco;
         this.mLocalizacao = mLocalizacao;
+        this.mLaititude = mLaititude;
+        this.mLongitude = mLongitude;
         this.mServicos = mServicos;
         this.mAgenda = mAgenda;
         this.mPromocoes = mPromocoes;
@@ -45,16 +50,16 @@ public class Estabelecimento {
         this.mAvaliacoes = mAvaliacoes;
     }
 
-    public void addEstabelecimento(String nome, String telefone, String descricao, String mediaAvaliacoes,
-                                   String galeria, String endereco, String localizacao, ArrayList<Servico> servicos_arl, ArrayList<Agenda> agenda_arl,
+    /*public void addEstabelecimento(String nome, String telefone, String descricao, String mediaAvaliacoes,
+                                   String galeria, String endereco, String localizacao, double latitude, double longitude, ArrayList<Servico> servicos_arl, ArrayList<Agenda> agenda_arl,
                                    ArrayList<Promocoes> promocoes_arl, ArrayList<Profissional> profissionais_arl, ArrayList<String> avaliacoes_arl) {
 
         Estabelecimento estabelecimento = new Estabelecimento(nome, telefone, descricao, mediaAvaliacoes,
-                galeria, endereco, localizacao, servicos_arl, agenda_arl, promocoes_arl, profissionais_arl, avaliacoes_arl);
+                galeria, endereco, localizacao, latitude, longitude, servicos_arl, agenda_arl, promocoes_arl, profissionais_arl, avaliacoes_arl);
 
         mDataBase = FirebaseDatabase.getInstance().getReference();
         mDataBase.child("estabelecimentos").push().setValue(estabelecimento);
-    }
+    }*/
 
     public String getmEId() {
         return mEId;
@@ -104,11 +109,11 @@ public class Estabelecimento {
         this.mGaleria = mGaleria;
     }
 
-    public String getmEndereco_ID() {
+    public Endereco getmEndereco_ID() {
         return mEndereco_ID;
     }
 
-    public void setmEndereco(String mEndereco) {
+    public void setmEndereco(Endereco mEndereco) {
         this.mEndereco_ID = mEndereco;
     }
 
@@ -118,6 +123,22 @@ public class Estabelecimento {
 
     public void setmLocalizacao(String mLocalizacao) {
         this.mLocalizacao = mLocalizacao;
+    }
+
+    public double getmLaititude() {
+        return mLaititude;
+    }
+
+    public void setmLaititude(double mLaititude) {
+        this.mLaititude = mLaititude;
+    }
+
+    public double getmLongitude() {
+        return mLongitude;
+    }
+
+    public void setmLongitude(double mLongitude) {
+        this.mLongitude = mLongitude;
     }
 
     public ArrayList<Servico> getmServicos() {

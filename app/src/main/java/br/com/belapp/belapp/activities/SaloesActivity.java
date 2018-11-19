@@ -10,20 +10,23 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import br.com.belapp.belapp.DAO.EstabelecimentoDAO;
 import br.com.belapp.belapp.R;
 import br.com.belapp.belapp.model.Estabelecimento;
 import br.com.belapp.belapp.model.Teste;
+import br.com.belapp.belapp.presenter.ApplicationClass;
 import br.com.belapp.belapp.presenter.SalaoAdapter;
 
 public class SaloesActivity extends AppCompatActivity implements SalaoAdapter.ItemClicked{
 
     TextView tvTeste, tvLatitude, tvLongitude;
 
+    ArrayList<Estabelecimento> estabelecimentos;
+    //EstabelecimentoDAO estabelecimentoDAO;
     RecyclerView recyclerView;
     RecyclerView.Adapter myAdapter;
     RecyclerView.LayoutManager layoutManager;
-    ArrayList<Teste> lista;
-    ArrayList<Teste> lista2;
+    //ArrayList<Estabelecimento> lista;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,22 +49,51 @@ public class SaloesActivity extends AppCompatActivity implements SalaoAdapter.It
 
         layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
-        lista = new ArrayList<Teste>();
-        lista2 = new ArrayList<Teste>();
-        lista.add(new Teste("00","Salao Beauty", "Barba"));
-        lista.add(new Teste("01","Salao Great", "Cabelo"));
-        lista.add(new Teste("02","Salao Beauty", "Barba"));
-        lista.add(new Teste("03","Salao Great", "Olho"));
-        lista.add(new Teste("04","Salao Beauty", "Unha"));
-        lista.add(new Teste("05","Salao Great", "Olho"));
 
-        for (int i = 0; i < ((Integer) lista.size()); i++){
-            if (lista.get(i).getCateg().equals(categoria)){
-                lista2.add(lista.get(i));
+        estabelecimentos = new ArrayList<>();
+        //estabelecimentoDAO = new EstabelecimentoDAO();
+
+        /*try{
+            estabelecimentos = estabelecimentoDAO.getEstabelecimentos();
+        } catch (Exception e){
+            System.out.print(e.getMessage());
+            Toast.makeText(this, "Salao: "+e.getMessage(),Toast.LENGTH_SHORT).show();
+        }*/
+
+        //lista = new ArrayList<Estabelecimento>();
+
+        if(!categoria.isEmpty()) { //apenas escolheu uma categoria
+            for (int i = 0; i < ((Integer) ApplicationClass.estabelecimentos.size()); i++) {
+                for (int j = 0; j < ApplicationClass.estabelecimentos.get(i).getmServicos().size(); j++) {
+                    if (ApplicationClass.estabelecimentos.get(i).getmServicos().get(j).getCategoria().equals(categoria)) {
+                        estabelecimentos.add(ApplicationClass.estabelecimentos.get(i));
+                        break;
+                    }
+                }
+            }
+        } else { //foi pela tela de busca
+            String servico = getIntent().getStringExtra("servico");
+            String cidade = getIntent().getStringExtra("cidade");
+            String precoMin = getIntent().getStringExtra("precoMin");
+            String precoMax = getIntent().getStringExtra("precoMax");
+
+            for (int i = 0; i < ApplicationClass.estabelecimentos.size(); i++){
+                estabelecimentos.add(ApplicationClass.estabelecimentos.get(i));
+            }
+
+            if(!servico.isEmpty()){
+                for (int i = 0; i < ApplicationClass.estabelecimentos.size(); i++){
+                    for (int j = 0; j < ApplicationClass.estabelecimentos.get(i).getmServicos().size(); j++){
+                        if (!ApplicationClass.estabelecimentos.get(i).getmServicos().get(j).getNome().equals(servico)){
+                            estabelecimentos.remove(i);
+                            break;
+                        }
+                    }
+                }
             }
         }
 
-        myAdapter = new SalaoAdapter(this, lista2);
+        myAdapter = new SalaoAdapter(this, estabelecimentos);
         recyclerView.setAdapter(myAdapter);
     }
 
@@ -69,7 +101,8 @@ public class SaloesActivity extends AppCompatActivity implements SalaoAdapter.It
     @Override
     public void onItemClicked(int index) {
         Intent intent = new Intent(SaloesActivity.this, PagSalaoActivity.class);
+        intent.putExtra("salao", estabelecimentos.get(index).getmNome());
         startActivity(intent);
-        Toast.makeText(this, "Salao: "+lista2.get(index).getNome(),Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "Salao: "+estabelecimentos.get(index).getmNome(),Toast.LENGTH_SHORT).show();
     }
 }

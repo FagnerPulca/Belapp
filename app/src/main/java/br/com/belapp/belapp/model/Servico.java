@@ -5,14 +5,26 @@ public class Servico {
     //Aqui atributos e metodos da classe
     private String mId;
     private String nome;
-    private String preco;
+    private double preco;
+    private String duracao;
     private Profissional profissionais;
+    private String categoria;
 
-    public Servico(String mId, String nome, String preco, Profissional profissionais) {
+    public Servico(String mId, String nome, double preco, String duracao, Profissional profissionais, String categoria) {
         this.mId = mId;
         this.nome = nome;
         this.preco = preco;
+        this.duracao = duracao;
         this.profissionais = profissionais;
+        this.categoria = categoria;
+    }
+
+    public String getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(String categoria) {
+        this.categoria = categoria;
     }
 
     public String getmId() {
@@ -31,11 +43,19 @@ public class Servico {
         this.nome = nome;
     }
 
-    public String getPreco() {
+    public String getDuracao() {
+        return duracao;
+    }
+
+    public void setDuracao(String duracao) {
+        this.duracao = duracao;
+    }
+
+    public double getPreco() {
         return preco;
     }
 
-    public void setPreco(String preco) {
+    public void setPreco(double preco) {
         this.preco = preco;
     }
 

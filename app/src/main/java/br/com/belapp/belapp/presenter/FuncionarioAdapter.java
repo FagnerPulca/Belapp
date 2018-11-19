@@ -12,19 +12,20 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import br.com.belapp.belapp.R;
+import br.com.belapp.belapp.model.Profissional;
 import br.com.belapp.belapp.model.Teste;
 
 public class FuncionarioAdapter extends RecyclerView.Adapter<FuncionarioAdapter.ViewHolder> {
 
-    private ArrayList<Teste> lista;
+    private ArrayList<Profissional> profissionais;
     ItemClicked activity;
 
     public interface ItemClicked{
         void onItemClicked(int index);
     }
 
-    public FuncionarioAdapter (Context context, ArrayList<Teste> list){
-        lista = list;
+    public FuncionarioAdapter (Context context, ArrayList<Profissional> list){
+        profissionais = list;
         activity = (ItemClicked) context;
     }
 
@@ -44,7 +45,7 @@ public class FuncionarioAdapter extends RecyclerView.Adapter<FuncionarioAdapter.
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    activity.onItemClicked(lista.indexOf((Teste) v.getTag()));
+                    activity.onItemClicked(profissionais.indexOf((Profissional) v.getTag()));
                 }
             });
         }
@@ -59,15 +60,19 @@ public class FuncionarioAdapter extends RecyclerView.Adapter<FuncionarioAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull FuncionarioAdapter.ViewHolder viewHolder, int i) {
-        viewHolder.itemView.setTag(lista.get(i));
+        viewHolder.itemView.setTag(profissionais.get(i));
 
-        viewHolder.tvPreco.setText("R$ "+lista.get(i).getInfo());
-        viewHolder.tvNome.setText("Nome: "+lista.get(i).getNome());
+        for (int j = 0; j < ApplicationClass.servicos.size(); j++){
+            if (ApplicationClass.servicos.get(j).getProfissionais().getmId().equals(profissionais.get(i).getmId())){
+                viewHolder.tvPreco.setText("R$ "+ApplicationClass.servicos.get(j).getPreco());
+            }
+        }
+        viewHolder.tvNome.setText("Nome: "+profissionais.get(i).getNome());
         viewHolder.ivProfissional.setImageResource(R.drawable.profissional_teste);
     }
 
     @Override
     public int getItemCount() {
-        return lista.size();
+        return profissionais.size();
     }
 }

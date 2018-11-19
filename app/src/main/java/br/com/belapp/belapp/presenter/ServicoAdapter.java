@@ -11,14 +11,15 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import br.com.belapp.belapp.R;
+import br.com.belapp.belapp.model.Servico;
 import br.com.belapp.belapp.model.Teste;
 
 public class ServicoAdapter extends RecyclerView.Adapter<ServicoAdapter.ViewHolder> {
 
-    private ArrayList<Teste> testes;
+    private ArrayList<Servico> testes;
     ItemClicked activity;
 
-    public ServicoAdapter(Context context, ArrayList<Teste> list){
+    public ServicoAdapter(Context context, ArrayList<Servico> list){
         testes = list;
         activity = (ItemClicked) context;
     }
@@ -40,7 +41,7 @@ public class ServicoAdapter extends RecyclerView.Adapter<ServicoAdapter.ViewHold
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    activity.onItemClicked(testes.indexOf((Teste) v.getTag()));
+                    activity.onItemClicked(testes.indexOf((Servico) v.getTag()));
                 }
             });
         }
@@ -59,8 +60,8 @@ public class ServicoAdapter extends RecyclerView.Adapter<ServicoAdapter.ViewHold
         viewHolder.itemView.setTag(testes.get(i));
 
         viewHolder.tvServico.setText(testes.get(i).getNome());
-        viewHolder.tvPreco.setText("R$ "+testes.get(i).getInfo());
-        viewHolder.tvDuracao.setText("Duração"+testes.get(i).getCateg());
+        viewHolder.tvPreco.setText("R$ "+testes.get(i).getPreco());
+        viewHolder.tvDuracao.setText("Duração: "+testes.get(i).getDuracao());
 
     }
 

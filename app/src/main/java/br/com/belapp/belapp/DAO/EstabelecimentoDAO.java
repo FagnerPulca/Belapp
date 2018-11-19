@@ -21,7 +21,7 @@ public class EstabelecimentoDAO {
     public EstabelecimentoDAO() {
     }
 
-    public void inserirEstabelecimento()
+    /*public void inserirEstabelecimento()
     {
         Endereco endereco = new Endereco("Av Santo Antonio", "150", "Centro","Garanhuns","","55333-000",
                 "L1234560");
@@ -36,10 +36,10 @@ public class EstabelecimentoDAO {
 
         Estabelecimento est = new Estabelecimento();
         est.addEstabelecimento("Salão Glamour", "8755555555", "Tudo que você precisa em um só lugar ", "5",
-                "foto.pnj", end, "L123456",servicos, agenda, promocoes, profissionais,avaliacoes);
+                "foto.pnj", end, "L123456", -8, -37, servicos, agenda, promocoes, profissionais,avaliacoes);
 
      }
-
+*/
      public ArrayList<Estabelecimento> getEstabelecimentos()
      {
          firebaseDatabase = FirebaseDatabase.getInstance();

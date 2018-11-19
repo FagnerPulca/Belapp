@@ -190,7 +190,8 @@ public class ClienteLogadoActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            return true;
+            Intent intetAbrirTelaLogin = new Intent(ClienteLogadoActivity.this, TelaBuscaActivity.class);
+            startActivity(intetAbrirTelaLogin);
         }
 
         return super.onOptionsItemSelected(item);

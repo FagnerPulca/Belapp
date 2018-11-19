@@ -77,8 +77,6 @@ public class InicialActivity extends AppCompatActivity
     private static final String TAG = "Debug";
     private Boolean flag = false;
 
-
-
     private FirebaseAuth logado = FirebaseAuth.getInstance();
     private TextView AbriActivityLogin;
     ImageButton btnBarba, btnCabelo, btnDepilacao, btnOlho, btnSobrancelha, btnUnha;
@@ -138,6 +136,7 @@ public class InicialActivity extends AppCompatActivity
 
 //        EstabelecimentoDAO estabelecimentoDAO = new EstabelecimentoDAO();
 //        estabelecimentoDAO.inserirEstabelecimento();
+
 
 
         btnBarba.setOnClickListener(new View.OnClickListener() {
@@ -252,7 +251,7 @@ public class InicialActivity extends AppCompatActivity
         //noinspection SimplifiableIfStatement
         if (id == R.id.app_bar_search) {
 
-            Intent intetAbrirTelaLogin = new Intent(InicialActivity.this, BuscaActivity.class);
+            Intent intetAbrirTelaLogin = new Intent(InicialActivity.this, TelaBuscaActivity.class);
             startActivity(intetAbrirTelaLogin);
 
         }

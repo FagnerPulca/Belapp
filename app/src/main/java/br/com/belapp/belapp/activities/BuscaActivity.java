@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -52,16 +53,18 @@ public class BuscaActivity extends AppCompatActivity implements ClickRecyclerVie
 
 
         //chamada da implementação de listview
-        novoadapter = new EstabelecimentoAdapter(listaEstabelecimentos, this);
+        /*novoadapter = new EstabelecimentoAdapter(listaEstabelecimentos, this);
 
-        estabelecimentos_LVW .setAdapter(novoadapter);
+        estabelecimentos_LVW .setAdapter(novoadapter);*/
 
 
         busca_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                System.out.println("Tamanho do list: " + listaEstabelecimentos.size());
+                Toast.makeText(BuscaActivity.this, "Tamanho do list: " + listaEstabelecimentos.get(0).getmDescricao(), Toast.LENGTH_SHORT).show();
+
+                //System.out.println("Tamanho do list: " + listaEstabelecimentos.size());
 
             }
         });

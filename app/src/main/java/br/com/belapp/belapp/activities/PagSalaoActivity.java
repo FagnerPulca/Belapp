@@ -10,7 +10,10 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 import br.com.belapp.belapp.R;
+import br.com.belapp.belapp.model.Servico;
 import br.com.belapp.belapp.presenter.ApplicationClass;
 import br.com.belapp.belapp.presenter.ServicoAdapter;
 
@@ -21,6 +24,7 @@ public class PagSalaoActivity extends AppCompatActivity implements ServicoAdapte
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
     RecyclerView.Adapter myAdapter;
+    ArrayList<Servico> servicos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +43,20 @@ public class PagSalaoActivity extends AppCompatActivity implements ServicoAdapte
         layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
 
-        myAdapter = new ServicoAdapter(this, ApplicationClass.testes);
+        String salao = getIntent().getStringExtra("salao");
+        servicos = new ArrayList<Servico>();
+
+
+        for (int i = 0; i < ApplicationClass.estabelecimentos.size(); i++){
+            if (ApplicationClass.estabelecimentos.get(i).getmNome().equals(salao)){
+                Toast.makeText(this, "Salao: "+ApplicationClass.estabelecimentos.get(i).getmServicos().size(),Toast.LENGTH_SHORT).show();
+                for (int j = 0; j < ApplicationClass.estabelecimentos.get(i).getmServicos().size(); j++){
+                    servicos.add(ApplicationClass.estabelecimentos.get(i).getmServicos().get(j));
+                }
+            }
+        }
+
+        myAdapter = new ServicoAdapter(this, servicos);
         recyclerView.setAdapter(myAdapter);
 
     }
@@ -47,7 +64,8 @@ public class PagSalaoActivity extends AppCompatActivity implements ServicoAdapte
     @Override
     public void onItemClicked(int index) {
         Intent intent = new Intent(PagSalaoActivity.this, FuncionariosActivity.class);
+        intent.putExtra("servico", servicos.get(index).getmId());
         startActivity(intent);
-        Toast.makeText(this, "Salao: "+ApplicationClass.testes.get(index).getNome(),Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Salao: "+servicos.get(index).getNome(),Toast.LENGTH_SHORT).show();
     }
 }

@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.text.BreakIterator;
 import java.util.ArrayList;
 
 import br.com.belapp.belapp.R;
@@ -18,21 +17,21 @@ import br.com.belapp.belapp.model.Teste;
 
 public class SalaoAdapter extends RecyclerView.Adapter<SalaoAdapter.ViewHolder> {
 
-    private ArrayList<Teste> lista;
+    private ArrayList<Estabelecimento> lista;
     ItemClicked activity;
 
     public interface ItemClicked{
         void onItemClicked(int index);
     }
 
-    public SalaoAdapter (Context context, ArrayList<Teste> list){
+    public SalaoAdapter (Context context, ArrayList<Estabelecimento> list){
         lista = list;
         activity = (ItemClicked) context;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
         ImageView ivFotoSalao;
-        TextView tvNomeSalao, tvEnderecoSalao,tvDistancia;
+        TextView tvNomeSalao, tvEnderecoSalao, tvDistancia;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -40,11 +39,12 @@ public class SalaoAdapter extends RecyclerView.Adapter<SalaoAdapter.ViewHolder> 
             ivFotoSalao = itemView.findViewById(R.id.ivFotoSalao);
             tvNomeSalao = itemView.findViewById(R.id.tvNomeSalao);
             tvEnderecoSalao = itemView.findViewById(R.id.tvEnderecoSalao);
+            tvDistancia = itemView.findViewById(R.id.tvDistancia);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    activity.onItemClicked(lista.indexOf((Teste) v.getTag()));
+                    activity.onItemClicked(lista.indexOf((Estabelecimento) v.getTag()));
                 }
             });
         }
@@ -61,9 +61,9 @@ public class SalaoAdapter extends RecyclerView.Adapter<SalaoAdapter.ViewHolder> 
     public void onBindViewHolder(@NonNull SalaoAdapter.ViewHolder viewHolder, int i) {
         viewHolder.itemView.setTag(lista.get(i));
 
-        viewHolder.tvNomeSalao.setText(lista.get(i).getNome());
-        viewHolder.tvEnderecoSalao.setText("Endereço: "+lista.get(i).getInfo());
-        viewHolder.tvDistancia.setText("Distância: "+lista.get(i).getCateg());
+        viewHolder.tvNomeSalao.setText(lista.get(i).getmNome());
+        viewHolder.tvEnderecoSalao.setText("Endereço: "+lista.get(i).getmTelefone());
+        viewHolder.tvDistancia.setText("Distância: "+lista.get(i).getmLocalizacao());
 
         viewHolder.ivFotoSalao.setImageResource(R.drawable.salao_teste);
     }
