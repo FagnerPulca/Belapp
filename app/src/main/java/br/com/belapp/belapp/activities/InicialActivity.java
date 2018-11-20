@@ -252,6 +252,8 @@ public class InicialActivity extends AppCompatActivity
         if (id == R.id.app_bar_search) {
 
             Intent intetAbrirTelaLogin = new Intent(InicialActivity.this, TelaBuscaActivity.class);
+            intetAbrirTelaLogin.putExtra("latitude", localizao.getLatitude());
+            intetAbrirTelaLogin.putExtra("longitude", localizao.getLongitude());
             startActivity(intetAbrirTelaLogin);
 
         }

@@ -38,6 +38,10 @@ public class SaloesActivity extends AppCompatActivity implements SalaoAdapter.It
         tvLongitude = findViewById(R.id.tvLongitude);
 
         String categoria = getIntent().getStringExtra("categoria");
+        String servico = getIntent().getStringExtra("servico");
+        String cidade = getIntent().getStringExtra("cidade");
+        double preco = getIntent().getDoubleExtra("preco",0);
+
         double latitude = getIntent().getDoubleExtra("latitude", -8);
         double longitude = getIntent().getDoubleExtra("longitude", -36);
         tvTeste.setText(categoria);
@@ -71,23 +75,32 @@ public class SaloesActivity extends AppCompatActivity implements SalaoAdapter.It
                     }
                 }
             }
-        } else { //foi pela tela de busca
-            String servico = getIntent().getStringExtra("servico");
-            String cidade = getIntent().getStringExtra("cidade");
-            String precoMin = getIntent().getStringExtra("precoMin");
-            String precoMax = getIntent().getStringExtra("precoMax");
-
-            for (int i = 0; i < ApplicationClass.estabelecimentos.size(); i++){
-                estabelecimentos.add(ApplicationClass.estabelecimentos.get(i));
-            }
-
-            if(!servico.isEmpty()){
-                for (int i = 0; i < ApplicationClass.estabelecimentos.size(); i++){
-                    for (int j = 0; j < ApplicationClass.estabelecimentos.get(i).getmServicos().size(); j++){
-                        if (!ApplicationClass.estabelecimentos.get(i).getmServicos().get(j).getNome().equals(servico)){
-                            estabelecimentos.remove(i);
+        } else if (!servico.isEmpty() && cidade.isEmpty()){ //foi pela tela de busca
+            Toast.makeText(SaloesActivity.this, servico, Toast.LENGTH_SHORT).show();
+            for (int i = 0; i < ((Integer) ApplicationClass.estabelecimentos.size()); i++) {
+                for (int j = 0; j < ApplicationClass.estabelecimentos.get(i).getmServicos().size(); j++) {
+                    if (ApplicationClass.estabelecimentos.get(i).getmServicos().get(j).getNome().equals(servico)) {
+                            estabelecimentos.add(ApplicationClass.estabelecimentos.get(i));
                             break;
-                        }
+                    }
+                }
+            }
+        } else if (!cidade.isEmpty() && servico.isEmpty()){
+            for (int i = 0; i < ((Integer) ApplicationClass.estabelecimentos.size()); i++) {
+                for (int j = 0; j < ApplicationClass.estabelecimentos.get(i).getmServicos().size(); j++) {
+                    if (ApplicationClass.estabelecimentos.get(i).getmEndereco_ID().getmCidade().equals(cidade)) {
+                        estabelecimentos.add(ApplicationClass.estabelecimentos.get(i));
+                        break;
+                    }
+                }
+            }
+        } else {
+            for (int i = 0; i < ((Integer) ApplicationClass.estabelecimentos.size()); i++) {
+                for (int j = 0; j < ApplicationClass.estabelecimentos.get(i).getmServicos().size(); j++) {
+                    if (ApplicationClass.estabelecimentos.get(i).getmServicos().get(j).getNome().equals(servico) &&
+                            ApplicationClass.estabelecimentos.get(i).getmEndereco_ID().getmCidade().equals(cidade)) {
+                        estabelecimentos.add(ApplicationClass.estabelecimentos.get(i));
+                        break;
                     }
                 }
             }

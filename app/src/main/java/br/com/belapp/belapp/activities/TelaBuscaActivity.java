@@ -13,8 +13,10 @@ import br.com.belapp.belapp.R;
 
 public class TelaBuscaActivity extends AppCompatActivity {
 
-    EditText etServico, etCidade, etPrecoMin, etPrecoMax;
+    EditText etServico, etCidade, etPreco;
     Button btnBuscar;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,23 +25,23 @@ public class TelaBuscaActivity extends AppCompatActivity {
 
         etServico = findViewById(R.id.etServico);
         etCidade = findViewById(R.id.etCidade);
-        etPrecoMin = findViewById(R.id.etPrecoMin);
-        etPrecoMax = findViewById(R.id.etPrecoMax);
         btnBuscar = findViewById(R.id.btnBuscar);
 
         btnBuscar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String servico = etServico.getText().toString().trim();
-                String cidade = etServico.getText().toString().trim();
-                String precoMin = etPrecoMin.getText().toString().trim();
-                String precoMax = etPrecoMax.getText().toString().trim();
+                String cidade = etCidade.getText().toString().trim();
+
+                double latitude = getIntent().getDoubleExtra("latitude", -8);
+                double longitude = getIntent().getDoubleExtra("longitude", -36);
 
                 Intent intent = new Intent(TelaBuscaActivity.this, SaloesActivity.class);
                 intent.putExtra("servico", servico);
                 intent.putExtra("cidade", cidade);
-                intent.putExtra("precoMin", precoMin);
-                intent.putExtra("precoMax", precoMax);
+                intent.putExtra("latitude", latitude);
+                intent.putExtra("longitude", longitude);
+                intent.putExtra("categoria", "");
                 startActivity(intent);
             }
         });
