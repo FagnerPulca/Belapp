@@ -13,6 +13,8 @@
     <string name="error_atualizar_perfil">Erro ao atualizar perfil</string>
     <string name="error_nome_nao_pode_ser_vazio">Campo nome não pode ser deixado em branco!</string>
     <string name="error_email_nao_pode_ser_vazio">Campo e-mail não pode ser deixado em branco!</string>
+    <string name="error_telefone_nao_pode_ser_vazio">Campo telefone não pode ser deixado em branco!</string>
+    <string name="error_telefone_invalido">O telefone informado não é válido!</string>
     <string name="error_email_invalido">O e-mail informado não é válido!</string>
 
     <string name="permission_rationale">"Contacts permissions are needed for providing email

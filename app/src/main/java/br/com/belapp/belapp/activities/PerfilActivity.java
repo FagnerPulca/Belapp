@@ -24,7 +24,6 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.Objects;
 
 import br.com.belapp.belapp.R;
-import br.com.belapp.belapp.database.utils.FirebaseUtils;
 import br.com.belapp.belapp.exceptions.ValidationException;
 import br.com.belapp.belapp.model.Cliente;
 import br.com.belapp.belapp.utils.StringUtils;
@@ -144,7 +143,7 @@ public class PerfilActivity extends AppCompatActivity {
 
     @Override
     public boolean onSupportNavigateUp() {
-        // TODO: Verificar se ha alteracoes
+        // TODO: Verificar se ha alteracoes antes de voltar
         onBackPressed();
         return true;
     }
@@ -226,6 +225,12 @@ public class PerfilActivity extends AppCompatActivity {
         }
         if(!StringUtils.isEmailValido(mEtEmail.getText().toString())){
             throw new ValidationException(getString(R.string.error_email_invalido));
+        }
+        if(mEtTelefone.getText().toString().equalsIgnoreCase("")){
+            throw new ValidationException(getString(R.string.error_telefone_nao_pode_ser_vazio));
+        }
+        if(mEtTelefone.getText().toString().length() != 11){
+            throw new ValidationException(getString(R.string.error_telefone_invalido));
         }
     }
 
