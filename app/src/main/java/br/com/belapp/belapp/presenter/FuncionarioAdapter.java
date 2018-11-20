@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import br.com.belapp.belapp.R;
@@ -60,11 +61,12 @@ public class FuncionarioAdapter extends RecyclerView.Adapter<FuncionarioAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull FuncionarioAdapter.ViewHolder viewHolder, int i) {
+        DecimalFormat df2 = new DecimalFormat(".##");
         viewHolder.itemView.setTag(profissionais.get(i));
 
         for (int j = 0; j < ApplicationClass.servicos.size(); j++){
             if (ApplicationClass.servicos.get(j).getProfissionais().getmId().equals(profissionais.get(i).getmId())){
-                viewHolder.tvPreco.setText("R$ "+ApplicationClass.servicos.get(j).getPreco());
+                viewHolder.tvPreco.setText("R$ "+df2.format(ApplicationClass.servicos.get(j).getPreco()));
             }
         }
         viewHolder.tvNome.setText("Nome: "+profissionais.get(i).getNome());

@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import br.com.belapp.belapp.R;
@@ -57,10 +58,11 @@ public class ServicoAdapter extends RecyclerView.Adapter<ServicoAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull ServicoAdapter.ViewHolder viewHolder, int i) {
+        DecimalFormat df2 = new DecimalFormat(".##");
         viewHolder.itemView.setTag(testes.get(i));
 
         viewHolder.tvServico.setText(testes.get(i).getNome());
-        viewHolder.tvPreco.setText("R$ "+testes.get(i).getPreco());
+        viewHolder.tvPreco.setText("R$ "+df2.format(testes.get(i).getPreco()));
         viewHolder.tvDuracao.setText("Duração: "+testes.get(i).getDuracao());
 
     }

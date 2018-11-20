@@ -19,7 +19,7 @@ import br.com.belapp.belapp.presenter.ServicoAdapter;
 
 public class PagSalaoActivity extends AppCompatActivity implements ServicoAdapter.ItemClicked {
 
-    ImageButton ibServicos, ibInformacoes, ibAvaliacoes, ibGaleria;
+    ImageButton ibServicos, ibInformacoes, ibAvaliacoes;
     ImageView ivFotoSalao;
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
@@ -33,7 +33,6 @@ public class PagSalaoActivity extends AppCompatActivity implements ServicoAdapte
 
         ibServicos = findViewById(R.id.ibServicos);
         ibInformacoes = findViewById(R.id.ibInformacoes);
-        ibGaleria = findViewById(R.id.ibGaleria);
         ibAvaliacoes = findViewById(R.id.ibAvaliacoes);
         ivFotoSalao = findViewById(R.id.ivFotoSalao);
 
@@ -46,15 +45,7 @@ public class PagSalaoActivity extends AppCompatActivity implements ServicoAdapte
         String salao = getIntent().getStringExtra("salao");
         servicos = new ArrayList<Servico>();
 
-
-        for (int i = 0; i < ApplicationClass.estabelecimentos.size(); i++){
-            if (ApplicationClass.estabelecimentos.get(i).getmNome().equals(salao)){
-                //Toast.makeText(this, "Salao: "+ApplicationClass.estabelecimentos.get(i).getmServicos().size(),Toast.LENGTH_SHORT).show();
-                for (int j = 0; j < ApplicationClass.estabelecimentos.get(i).getmServicos().size(); j++){
-                    servicos.add(ApplicationClass.estabelecimentos.get(i).getmServicos().get(j));
-                }
-            }
-        }
+        selServicos(salao);
 
         myAdapter = new ServicoAdapter(this, servicos);
         recyclerView.setAdapter(myAdapter);
@@ -67,5 +58,16 @@ public class PagSalaoActivity extends AppCompatActivity implements ServicoAdapte
         intent.putExtra("servico", servicos.get(index).getmId());
         startActivity(intent);
         Toast.makeText(this, "Salao: "+servicos.get(index).getNome(),Toast.LENGTH_SHORT).show();
+    }
+
+    private void selServicos (String salao){
+        for (int i = 0; i < ApplicationClass.estabelecimentos.size(); i++){
+            if (ApplicationClass.estabelecimentos.get(i).getmNome().equals(salao)){
+                //Toast.makeText(this, "Salao: "+ApplicationClass.estabelecimentos.get(i).getmServicos().size(),Toast.LENGTH_SHORT).show();
+                for (int j = 0; j < ApplicationClass.estabelecimentos.get(i).getmServicos().size(); j++){
+                    servicos.add(ApplicationClass.estabelecimentos.get(i).getmServicos().get(j));
+                }
+            }
+        }
     }
 }

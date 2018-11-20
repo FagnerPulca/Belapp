@@ -39,12 +39,6 @@
             android:layout_weight="1"
             app:srcCompat="@drawable/avaliacao_teste" />
 
-        <ImageButton
-            android:id="@+id/ibGaleria"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            app:srcCompat="@drawable/galeria_teste" />
     </LinearLayout>
 
     <android.support.v7.widget.RecyclerView

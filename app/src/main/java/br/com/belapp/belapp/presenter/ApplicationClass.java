@@ -52,10 +52,10 @@ public class ApplicationClass extends Application {
         profissionais.add(new Profissional("04","Fulano", "ABC", "Sim"));
 
         servicos = new ArrayList<Servico>();
-        servicos.add(new Servico("01", "Corte simples", 10.00, "30",profissionais.get(0), "Cabelo"));
-        servicos.add(new Servico("02", "Corte channel", 15.00, "30",profissionais.get(1), "Cabelo"));
-        servicos.add(new Servico("03", "Alisamento", 20.00, "1:00",profissionais.get(2), "Cabelo"));
-        servicos.add(new Servico("04", "Pintura", 16.00, "30",profissionais.get(3), "Unha"));
+        servicos.add(new Servico("01", "Corte simples", 10, "30 min",profissionais.get(0), "Cabelo"));
+        servicos.add(new Servico("02", "Corte channel", 15, "30 min",profissionais.get(1), "Cabelo"));
+        servicos.add(new Servico("03", "Alisamento", 20, "1:00 Hr",profissionais.get(2), "Cabelo"));
+        servicos.add(new Servico("04", "Pintura", 16, "30 min",profissionais.get(3), "Unha"));
 
         enderecos = new ArrayList<Endereco>();
         enderecos.add(new Endereco("Rua X", "11", "Boa Vista", "Garanhuns", "", "55292-000", "L123456"));
@@ -104,6 +104,8 @@ public class ApplicationClass extends Application {
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
         double dist = earthRadius * c;
 
-        return dist * 1000; //em metros
+        return dist; //Km
     }
+
+
 }

@@ -35,19 +35,12 @@ public class SaloesActivity extends AppCompatActivity implements SalaoAdapter.It
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_saloes);
 
-        tvTeste = findViewById(R.id.tvTeste);
-        tvLatitude = findViewById(R.id.tvLatitude);
-        tvLongitude = findViewById(R.id.tvLongitude);
-
         String categoria = getIntent().getStringExtra("categoria");
         String servico = getIntent().getStringExtra("servico");
         String cidade = getIntent().getStringExtra("cidade");
 
         double latitude = getIntent().getDoubleExtra("latitude", -8);
         double longitude = getIntent().getDoubleExtra("longitude", -36);
-        tvTeste.setText(categoria);
-        tvLatitude.setText(String.valueOf(latitude));
-        tvLongitude.setText(String.valueOf(longitude));
 
         recyclerView = findViewById(R.id.rvSaloes);
         recyclerView.setHasFixedSize(true);
@@ -67,44 +60,7 @@ public class SaloesActivity extends AppCompatActivity implements SalaoAdapter.It
 
         //lista = new ArrayList<Estabelecimento>();
 
-        if(!categoria.isEmpty()) { //apenas escolheu uma categoria
-            for (int i = 0; i < ((Integer) ApplicationClass.estabelecimentos.size()); i++) {
-                for (int j = 0; j < ApplicationClass.estabelecimentos.get(i).getmServicos().size(); j++) {
-                    if (ApplicationClass.estabelecimentos.get(i).getmServicos().get(j).getCategoria().equals(categoria)) {
-                        estabelecimentos.add(ApplicationClass.estabelecimentos.get(i));
-                        break;
-                    }
-                }
-            }
-        } else if (!servico.isEmpty() && cidade.isEmpty()){ //foi pela tela de busca
-            for (int i = 0; i < ((Integer) ApplicationClass.estabelecimentos.size()); i++) {
-                for (int j = 0; j < ApplicationClass.estabelecimentos.get(i).getmServicos().size(); j++) {
-                    if (ApplicationClass.estabelecimentos.get(i).getmServicos().get(j).getNome().equals(servico)) {
-                            estabelecimentos.add(ApplicationClass.estabelecimentos.get(i));
-                            break;
-                    }
-                }
-            }
-        } else if (!cidade.isEmpty() && servico.isEmpty()){
-            for (int i = 0; i < ((Integer) ApplicationClass.estabelecimentos.size()); i++) {
-                for (int j = 0; j < ApplicationClass.estabelecimentos.get(i).getmServicos().size(); j++) {
-                    if (ApplicationClass.estabelecimentos.get(i).getmEndereco_ID().getmCidade().equals(cidade)) {
-                        estabelecimentos.add(ApplicationClass.estabelecimentos.get(i));
-                        break;
-                    }
-                }
-            }
-        } else {
-            for (int i = 0; i < ((Integer) ApplicationClass.estabelecimentos.size()); i++) {
-                for (int j = 0; j < ApplicationClass.estabelecimentos.get(i).getmServicos().size(); j++) {
-                    if (ApplicationClass.estabelecimentos.get(i).getmServicos().get(j).getNome().equals(servico) &&
-                            ApplicationClass.estabelecimentos.get(i).getmEndereco_ID().getmCidade().equals(cidade)) {
-                        estabelecimentos.add(ApplicationClass.estabelecimentos.get(i));
-                        break;
-                    }
-                }
-            }
-        }
+        selEstabelecimentos(categoria, servico, cidade);
 
         for (int i = 0; i < estabelecimentos.size(); i++){
             estabelecimentos.get(i).setDistancia(ApplicationClass.calculaDistancia(latitude, longitude,
@@ -128,5 +84,47 @@ public class SaloesActivity extends AppCompatActivity implements SalaoAdapter.It
         intent.putExtra("salao", estabelecimentos.get(index).getmNome());
         startActivity(intent);
         Toast.makeText(this, getString(R.string.servicos),Toast.LENGTH_SHORT).show();
+    }
+
+    private void selEstabelecimentos(String categoria, String servico, String cidade){
+
+        if(!categoria.isEmpty()) { //apenas escolheu uma categoria
+            for (int i = 0; i < ((Integer) ApplicationClass.estabelecimentos.size()); i++) {
+                for (int j = 0; j < ApplicationClass.estabelecimentos.get(i).getmServicos().size(); j++) {
+                    if (ApplicationClass.estabelecimentos.get(i).getmServicos().get(j).getCategoria().equals(categoria)) {
+                        estabelecimentos.add(ApplicationClass.estabelecimentos.get(i));
+                        break;
+                    }
+                }
+            }
+        } else if (!servico.isEmpty() && cidade.isEmpty()){ //foi pela tela de busca
+            for (int i = 0; i < ((Integer) ApplicationClass.estabelecimentos.size()); i++) {
+                for (int j = 0; j < ApplicationClass.estabelecimentos.get(i).getmServicos().size(); j++) {
+                    if (ApplicationClass.estabelecimentos.get(i).getmServicos().get(j).getNome().equals(servico)) {
+                        estabelecimentos.add(ApplicationClass.estabelecimentos.get(i));
+                        break;
+                    }
+                }
+            }
+        } else if (!cidade.isEmpty() && servico.isEmpty()){
+            for (int i = 0; i < ((Integer) ApplicationClass.estabelecimentos.size()); i++) {
+                for (int j = 0; j < ApplicationClass.estabelecimentos.get(i).getmServicos().size(); j++) {
+                    if (ApplicationClass.estabelecimentos.get(i).getmEndereco_ID().getmCidade().equals(cidade)) {
+                        estabelecimentos.add(ApplicationClass.estabelecimentos.get(i));
+                        break;
+                    }
+                }
+            }
+        } else {
+            for (int i = 0; i < ((Integer) ApplicationClass.estabelecimentos.size()); i++) {
+                for (int j = 0; j < ApplicationClass.estabelecimentos.get(i).getmServicos().size(); j++) {
+                    if (ApplicationClass.estabelecimentos.get(i).getmServicos().get(j).getNome().equals(servico) &&
+                            ApplicationClass.estabelecimentos.get(i).getmEndereco_ID().getmCidade().equals(cidade)) {
+                        estabelecimentos.add(ApplicationClass.estabelecimentos.get(i));
+                        break;
+                    }
+                }
+            }
+        }
     }
 }
