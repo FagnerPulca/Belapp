@@ -9,6 +9,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import br.com.belapp.belapp.DAO.EstabelecimentoDAO;
 import br.com.belapp.belapp.R;
@@ -40,7 +42,6 @@ public class SaloesActivity extends AppCompatActivity implements SalaoAdapter.It
         String categoria = getIntent().getStringExtra("categoria");
         String servico = getIntent().getStringExtra("servico");
         String cidade = getIntent().getStringExtra("cidade");
-        double preco = getIntent().getDoubleExtra("preco",0);
 
         double latitude = getIntent().getDoubleExtra("latitude", -8);
         double longitude = getIntent().getDoubleExtra("longitude", -36);
@@ -105,6 +106,17 @@ public class SaloesActivity extends AppCompatActivity implements SalaoAdapter.It
                 }
             }
         }
+
+        for (int i = 0; i < estabelecimentos.size(); i++){
+            estabelecimentos.get(i).setDistancia(ApplicationClass.calculaDistancia(latitude, longitude,
+                    estabelecimentos.get(i).getmLaititude(), estabelecimentos.get(i).getmLongitude()));
+        }
+        Collections.sort(estabelecimentos, new Comparator<Estabelecimento>() {
+            @Override
+            public int compare(Estabelecimento o1, Estabelecimento o2) {
+                return Double.compare(o1.getDistancia(), o2.getDistancia());
+            }
+        });
 
         myAdapter = new SalaoAdapter(this, estabelecimentos);
         recyclerView.setAdapter(myAdapter);

@@ -84,14 +84,14 @@ public class ApplicationClass extends Application {
 
         estabelecimentos = new ArrayList<Estabelecimento>();
         estabelecimentos.add(new Estabelecimento("Salão Beauty", "58964712", "Sua beleza em 1º lugar", "5", "Gal",
-                enderecos.get(0), "123", -9, -37, subServicos1, agenda, promocoes, subProfissionais1, avaliacoes));
+                enderecos.get(0), "123", -9, -37, subServicos1, agenda, promocoes, subProfissionais1, avaliacoes,0));
         estabelecimentos.add(new Estabelecimento("Salão Great", "58966574", "Sua beleza é prioridade", "5", "Gal",
-                enderecos.get(1), "123", -8.5, -37, subServicos2, agenda, promocoes, subProfissionais2, avaliacoes));
+                enderecos.get(1), "123", -8.5, -37, subServicos2, agenda, promocoes, subProfissionais2, avaliacoes, 0));
         estabelecimentos.add(new Estabelecimento("Salão Maximum", "58964712", "ABC", "5", "Gal",
-                enderecos.get(2), "123", -9, -39, subServicos3, agenda, promocoes, subProfissionais3, avaliacoes));
+                enderecos.get(2), "123", -9, -39, subServicos3, agenda, promocoes, subProfissionais3, avaliacoes,0));
     }
 
-    private double calculaDistancia(double lat1, double lng1, double lat2, double lng2) {
+    public static double calculaDistancia(double lat1, double lng1, double lat2, double lng2) {
         //double earthRadius = 3958.75;//miles
         double earthRadius = 6371;//kilometers
         double dLat = Math.toRadians(lat2 - lat1);

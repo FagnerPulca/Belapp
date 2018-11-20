@@ -62,8 +62,8 @@ public class SalaoAdapter extends RecyclerView.Adapter<SalaoAdapter.ViewHolder> 
         viewHolder.itemView.setTag(lista.get(i));
 
         viewHolder.tvNomeSalao.setText(lista.get(i).getmNome());
-        viewHolder.tvEnderecoSalao.setText("Endereço: "+lista.get(i).getmTelefone());
-        viewHolder.tvDistancia.setText("Distância: "+lista.get(i).getmLocalizacao());
+        viewHolder.tvEnderecoSalao.setText("Endereço: "+lista.get(i).getmEndereco_ID().getmCidade());
+        viewHolder.tvDistancia.setText("Distância: "+lista.get(i).getDistancia());
 
         viewHolder.ivFotoSalao.setImageResource(R.drawable.salao_teste);
     }

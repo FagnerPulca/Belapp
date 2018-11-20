@@ -6,7 +6,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
-public class Estabelecimento {
+public class Estabelecimento{
 
     //Aqui atributos e metodos da classe
     String mEId;
@@ -24,6 +24,7 @@ public class Estabelecimento {
     ArrayList<Promocoes> mPromocoes;
     ArrayList<Profissional> mProfissionais;
     ArrayList<String> mAvaliacoes;
+    private double distancia;
     private DatabaseReference mDataBase;
 
     public Estabelecimento() {
@@ -32,7 +33,7 @@ public class Estabelecimento {
     public Estabelecimento(String mNome, String mTelefone, String mDescricao, String mMediaAvaliacoes,
                            String mGaleria, Endereco mEndereco, String mLocalizacao, double mLaititude, double mLongitude,
                            ArrayList<Servico> mServicos, ArrayList<Agenda> mAgenda,
-                           ArrayList<Promocoes> mPromocoes, ArrayList<Profissional> mProfissionais, ArrayList<String> mAvaliacoes) {
+                           ArrayList<Promocoes> mPromocoes, ArrayList<Profissional> mProfissionais, ArrayList<String> mAvaliacoes, double distancia) {
         this.mEId = mEId;
         this.mNome = mNome;
         this.mTelefone = mTelefone;
@@ -48,6 +49,7 @@ public class Estabelecimento {
         this.mPromocoes = mPromocoes;
         this.mProfissionais = mProfissionais;
         this.mAvaliacoes = mAvaliacoes;
+        this.distancia = distancia;
     }
 
     /*public void addEstabelecimento(String nome, String telefone, String descricao, String mediaAvaliacoes,
@@ -60,6 +62,14 @@ public class Estabelecimento {
         mDataBase = FirebaseDatabase.getInstance().getReference();
         mDataBase.child("estabelecimentos").push().setValue(estabelecimento);
     }*/
+
+    public double getDistancia() {
+        return distancia;
+    }
+
+    public void setDistancia(double distancia) {
+        this.distancia = distancia;
+    }
 
     public String getmEId() {
         return mEId;
@@ -184,4 +194,5 @@ public class Estabelecimento {
     public void setmDataBase(DatabaseReference mDataBase) {
         this.mDataBase = mDataBase;
     }
+
 }
