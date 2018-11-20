@@ -1,5 +1,6 @@
 package br.com.belapp.belapp.activities;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -60,7 +61,9 @@ public class PerfilActivity extends AppCompatActivity {
         btnAlterarSenha.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Intent intent = new Intent();
+                intent.setClass(PerfilActivity.this, AlterarSenhaActivity.class);
+                startActivity(intent);
             }
         });
         Button btnSalvar = findViewById(R.id.btnSalvar);
@@ -142,7 +145,7 @@ public class PerfilActivity extends AppCompatActivity {
                                 }
                                 else{
                                     try {
-                                        throw task.getException();
+                                        throw Objects.requireNonNull(task.getException());
                                     } catch (Exception e) {
                                         Toast.makeText(
                                                 PerfilActivity.this,
@@ -225,7 +228,8 @@ public class PerfilActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists()){
                     for (DataSnapshot dadosObjeto : dataSnapshot.getChildren()) {
-                        if(dadosObjeto.getValue(Cliente.class).getmEmail().equalsIgnoreCase(mClienteModificado.getmEmail())){
+                        if(Objects.requireNonNull(dadosObjeto.getValue(Cliente.class))
+                                .getmEmail().equalsIgnoreCase(mClienteModificado.getmEmail())){
                             emailExiste = true;
                         }
                     }
