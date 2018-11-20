@@ -2,7 +2,12 @@ package br.com.belapp.belapp.test;
 
 import android.app.Activity;
 import android.support.test.espresso.Espresso;
+import android.support.test.espresso.UiController;
+import android.support.test.espresso.ViewAction;
 import android.view.KeyEvent;
+import android.view.View;
+
+import org.hamcrest.Matcher;
 
 import br.com.belapp.belapp.R;
 
@@ -12,12 +17,16 @@ import static android.support.test.espresso.action.ViewActions.pressKey;
 import static android.support.test.espresso.action.ViewActions.replaceText;
 import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.intent.Intents.intended;
+import static android.support.test.espresso.intent.matcher.IntentMatchers.hasComponent;
 import static android.support.test.espresso.matcher.RootMatchers.withDecorView;
+import static android.support.test.espresso.matcher.ViewMatchers.isAssignableFrom;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.not;
+import static org.hamcrest.core.AllOf.allOf;
 
 public class DefaultTest {
 
@@ -70,5 +79,9 @@ public class DefaultTest {
     public void apertarBotao(int idBotao){
         Espresso.onView(withId(idBotao))
                 .perform(click());
+    }
+
+    public  void isActivityAtual(String activityNome) {
+        intended(hasComponent(activityNome));
     }
 }

@@ -22,6 +22,7 @@ import java.util.Objects;
 import br.com.belapp.belapp.R;
 import br.com.belapp.belapp.database.utils.FirebaseUtils;
 import br.com.belapp.belapp.exceptions.ValidationException;
+import br.com.belapp.belapp.utils.StringUtils;
 
 import static br.com.belapp.belapp.database.utils.FirebaseUtils.*;
 
@@ -64,8 +65,9 @@ public class AlterarSenhaActivity extends AppCompatActivity {
             }
 
             private void salvar() {
+
                 AuthCredential credencial = EmailAuthProvider
-                        .getCredential(Objects.requireNonNull(getUsuarioAtual().getEmail()), etNovaSenha.getText().toString());
+                        .getCredential(Objects.requireNonNull(getUsuarioAtual().getEmail()), etSenhaAnterior.getText().toString());
                 getUsuarioAtual().reauthenticate(credencial)
                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
@@ -93,6 +95,10 @@ public class AlterarSenhaActivity extends AppCompatActivity {
                             });
                         } else {
                             Log.d(TAG, "Error auth failed");
+                            Toast.makeText(
+                                    AlterarSenhaActivity.this,
+                                    getText(R.string.error_autenticacao_falhou),
+                                    Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -112,6 +118,9 @@ public class AlterarSenhaActivity extends AppCompatActivity {
                 }
                 if(!TextUtils.equals(etNovaSenha.getText().toString(), etNovaSenhaConfirmacao.getText().toString())){
                     throw new ValidationException(getString(R.string.error_nova_senha_confirmacao_diferem));
+                }
+                if(StringUtils.isVerificarSenhaInvalida(etNovaSenha.getText().toString())){
+                    throw new ValidationException(getString(R.string.error_nova_senha_deve_ter_6_ou_mais_caracteres));
                 }
             }
         });

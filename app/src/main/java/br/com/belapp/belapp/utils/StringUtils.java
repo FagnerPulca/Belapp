@@ -13,4 +13,11 @@ public class StringUtils {
             return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
         }
     }
+
+    public static boolean isVerificarSenhaInvalida(String senha){
+        if(senha.length() < 6){
+            return true;
+        }
+        return false;
+    }
 }

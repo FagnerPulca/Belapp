@@ -21,6 +21,7 @@ import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static junit.framework.TestCase.assertNotNull;
+import static junit.framework.TestCase.assertTrue;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.not;
 
@@ -38,7 +39,11 @@ public class PerfilActivitySteps extends DefaultTest {
 
     @After("@alteracao-perfil-feature")
     public void tearDown() {
-
+        if(((String) getActivity().getTitle()).contains("Alterar")){
+            getActivity().onBackPressed();
+            setActivity(activityTestRule.getActivity());
+            esperar(1000);
+        }
         dadosAnteriores();
         esperar(1000);
         activityTestRule.finishActivity();
@@ -139,6 +144,35 @@ public class PerfilActivitySteps extends DefaultTest {
         verificarMensagemToast((String) getActivity().getText(R.string.sucess_alteracao_realizada));
     }
 
+    @Quando("^eu aperto no botão alterar senha$")
+    public void euApertoBotaoAlterarSenha(){
+        apertarBotao(R.id.btnAlterarSenha);
+    }
+//    @E("^eu estou na tela de alteração de senha$")
+//    public void estouNaTelaAlteracaoSenha(){
+//        isActivityAtual(getActivity().getString(R.string.title_activity_alterar_senha));
+//    }
+
+    @E("^eu informo uma senha que não satisfaz as restrições$")
+    public void euInformoSenhaNaoRestrita(){
+        preencherCampoEditText(R.id.etSenhaAnterior, "1234567");
+        preencherCampoEditText(R.id.etNovaSenha, "12345");
+        preencherCampoEditText(R.id.etNovaSenhaConfirmacao, "12345");
+    }
+
+    @E("^eu aperto no botão salvar senha^$")
+    public void euApertoSalvarAlterarSenha(){
+        apertarBotao(R.id.btnSalvarAlteracaoSenha);
+    }
+    @Quando("^eu aperto no botão salvar senha$")
+    public void eu_aperto_no_botão_salvar_senha() throws Throwable {
+        // Write code here that turns the phrase above into concrete actions
+        apertarBotao(R.id.btnSalvarAlteracaoSenha);
+    }
+    @Entao("^devo ver uma mensagem de erro$")
+    public void euVereiAMensagem(){
+        verificarMensagemToast((String) getActivity().getString(R.string.error_nova_senha_deve_ter_6_ou_mais_caracteres));
+    }
     public void dadosAnteriores(){
         preencherCampoEditText(R.id.etNome,"Fulano de Teste");
         preencherCampoEditText(R.id.etEmail,"flp.d@hotmail.com");

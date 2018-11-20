@@ -21,7 +21,9 @@
     <string name="error_nova_senha_vazia">A nova senha deve ser informada</string>
     <string name="error_confirmacao_nova_senha_vazia">A confirmação da nova senha deve ser informada</string>
     <string name="error_alteracao_nao_realizada">A alteração não pode ser realizada</string>
+    <string name="error_autenticacao_falhou">A autenticação falhou</string>
     <string name="error_nova_senha_confirmacao_diferem">A nova senha e sua confirmação devem ser iguais</string>
+    <string name="error_nova_senha_deve_ter_6_ou_mais_caracteres">A nova senha deverá ter 6 ou mais caracteres</string>
 
 
     <string name="permission_rationale">"Contacts permissions are needed for providing email
