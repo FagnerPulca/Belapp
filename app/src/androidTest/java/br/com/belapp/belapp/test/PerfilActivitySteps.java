@@ -1,6 +1,5 @@
 package br.com.belapp.belapp.test;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.support.test.rule.ActivityTestRule;
 
@@ -19,110 +18,131 @@ import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static android.support.test.espresso.action.ViewActions.typeText;
-import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.matcher.RootMatchers.withDecorView;
-import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static junit.framework.TestCase.assertNotNull;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.not;
 
-public class PerfilActivitySteps {
+public class PerfilActivitySteps extends DefaultTest {
 
     @Rule
     public ActivityTestRule<PerfilActivity> activityTestRule = new ActivityTestRule<>(PerfilActivity.class);
-    private Activity activity;
 
     @Before("@alteracao-perfil-feature")
     public void setup() {
         activityTestRule.launchActivity(new Intent());
-        activity = activityTestRule.getActivity();
+        setActivity(activityTestRule.getActivity());
+        esperar(3000);
     }
 
     @After("@alteracao-perfil-feature")
     public void tearDown() {
+
+        dadosAnteriores();
+        esperar(1000);
         activityTestRule.finishActivity();
     }
 
     @Dado("^que estou na tela Meu Perfil")
     public void estouNaTelaMeuPerfil() {
-        assertNotNull(activity);
+        assertNotNull(getActivity());
     }
 
     @Quando("^eu preencho todos os campos obrigatórios, exeto o campo nome$")
     public void euNaoPreenchoOCampoNome() {
-        onView(withId(R.id.etNome)).perform(typeText(""));
-        onView(withId(R.id.etEmail)).perform(typeText("flp.d@hotmail.com"), closeSoftKeyboard());
-        onView(withId(R.id.etTelefone)).perform(typeText("87999996666"), closeSoftKeyboard());
+        preencherCampoEditText(R.id.etNome, "");
+        preencherCampoEditText(R.id.etEmail,"flp.d@hotmail.com");
+        preencherCampoEditText(R.id.etTelefone,"87999996666");
     }
 
     @E("^eu aperto o botão salvar")
     public void apertoBotaoLogin() {
-        onView(withId(R.id.btnSalvar)).perform(click());
+        apertarBotao(R.id.btnSalvar);
     }
 
     @Entao("^devo ver uma mensagem que informe que campo nome nao pode ser deixado em branco$")
     public void devoVerAMensagemNomeNaoPodeSerDeixadoVazio() {
-        onView(withText((String) activity.getText(R.string.error_nome_nao_pode_ser_vazio)))
-                .inRoot(withDecorView(not(is(activity.getWindow().getDecorView()))))
-                .check(matches(isDisplayed()));
+        verificarMensagemToast((String) getActivity().getText(R.string.error_nome_nao_pode_ser_vazio));
     }
 
     @Quando("^eu preencho todos os campos obrigatórios, exeto o e-mail$")
     public void euNaoPreenchoOCampoEmail() {
-        onView(withId(R.id.etNome)).perform(typeText("Fulano de Teste"));
-        onView(withId(R.id.etEmail)).perform(typeText(""), closeSoftKeyboard());
-        onView(withId(R.id.etTelefone)).perform(typeText("87999996666"), closeSoftKeyboard());
-    }
-
-    @Quando("^eu preencho todos os campos obrigatórios, exeto o telefone$")
-    public void euNaoPreenchoOCampoTelefone() {
-        onView(withId(R.id.etNome)).perform(typeText("Fulano de Teste"));
-        onView(withId(R.id.etEmail)).perform(typeText("flp.d@hotmail.com"), closeSoftKeyboard());
-        onView(withId(R.id.etTelefone)).perform(typeText(""), closeSoftKeyboard());
-    }
-
-    @Quando("^eu preencho todos os campos obrigatórios e informo um e-mail inválido$")
-    public void euPreenchoOCampoEmailInvalido() {
-        onView(withId(R.id.etNome)).perform(typeText("Fulano de Teste"));
-        onView(withId(R.id.etEmail)).perform(typeText("flp.d@hotm"), closeSoftKeyboard());
-        onView(withId(R.id.etTelefone)).perform(typeText("87912345678"), closeSoftKeyboard());
-    }
-
-    @Quando("^eu preencho todos os campos obrigatórios e informo um telefone inválido$")
-    public void euPreenchoOCampoTelefoneInvalido() {
-        onView(withId(R.id.etNome)).perform(typeText("Fulano de Teste"));
-        onView(withId(R.id.etEmail)).perform(typeText("flp.d@hotmail.com"), closeSoftKeyboard());
-        onView(withId(R.id.etTelefone)).perform(typeText("8791678"), closeSoftKeyboard());
+        preencherCampoEditText(R.id.etNome, "Fulano de Teste");
+        preencherCampoEditText(R.id.etEmail,"");
+        preencherCampoEditText(R.id.etTelefone,"87999996666");
     }
 
     @Entao("^devo ver uma mensagem que informe que campo e-mail nao pode ser deixado em branco$")
     public void devoVerAMensagemEmailNaoPodeSerDeixadoVazio() {
-        onView(withText((String) activity.getText(R.string.error_email_nao_pode_ser_vazio)))
-                .inRoot(withDecorView(not(is(activity.getWindow().getDecorView()))))
-                .check(matches(isDisplayed()));
+        verificarMensagemToast((String) getActivity().getText(R.string.error_email_nao_pode_ser_vazio));
+    }
+
+    @Quando("^eu preencho todos os campos obrigatórios, exeto o telefone$")
+    public void euNaoPreenchoOCampoTelefone() {
+        preencherCampoEditText(R.id.etNome,"Fulano de Teste");
+        preencherCampoEditText(R.id.etEmail,"flp.d@hotmail.com");
+        preencherCampoEditText(R.id.etTelefone,"");
     }
 
     @Entao("^devo ver uma mensagem que informe que campo telefone nao pode ser deixado em branco$")
     public void devoVerAMensagemTelefoneNaoPodeSerDeixadoVazio() {
-        onView(withText((String) activity.getText(R.string.error_telefone_nao_pode_ser_vazio)))
-                .inRoot(withDecorView(not(is(activity.getWindow().getDecorView()))))
-                .check(matches(isDisplayed()));
+        verificarMensagemToast((String) getActivity().getText(R.string.error_telefone_nao_pode_ser_vazio));
+    }
+
+    @Quando("^eu preencho todos os campos obrigatórios e informo um e-mail inválido$")
+    public void euPreenchoOCampoEmailInvalido() {
+        preencherCampoEditText(R.id.etNome,"Fulano de Teste");
+        preencherCampoEditText(R.id.etEmail,"flp.d@hotm");
+        preencherCampoEditText(R.id.etTelefone,"87912345678");
     }
 
     @Entao("^devo ver uma mensagem que informe que o e-mail informado é inválido$")
     public void devoVerAMensagemEmailInvalido() {
-        onView(withText((String) activity.getText(R.string.error_email_invalido)))
-                .inRoot(withDecorView(not(is(activity.getWindow().getDecorView()))))
-                .check(matches(isDisplayed()));
+        verificarMensagemToast((String) getActivity().getText(R.string.error_email_invalido));
     }
 
     @Entao("^devo ver uma mensagem que informe que o telefone informado é inválido$")
     public void devoVerAMensagemTelefoneInvalido() {
-        onView(withText((String) activity.getText(R.string.error_telefone_invalido)))
-                .inRoot(withDecorView(not(is(activity.getWindow().getDecorView()))))
-                .check(matches(isDisplayed()));
+        verificarMensagemToast((String) getActivity().getText(R.string.error_telefone_invalido));
     }
 
+    @Quando("^eu preencho todos os campos obrigatórios e informo um telefone inválido$")
+    public void euPreenchoOCampoTelefoneInvalido() {
+        preencherCampoEditText(R.id.etNome, "Fulano de Teste");
+        preencherCampoEditText(R.id.etEmail,"flp.d@hotmail.com");
+        preencherCampoEditText(R.id.etTelefone,"8791678");
+    }
+
+    @Quando("^eu preencho todos os campos obrigatórios e informo um e-mail em uso por outro cadastro$")
+    public void euPreenchoOCampoEmailJaCadastrado() {
+        preencherCampoEditText(R.id.etNome,"Fulano de Teste");
+        preencherCampoEditText(R.id.etEmail,"beltrano@teste.com");
+        preencherCampoEditText(R.id.etTelefone,"87912345678");
+    }
+
+
+    @Entao("^devo ver uma mensagem que informe que o e-mail já está em uso$")
+    public void devoVerAMensagemEmailEmUso() {
+        verificarMensagemToast((String) getActivity().getText(R.string.error_email_ja_utilizado));
+    }
+
+    @Quando("^eu preencho todos os campos obrigatórios corretamente$")
+    public void euPreenchoOsCamposCorretamente() {
+        preencherCampoEditText(R.id.etNome,"Fulano de Teste Alterado");
+        preencherCampoEditText(R.id.etEmail,"flp.d2@alterado.com");
+        preencherCampoEditText(R.id.etTelefone,"87987654321");
+    }
+
+    @Entao("^devo ver uma mensagem de sucesso da operacao$")
+    public void devoVerAMensagemSucesso() {
+        verificarMensagemToast((String) getActivity().getText(R.string.sucess_alteracao_realizada));
+    }
+
+    public void dadosAnteriores(){
+        preencherCampoEditText(R.id.etNome,"Fulano de Teste");
+        preencherCampoEditText(R.id.etEmail,"flp.d@hotmail.com");
+        preencherCampoEditText(R.id.etTelefone,"87912345678");
+        apertarBotao(R.id.btnSalvar);
+    }
 }

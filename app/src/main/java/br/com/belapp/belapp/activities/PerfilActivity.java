@@ -24,6 +24,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.Objects;
 
 import br.com.belapp.belapp.R;
+import br.com.belapp.belapp.database.utils.FirebaseUtils;
 import br.com.belapp.belapp.exceptions.ValidationException;
 import br.com.belapp.belapp.model.Cliente;
 import br.com.belapp.belapp.utils.StringUtils;
@@ -34,7 +35,10 @@ public class PerfilActivity extends AppCompatActivity {
 
     private static final String TAG = "belapp.activities";
     private Cliente mClienteAtual, mClienteModificado;
-    private EditText mEtNome, mEtEmail, mEtTelefone, mEtSenha;
+    private EditText mEtNome, mEtEmail, mEtTelefone;
+    private boolean emailExiste = false;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +72,13 @@ public class PerfilActivity extends AppCompatActivity {
                     validarCampos();
                     povoarClienteModificado();
                     if(verificarSeHaAlteracoes()){
-                        salvarAlteracoes();
+                        if(verificarSeHaAlteracaoEmail()){
+                            realizarAlteracaoAutenticacao();
+                        }
+                        else{
+                            salvarAlteracoes();
+                        }
+
                         mClienteAtual = mClienteModificado;
                     }
                 } catch (ValidationException e) {
@@ -89,7 +99,9 @@ public class PerfilActivity extends AppCompatActivity {
                 for (DataSnapshot dadosObjeto : dataSnapshot.getChildren()) {
                     if(dadosObjeto.getKey().equals(userId)) {
                         mClienteAtual = dadosObjeto.getValue(Cliente.class);
+                        mClienteAtual.setmEmail(FirebaseUtils.getUsuarioAtual().getEmail());
                         mClienteModificado = dadosObjeto.getValue(Cliente.class);
+                        mClienteModificado.setmEmail(FirebaseUtils.getUsuarioAtual().getEmail());
                         preencherCampos();
                         break;
                     }
@@ -105,6 +117,9 @@ public class PerfilActivity extends AppCompatActivity {
         query.addValueEventListener(mValueEventListenerClientes);
 
     }
+
+
+
 
     /**
      * Realiza a mudanca de e-mail no Firebase Auth
@@ -123,9 +138,19 @@ public class PerfilActivity extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if(task.isSuccessful()){
-                                    Log.d(TAG, "Alterou o email no firebase auth");
+                                    salvarAlteracoes();
                                 }
                                 else{
+                                    try {
+                                        throw task.getException();
+                                    } catch (Exception e) {
+                                        Toast.makeText(
+                                                PerfilActivity.this,
+                                                getText(R.string.error_email_ja_utilizado),
+                                                Toast.LENGTH_SHORT).show();
+                                        Log.d(TAG, e.getMessage());
+                                        mClienteModificado.setmEmail(FirebaseUtils.getUsuarioAtual().getEmail());
+                                    }
                                     Log.d(TAG, "nao alterou o email no firebase auth");
                                 }
                             }
@@ -155,7 +180,7 @@ public class PerfilActivity extends AppCompatActivity {
                 .addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                getmDatabaseReference()
+               getmDatabaseReference()
                         .child("clientes")
                         .child(getUsuarioAtual().getUid())
                         .setValue(mClienteModificado)
@@ -168,9 +193,7 @@ public class PerfilActivity extends AppCompatActivity {
                                             getText(R.string.sucess_alteracao_realizada),
                                             Toast.LENGTH_SHORT).show();
                                     Log.d(TAG, getUsuarioAtual().getEmail());
-                                    if(verificarSeHaAlteracaoEmail()) {
-                                        realizarAlteracaoAutenticacao();
-                                    }
+
                                 }
                                 else{
                                     Toast.makeText(
@@ -188,6 +211,35 @@ public class PerfilActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void verificarSeEmailDisponivel() {
+
+        final Query query = getmDatabaseReference().child("clientes")
+                .orderByChild("mEmail")
+                .equalTo(mClienteModificado.getmEmail());
+
+
+        final ValueEventListener mValueEventListenerClientes = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    for (DataSnapshot dadosObjeto : dataSnapshot.getChildren()) {
+                        if(dadosObjeto.getValue(Cliente.class).getmEmail().equalsIgnoreCase(mClienteModificado.getmEmail())){
+                            emailExiste = true;
+                        }
+                    }
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+
+        };
+        query.addValueEventListener(mValueEventListenerClientes);
     }
 
     private void povoarClienteModificado() {
@@ -217,6 +269,8 @@ public class PerfilActivity extends AppCompatActivity {
     }
 
     private void validarCampos() throws ValidationException{
+        emailExiste = false;
+        verificarSeEmailDisponivel();
         if(TextUtils.isEmpty(mEtNome.getText().toString())){
             throw new ValidationException(getString(R.string.error_nome_nao_pode_ser_vazio));
         }
@@ -226,7 +280,8 @@ public class PerfilActivity extends AppCompatActivity {
         if(!StringUtils.isEmailValido(mEtEmail.getText().toString())){
             throw new ValidationException(getString(R.string.error_email_invalido));
         }
-        if(mEtTelefone.getText().toString().equalsIgnoreCase("")){
+
+        if(TextUtils.isEmpty(mEtTelefone.getText().toString())){
             throw new ValidationException(getString(R.string.error_telefone_nao_pode_ser_vazio));
         }
         if(mEtTelefone.getText().toString().length() != 11){
@@ -234,6 +289,15 @@ public class PerfilActivity extends AppCompatActivity {
         }
     }
 
-
-
+    /**
+     * Pausa a execuçao pelo tempo informado
+     * @param tempo em milisegundos
+     */
+    public void esperar(int tempo) {
+        try {
+            Thread.sleep(tempo);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
 }
