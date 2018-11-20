@@ -21,6 +21,6 @@ public class ApplicationClassTest {
         ApplicationClass applicationClass = new ApplicationClass();
         double resultado = applicationClass.calculaDistancia(lat1,lon1,lat2,lon2);
 
-        assertThat(resultado, is(156391.04297508643));
+        assertThat(resultado, is(156.39104297508643));
     }
 }
