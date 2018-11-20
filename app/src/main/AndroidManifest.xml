@@ -29,6 +29,10 @@
         <activity
             android:name=".activities.ClienteLogadoActivity"
             android:label="@string/title_activity_cliente_logado"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activities.PerfilActivity"
+            android:label="@string/title_activity_perfil"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
