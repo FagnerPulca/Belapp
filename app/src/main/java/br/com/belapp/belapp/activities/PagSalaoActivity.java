@@ -49,7 +49,7 @@ public class PagSalaoActivity extends AppCompatActivity implements ServicoAdapte
 
         for (int i = 0; i < ApplicationClass.estabelecimentos.size(); i++){
             if (ApplicationClass.estabelecimentos.get(i).getmNome().equals(salao)){
-                Toast.makeText(this, "Salao: "+ApplicationClass.estabelecimentos.get(i).getmServicos().size(),Toast.LENGTH_SHORT).show();
+                //Toast.makeText(this, "Salao: "+ApplicationClass.estabelecimentos.get(i).getmServicos().size(),Toast.LENGTH_SHORT).show();
                 for (int j = 0; j < ApplicationClass.estabelecimentos.get(i).getmServicos().size(); j++){
                     servicos.add(ApplicationClass.estabelecimentos.get(i).getmServicos().get(j));
                 }

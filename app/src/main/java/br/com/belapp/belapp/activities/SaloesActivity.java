@@ -77,7 +77,6 @@ public class SaloesActivity extends AppCompatActivity implements SalaoAdapter.It
                 }
             }
         } else if (!servico.isEmpty() && cidade.isEmpty()){ //foi pela tela de busca
-            Toast.makeText(SaloesActivity.this, servico, Toast.LENGTH_SHORT).show();
             for (int i = 0; i < ((Integer) ApplicationClass.estabelecimentos.size()); i++) {
                 for (int j = 0; j < ApplicationClass.estabelecimentos.get(i).getmServicos().size(); j++) {
                     if (ApplicationClass.estabelecimentos.get(i).getmServicos().get(j).getNome().equals(servico)) {
@@ -128,6 +127,6 @@ public class SaloesActivity extends AppCompatActivity implements SalaoAdapter.It
         Intent intent = new Intent(SaloesActivity.this, PagSalaoActivity.class);
         intent.putExtra("salao", estabelecimentos.get(index).getmNome());
         startActivity(intent);
-        //Toast.makeText(this, "Salao: "+estabelecimentos.get(index).getmNome(),Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, getString(R.string.servicos),Toast.LENGTH_SHORT).show();
     }
 }

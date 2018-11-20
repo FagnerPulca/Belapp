@@ -36,13 +36,19 @@ public class TelaBuscaActivity extends AppCompatActivity {
                 double latitude = getIntent().getDoubleExtra("latitude", -8);
                 double longitude = getIntent().getDoubleExtra("longitude", -36);
 
-                Intent intent = new Intent(TelaBuscaActivity.this, SaloesActivity.class);
-                intent.putExtra("servico", servico);
-                intent.putExtra("cidade", cidade);
-                intent.putExtra("latitude", latitude);
-                intent.putExtra("longitude", longitude);
-                intent.putExtra("categoria", "");
-                startActivity(intent);
+                if (!cidade.isEmpty() || !servico.isEmpty()){
+                    Intent intent = new Intent(TelaBuscaActivity.this, SaloesActivity.class);
+                    intent.putExtra("servico", servico);
+                    intent.putExtra("cidade", cidade);
+                    intent.putExtra("latitude", latitude);
+                    intent.putExtra("longitude", longitude);
+                    intent.putExtra("categoria", "");
+                    startActivity(intent);
+                    Toast.makeText(TelaBuscaActivity.this, getString(R.string.resultados), Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Toast.makeText(TelaBuscaActivity.this, getString(R.string.digite_algum_dado), Toast.LENGTH_SHORT).show();
+                }
             }
         });
 

@@ -122,7 +122,7 @@ public class InicialActivity extends AppCompatActivity
         if (localizao.canGetLocation()) {
             double longitude = localizao.getLongitude();
             double latitude = localizao.getLatitude();
-            Toast.makeText(getApplicationContext(), "Longitude:" + Double.toString(longitude) + "\nLatitude:" + Double.toString(latitude), Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getApplicationContext(), "Longitude:" + Double.toString(longitude) + "\nLatitude:" + Double.toString(latitude), Toast.LENGTH_SHORT).show();
         } else {
             localizao.showSettingsAlert();
         }
@@ -300,9 +300,9 @@ public class InicialActivity extends AppCompatActivity
 
             //editLocation.setText("");
           //  pb.setVisibility(View.INVISIBLE);
-            Toast.makeText(getBaseContext(),"Location changed : Lat: " +
+            /*Toast.makeText(getBaseContext(),"Location changed : Lat: " +
                             loc.getLatitude()+ " Lng: " + loc.getLongitude(),
-                    Toast.LENGTH_SHORT).show();
+                    Toast.LENGTH_SHORT).show();*/
             String longitude = "Longitude: " +loc.getLongitude();
             Log.v(TAG, longitude);
             String latitude = "Latitude: " +loc.getLatitude();
