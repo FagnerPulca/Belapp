@@ -20,7 +20,6 @@ import com.google.firebase.auth.EmailAuthProvider;
 import java.util.Objects;
 
 import br.com.belapp.belapp.R;
-import br.com.belapp.belapp.database.utils.FirebaseUtils;
 import br.com.belapp.belapp.exceptions.ValidationException;
 import br.com.belapp.belapp.utils.StringUtils;
 
@@ -41,7 +40,9 @@ public class AlterarSenhaActivity extends AppCompatActivity {
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
         setSupportActionBar(toolbar);
 
-        final EditText etSenhaAnterior, etNovaSenha, etNovaSenhaConfirmacao;
+        final EditText etSenhaAnterior;
+        final EditText etNovaSenha;
+        final EditText etNovaSenhaConfirmacao;
         etSenhaAnterior = findViewById(R.id.etSenhaAnterior);
         etNovaSenha = findViewById(R.id.etNovaSenha);
         etNovaSenhaConfirmacao = findViewById(R.id.etNovaSenhaConfirmacao);

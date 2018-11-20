@@ -15,9 +15,10 @@ public class StringUtils {
     }
 
     public static boolean isVerificarSenhaInvalida(String senha){
+        boolean retorno = false;
         if(senha.length() < 6){
-            return true;
+            retorno = true;
         }
-        return false;
+        return retorno;
     }
 }

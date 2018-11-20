@@ -37,7 +37,6 @@ public class PerfilActivity extends AppCompatActivity {
     private static final String TAG = "belapp.activities";
     private Cliente mClienteAtual, mClienteModificado;
     private EditText mEtNome, mEtEmail, mEtTelefone;
-    private boolean emailExiste = false;
 
 
 
@@ -102,9 +101,9 @@ public class PerfilActivity extends AppCompatActivity {
                 for (DataSnapshot dadosObjeto : dataSnapshot.getChildren()) {
                     if(dadosObjeto.getKey().equals(userId)) {
                         mClienteAtual = dadosObjeto.getValue(Cliente.class);
-                        mClienteAtual.setmEmail(FirebaseUtils.getUsuarioAtual().getEmail());
+                        mClienteAtual.setmEmail(getUsuarioAtual().getEmail());
                         mClienteModificado = dadosObjeto.getValue(Cliente.class);
-                        mClienteModificado.setmEmail(FirebaseUtils.getUsuarioAtual().getEmail());
+                        mClienteModificado.setmEmail(getUsuarioAtual().getEmail());
                         preencherCampos();
                         break;
                     }
@@ -113,7 +112,7 @@ public class PerfilActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
+                // empty
             }
 
         };
@@ -210,40 +209,10 @@ public class PerfilActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
+                // vazio
             }
         });
 
-    }
-
-    private void verificarSeEmailDisponivel() {
-
-        final Query query = getmDatabaseReference().child("clientes")
-                .orderByChild("mEmail")
-                .equalTo(mClienteModificado.getmEmail());
-
-
-        final ValueEventListener mValueEventListenerClientes = new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if(dataSnapshot.exists()){
-                    for (DataSnapshot dadosObjeto : dataSnapshot.getChildren()) {
-                        if(Objects.requireNonNull(dadosObjeto.getValue(Cliente.class))
-                                .getmEmail().equalsIgnoreCase(mClienteModificado.getmEmail())){
-                            emailExiste = true;
-                        }
-                    }
-                }
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-
-        };
-        query.addValueEventListener(mValueEventListenerClientes);
     }
 
     private void povoarClienteModificado() {
@@ -273,8 +242,6 @@ public class PerfilActivity extends AppCompatActivity {
     }
 
     private void validarCampos() throws ValidationException{
-        emailExiste = false;
-        verificarSeEmailDisponivel();
         if(TextUtils.isEmpty(mEtNome.getText().toString())){
             throw new ValidationException(getString(R.string.error_nome_nao_pode_ser_vazio));
         }
