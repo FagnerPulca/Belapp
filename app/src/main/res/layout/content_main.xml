@@ -9,80 +9,80 @@
     tools:showIn="@layout/app_bar_main">
 
     <ImageButton
-        android:id="@+id/imageButton1"
+        android:id="@+id/ibDepilacao"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="12dp"
         android:layout_marginBottom="4dp"
-        app:layout_constraintBottom_toTopOf="@+id/imageButton3"
-        app:layout_constraintEnd_toStartOf="@+id/imageButton2"
+        app:layout_constraintBottom_toTopOf="@+id/ibUnha"
+        app:layout_constraintEnd_toStartOf="@+id/ibCabelo"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@mipmap/depilacao" />
 
     <ImageButton
-        android:id="@+id/imageButton2"
+        android:id="@+id/ibCabelo"
 
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="14dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="6dp"
-        app:layout_constraintBottom_toTopOf="@+id/imageButton4"
+        app:layout_constraintBottom_toTopOf="@+id/ibBarba"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imageButton1"
+        app:layout_constraintStart_toEndOf="@+id/ibDepilacao"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@mipmap/cabelo" />
 
     <ImageButton
-        android:id="@+id/imageButton3"
+        android:id="@+id/ibUnha"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="18dp"
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="13dp"
-        app:layout_constraintBottom_toTopOf="@+id/imageButton5"
-        app:layout_constraintEnd_toStartOf="@+id/imageButton4"
+        app:layout_constraintBottom_toTopOf="@+id/ibSobrancelha"
+        app:layout_constraintEnd_toStartOf="@+id/ibBarba"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageButton1"
+        app:layout_constraintTop_toBottomOf="@+id/ibDepilacao"
         app:srcCompat="@mipmap/manicure" />
 
     <ImageButton
-        android:id="@+id/imageButton4"
+        android:id="@+id/ibBarba"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="13dp"
-        app:layout_constraintBottom_toTopOf="@+id/imageButton6"
+        app:layout_constraintBottom_toTopOf="@+id/ibOlho"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imageButton3"
-        app:layout_constraintTop_toBottomOf="@+id/imageButton2"
+        app:layout_constraintStart_toEndOf="@+id/ibUnha"
+        app:layout_constraintTop_toBottomOf="@+id/ibCabelo"
         app:srcCompat="@mipmap/barba" />
 
     <ImageButton
-        android:id="@+id/imageButton5"
+        android:id="@+id/ibSobrancelha"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="18dp"
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="28dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/imageButton6"
+        app:layout_constraintEnd_toStartOf="@+id/ibOlho"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageButton3"
+        app:layout_constraintTop_toBottomOf="@+id/ibUnha"
         app:srcCompat="@mipmap/sombrancelhas" />
 
     <ImageButton
-        android:id="@+id/imageButton6"
+        android:id="@+id/ibOlho"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="28dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imageButton5"
-        app:layout_constraintTop_toBottomOf="@+id/imageButton4"
+        app:layout_constraintStart_toEndOf="@+id/ibSobrancelha"
+        app:layout_constraintTop_toBottomOf="@+id/ibBarba"
         app:srcCompat="@mipmap/maquiagem" />
 </android.support.constraint.ConstraintLayout>
