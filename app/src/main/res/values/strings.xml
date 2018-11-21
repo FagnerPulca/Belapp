@@ -41,6 +41,7 @@
     <string name="site">belaapp.com.br</string>
     <string name="sucess_login_efetuado">Login efetuado com sucesso!</string>
     <string name="error_login_invalido">Senha errada ou email invalido!</string>
+
     <string name="title_activity_perfil">Meu Perfil</string>
     <string name="app_nome">Nome</string>
     <string name="app_telefone">Telefone</string>
@@ -59,4 +60,9 @@
     <string name="app_confirmacao_nova_senha">Confirmação Nova Senha</string>
     <string name="app_salvar_alteracao_senha">Salvar alteração de senha</string>
 
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="resultados">Resultados</string>
+    <string name="digite_algum_dado">Digite algum dado</string>
+    <string name="servicos">Serviços</string>
 </resources>
