@@ -23,7 +23,9 @@
     <string name="title_activity_cliente_logado">ClienteLogadoActivity</string>
     <string name="app_slongan">Sua beleza no melhor lugar</string>
     <string name="app_site">belapp.com.br</string>
+    <string name="sucess_cadastro">Cadastro realizado com sucesso!</string>
     <string name="sucess_login_efetuado">Login efetuado com sucesso!</string>
+    <string name="error_cadastro">Erro na autenticação!</string>
     <string name="error_login_invalido">Senha errada ou email invalido!</string>
     <string name="tv_ou">OU</string>
     <string name="tv_formulario">Preencha o Formulário</string>
@@ -32,8 +34,6 @@
     <string name="et_email">Email</string>
     <string name="et_telefone">Telefone</string>
     <string name="et_senha">Senha</string>
-    <string name="app_nome_usuario"></string>
-    <string name="app_email_usuario"></string>
 
     <!-- Facebook-->
     <string name="facebook_app_id">190569431853174</string>
