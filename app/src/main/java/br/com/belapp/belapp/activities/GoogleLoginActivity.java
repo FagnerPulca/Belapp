@@ -61,7 +61,7 @@ public class GoogleLoginActivity extends AppCompatActivity implements GoogleApiC
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
 
-        signInButton = (SignInButton) findViewById(R.id.signInButton);
+        signInButton = findViewById(R.id.signInButton);
 
         signInButton.setSize(SignInButton.SIZE_WIDE);
 
@@ -87,7 +87,7 @@ public class GoogleLoginActivity extends AppCompatActivity implements GoogleApiC
             }
         };
 
-        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        progressBar = findViewById(R.id.progressBar);
     }
 
     @Override
@@ -112,11 +112,17 @@ public class GoogleLoginActivity extends AppCompatActivity implements GoogleApiC
         }
     }
 
+
+    /* ---------------------------------------------------------
+    O erro acontece quando o método handleSignInResult é chamado.
+
+    */
+
     private void handleSignInResult(GoogleSignInResult result) {
         if (result.isSuccess()) {
             firebaseAuthWithGoogle(result.getSignInAccount());
         } else {
-            Toast.makeText(this, "erro1", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Erro - handleSingInResult", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -134,7 +140,7 @@ public class GoogleLoginActivity extends AppCompatActivity implements GoogleApiC
                 signInButton.setVisibility(View.VISIBLE);
 
                 if (!task.isSuccessful()) {
-                    Toast.makeText(getApplicationContext(), "erro2", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Erro", Toast.LENGTH_SHORT).show();
                 }
             }
         });
