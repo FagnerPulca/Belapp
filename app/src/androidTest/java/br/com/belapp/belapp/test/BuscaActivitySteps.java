@@ -2,8 +2,10 @@ package br.com.belapp.belapp.test;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.support.test.espresso.action.ViewActions;
+import android.support.test.espresso.NoMatchingViewException;
+import android.support.test.espresso.ViewAssertion;
 import android.support.test.rule.ActivityTestRule;
+import android.view.View;
 
 import org.junit.Rule;
 
@@ -24,6 +26,7 @@ import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.RootMatchers.withDecorView;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static android.support.test.espresso.matcher.ViewMatchers.isRoot;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
@@ -46,6 +49,7 @@ public class BuscaActivitySteps {
 
     @After("@busca-feature")
     public void tearDown() {
+        getAtualActivity().finish();
         activityTestRule.finishActivity();
     }
 
@@ -95,5 +99,16 @@ public class BuscaActivitySteps {
         onView(withText(R.string.digite_algum_dado)).
                 inRoot(withDecorView(not(is(activity.getWindow().getDecorView())))).
                 check(matches(isDisplayed()));
+    }
+
+    private Activity getAtualActivity() {
+        final Activity[] activity = new Activity[1];
+        onView(isRoot()).check(new ViewAssertion() {
+            @Override
+            public void check(View view, NoMatchingViewException noViewFoundException) {
+                activity[0] = (Activity) view.getContext();
+            }
+        });
+        return activity[0];
     }
 }
