@@ -68,7 +68,7 @@ public class GoogleLoginActivity extends AppCompatActivity implements GoogleApiC
                 .build();
 
         signInButton = (SignInButton) findViewById(R.id.signInButton);
-        Logout = findViewById(R.id.singOut);
+
 
         signInButton.setSize(SignInButton.SIZE_WIDE);
 
@@ -82,14 +82,7 @@ public class GoogleLoginActivity extends AppCompatActivity implements GoogleApiC
             }
         });
 
-        Logout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Intent intentInicialActivity = new Intent(GoogleLoginActivity.this, InicialActivity.class);
-                startActivity(intentInicialActivity );
-            }
-        });
+       
 
 
                 firebaseAuth = ConfiguracaoFireBase.getFirebaseAutenticacao();
