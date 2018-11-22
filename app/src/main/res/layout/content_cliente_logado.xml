@@ -86,4 +86,76 @@
         app:layout_constraintTop_toBottomOf="@+id/ibBarba"
         app:srcCompat="@mipmap/maquiagem" />
 
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Depilação"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/ibDepilacao"
+        app:layout_constraintEnd_toEndOf="@+id/ibDepilacao"
+        app:layout_constraintStart_toStartOf="@+id/ibDepilacao"
+        app:layout_constraintTop_toTopOf="@+id/ibDepilacao" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Cabelo"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/ibCabelo"
+        app:layout_constraintEnd_toEndOf="@+id/ibCabelo"
+        app:layout_constraintStart_toStartOf="@+id/ibCabelo"
+        app:layout_constraintTop_toTopOf="@+id/ibCabelo" />
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Unhas"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/ibUnha"
+        app:layout_constraintEnd_toEndOf="@+id/ibUnha"
+        app:layout_constraintStart_toStartOf="@+id/ibUnha"
+        app:layout_constraintTop_toTopOf="@+id/ibUnha" />
+
+    <TextView
+        android:id="@+id/textView7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Barba"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/ibBarba"
+        app:layout_constraintEnd_toEndOf="@+id/ibBarba"
+        app:layout_constraintStart_toStartOf="@+id/ibBarba"
+        app:layout_constraintTop_toTopOf="@+id/ibBarba" />
+
+    <TextView
+        android:id="@+id/textView8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sobrancelhas"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/ibSobrancelha"
+        app:layout_constraintEnd_toEndOf="@+id/ibSobrancelha"
+        app:layout_constraintStart_toStartOf="@+id/ibSobrancelha"
+        app:layout_constraintTop_toTopOf="@+id/ibSobrancelha" />
+
+    <TextView
+        android:id="@+id/textView9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Olhos"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/ibOlho"
+        app:layout_constraintEnd_toEndOf="@+id/ibOlho"
+        app:layout_constraintStart_toStartOf="@+id/ibOlho"
+        app:layout_constraintTop_toTopOf="@+id/ibOlho" />
+
 </android.support.constraint.ConstraintLayout>
