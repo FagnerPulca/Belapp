@@ -2,6 +2,7 @@ package br.com.belapp.belapp.test;
 
 import android.content.Intent;
 import android.support.test.rule.ActivityTestRule;
+import android.view.View;
 
 import org.junit.Rule;
 
@@ -13,7 +14,6 @@ import cucumber.api.java.es.Dado;
 import cucumber.api.java.it.E;
 import cucumber.api.java.it.Quando;
 import cucumber.api.java.pt.Entao;
-
 import static junit.framework.TestCase.assertNotNull;
 
 
@@ -77,5 +77,16 @@ public class BuscaActivitySteps extends DefaultTest {
     @Entao("^Devo ver uma mensagem dizendo para digitar algum dado$")
     public void verMensagem(){
         verificarMensagemToast(getActivity().getString(R.string.digite_algum_dado));
+    }
+
+    private Activity getAtualActivity() {
+        final Activity[] activity = new Activity[1];
+        onView(isRoot()).check(new ViewAssertion() {
+            @Override
+            public void check(View view, NoMatchingViewException noViewFoundException) {
+                activity[0] = (Activity) view.getContext();
+            }
+        });
+        return activity[0];
     }
 }
