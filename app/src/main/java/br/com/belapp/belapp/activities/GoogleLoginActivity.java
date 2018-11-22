@@ -14,6 +14,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -33,6 +34,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
+import java.nio.file.Files;
+
 public class GoogleLoginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener{
 
     private GoogleApiClient googleApiClient;
@@ -44,7 +47,7 @@ public class GoogleLoginActivity extends AppCompatActivity implements GoogleApiC
 
     private FirebaseAuth firebaseAuth;
     private FirebaseAuth.AuthStateListener firebaseAuthListener;
-
+    private Button Logout;
     private ProgressBar progressBar;
 
 
@@ -65,6 +68,7 @@ public class GoogleLoginActivity extends AppCompatActivity implements GoogleApiC
                 .build();
 
         signInButton = (SignInButton) findViewById(R.id.signInButton);
+        Logout = findViewById(R.id.singOut);
 
         signInButton.setSize(SignInButton.SIZE_WIDE);
 
@@ -78,12 +82,22 @@ public class GoogleLoginActivity extends AppCompatActivity implements GoogleApiC
             }
         });
 
+        Logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
-        firebaseAuth = ConfiguracaoFireBase.getFirebaseAutenticacao();
+                Intent intentInicialActivity = new Intent(GoogleLoginActivity.this, InicialActivity.class);
+                startActivity(intentInicialActivity );
+            }
+        });
+
+
+                firebaseAuth = ConfiguracaoFireBase.getFirebaseAutenticacao();
         firebaseAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
+
                 if (user != null) {
                     goMainScreen();
                 }
@@ -148,6 +162,8 @@ public class GoogleLoginActivity extends AppCompatActivity implements GoogleApiC
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }
+
+
 
     @Override
     protected void onStop() {

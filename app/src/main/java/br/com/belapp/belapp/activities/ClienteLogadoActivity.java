@@ -17,6 +17,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.auth.api.Auth;
@@ -27,13 +30,14 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.android.gms.common.ConnectionResult;
 
 import br.com.belapp.belapp.R;
 
 public class ClienteLogadoActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
-        private  FirebaseAuth logado = FirebaseAuth.getInstance();
-
+        implements NavigationView.OnNavigationItemSelectedListener, GoogleApiClient.OnConnectionFailedListener {
+    private FirebaseAuth logado = FirebaseAuth.getInstance();
+    private GoogleApiClient mGoogleApiClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,15 +57,25 @@ public class ClienteLogadoActivity extends AppCompatActivity
 
         personalizarCabecalho(navigationView);
 
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .enableAutoManage(this, this)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .build();
+
     }
 
-    private void personalizarCabecalho(NavigationView navigationView){
+    private void personalizarCabecalho(NavigationView navigationView) {
         View header = navigationView.getHeaderView(0);
         TextView titulo = header.findViewById(R.id.tvTituloNavegadorLogado);
         TextView subtitulo = header.findViewById(R.id.tvSubtituloNavegadorLogado);
 
         FirebaseUser usuario = logado.getCurrentUser();
-        if(usuario != null) {
+        if (usuario != null) {
             String nome = usuario.getDisplayName();
             String email = usuario.getEmail();
             if (nome != null) titulo.setText(nome);
@@ -70,6 +84,9 @@ public class ClienteLogadoActivity extends AppCompatActivity
     }
 
 
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+    }
 
 
     @Override
@@ -112,21 +129,26 @@ public class ClienteLogadoActivity extends AppCompatActivity
 
         if (id == R.id.nav_perfil) {
             Intent intentEditarActivity = new Intent(ClienteLogadoActivity.this, EditarActivity.class);
-            startActivity(intentEditarActivity );
+            startActivity(intentEditarActivity);
         } else if (id == R.id.nav_notificacao) {
 
         } else if (id == R.id.nav_agenda) {
 
         } else if (id == R.id.nav_favoritos) {
 
-        } else if(id == R.id.nav_promocoes) {
+        } else if (id == R.id.nav_promocoes) {
 
-        }else if (id == R.id.nav_sair) {
+        } else if (id == R.id.nav_sair) {
 
             logado.signOut();
             LoginManager.getInstance().logOut();
+
+            if (mGoogleApiClient != null && mGoogleApiClient.isConnected()) {
+                Auth.GoogleSignInApi.signOut(mGoogleApiClient);
+            }
+
             Intent intentInicialActivity = new Intent(ClienteLogadoActivity.this, InicialActivity.class);
-            startActivity(intentInicialActivity );
+            startActivity(intentInicialActivity);
 
         }
 
@@ -134,8 +156,6 @@ public class ClienteLogadoActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
-
 
 
 }
