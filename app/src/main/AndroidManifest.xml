@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?><!-- suppress ALL -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="br.com.belapp.belapp">
 
     <!-- To auto-complete the email text field in the login form with the user's emails -->
@@ -18,7 +19,8 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        tools:ignore="GoogleAppIndexingWarning">
         <activity
             android:name=".activities.InicialActivity"
             android:label="@string/title_activity_main"
@@ -41,13 +43,13 @@
         <activity
             android:name=".activities.AlterarSenhaActivity"
             android:label="@string/title_activity_alterar_senha"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <activity android:name=".activities.BuscaActivity" />
         <activity android:name=".activities.SaloesActivity" />
         <activity android:name=".activities.PagSalaoActivity" />
         <activity android:name=".activities.FuncionariosActivity" />
-        <activity android:name=".activities.TelaBuscaActivity"></activity>
+        <activity android:name=".activities.TelaBuscaActivity"/>
 
     </application>
 
