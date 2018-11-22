@@ -86,7 +86,6 @@ public class GoogleLoginActivity extends AppCompatActivity implements GoogleApiC
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
                     goMainScreen();
-
                 }
             }
         };
@@ -119,10 +118,8 @@ public class GoogleLoginActivity extends AppCompatActivity implements GoogleApiC
     private void handleSignInResult(GoogleSignInResult result) {
         if (result.isSuccess()) {
             firebaseAuthWithGoogle(result.getSignInAccount());
-            Log.d(TAG, "handleSignInResult:" + result.getStatus().toString());
         } else {
-
-            Toast.makeText(this, "erro ao inicair sessão", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "erro1", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -140,8 +137,7 @@ public class GoogleLoginActivity extends AppCompatActivity implements GoogleApiC
                 signInButton.setVisibility(View.VISIBLE);
 
                 if (!task.isSuccessful()) {
-                    Log.d(TAG,"handleSignInResult: error:"+ task.getException().getMessage());
-                    Toast.makeText(getApplicationContext(), "erro ao iniciar sessão", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "erro2", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -161,5 +157,4 @@ public class GoogleLoginActivity extends AppCompatActivity implements GoogleApiC
             firebaseAuth.removeAuthStateListener(firebaseAuthListener);
         }
     }
-
 }
