@@ -2,9 +2,8 @@ package br.com.belapp.belapp.test;
 
 import android.app.Activity;
 import android.support.test.espresso.Espresso;
-import android.support.test.espresso.NoMatchingViewException;
-import android.support.test.espresso.ViewAssertion;
 import android.view.View;
+import android.view.ViewGroup;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
@@ -67,7 +66,7 @@ public class DefaultTest {
 
     public void verificarMensagemToast(String mensagem){
         // Espera 2 segundos
-        esperar(1000);
+        esperar(2000);
         onView(withText(mensagem))
                 .inRoot(withDecorView(not(is(activity.getWindow().getDecorView()))))
                 .check(matches(isDisplayed()));
@@ -96,10 +95,19 @@ public class DefaultTest {
      */
     public Activity getAtualActivity() {
         final Activity[] activity = new Activity[1];
-        onView(isRoot()).check(new ViewAssertion() {
-            @Override
-            public void check(View view, NoMatchingViewException noViewFoundException) {
-                activity[0] = (Activity) view.getContext();
+
+        onView(isRoot()).check((view, noViewFoundException) -> {
+
+            View checkedView = view;
+
+            while (checkedView instanceof ViewGroup && ((ViewGroup) checkedView).getChildCount() > 0) {
+
+                checkedView = ((ViewGroup) checkedView).getChildAt(0);
+
+                if (checkedView.getContext() instanceof Activity) {
+                    activity[0] = (Activity) checkedView.getContext();
+                    return;
+                }
             }
         });
         return activity[0];

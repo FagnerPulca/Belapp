@@ -2,10 +2,9 @@ package br.com.belapp.belapp.test;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.support.test.espresso.NoMatchingViewException;
-import android.support.test.espresso.ViewAssertion;
 import android.support.test.rule.ActivityTestRule;
 import android.view.View;
+import android.view.ViewGroup;
 
 import org.junit.Rule;
 
@@ -104,10 +103,19 @@ public class BuscaActivitySteps extends DefaultTest {
      */
     public Activity getAtualActivity() {
         final Activity[] activity = new Activity[1];
-        onView(isRoot()).check(new ViewAssertion() {
-            @Override
-            public void check(View view, NoMatchingViewException noViewFoundException) {
-                activity[0] = (Activity) view.getContext();
+
+        onView(isRoot()).check((view, noViewFoundException) -> {
+
+            View checkedView = view;
+
+            while (checkedView instanceof ViewGroup && ((ViewGroup) checkedView).getChildCount() > 0) {
+
+                checkedView = ((ViewGroup) checkedView).getChildAt(0);
+
+                if (checkedView.getContext() instanceof Activity) {
+                    activity[0] = (Activity) checkedView.getContext();
+                    return;
+                }
             }
         });
         return activity[0];
