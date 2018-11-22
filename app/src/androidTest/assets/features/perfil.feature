@@ -51,13 +51,13 @@ Funcionalidade: Alteraçao de dados do Perfil
     E eu aperto o botão salvar
     Entao devo ver uma mensagem de sucesso da operacao
 
-#  @alteracao-perfil-feature
-#  Cenario: TA_02: Alteração de senha que não respeite as restrições
-#    Dado que estou na tela Meu Perfil
-#    Quando eu aperto no botão alterar senha
-#    E eu informo uma senha que não satisfaz as restrições
-#    E eu aperto no botão salvar senha
-#    Entao devo ver uma mensagem de erro
+  @alteracao-perfil-feature
+  Cenario: TA_02: Alteração de senha que não respeite as restrições
+    Dado que estou na tela Meu Perfil
+    Quando eu aperto no botão alterar senha
+    E eu informo uma senha que não satisfaz as restrições
+    E eu aperto no botão salvar senha
+    Entao devo ver uma mensagem de erro
 
 
 

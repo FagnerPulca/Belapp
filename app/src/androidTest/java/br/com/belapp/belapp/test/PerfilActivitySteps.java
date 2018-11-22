@@ -14,16 +14,8 @@ import cucumber.api.java.pt.E;
 import cucumber.api.java.pt.Entao;
 import cucumber.api.java.pt.Quando;
 
-import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
-import static android.support.test.espresso.action.ViewActions.typeText;
-import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static junit.framework.TestCase.assertNotNull;
-import static junit.framework.TestCase.assertTrue;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.Matchers.not;
+
 
 public class PerfilActivitySteps extends DefaultTest {
 
@@ -39,14 +31,16 @@ public class PerfilActivitySteps extends DefaultTest {
 
     @After("@alteracao-perfil-feature")
     public void tearDown() {
-        if(((String) getActivity().getTitle()).contains("Alterar")){
-            getActivity().onBackPressed();
+        if(((String) getAtualActivity().getTitle()).contains("Alterar")){
+            getAtualActivity().finish();
             setActivity(activityTestRule.getActivity());
             esperar(1000);
         }
-        dadosAnteriores();
-        esperar(1000);
-        activityTestRule.finishActivity();
+        else {
+            dadosAnteriores();
+            esperar(1000);
+            activityTestRule.finishActivity();
+        }
     }
 
     @Dado("^que estou na tela Meu Perfil")

@@ -25,12 +25,12 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.Objects;
 
 import br.com.belapp.belapp.R;
-import br.com.belapp.belapp.database.utils.FirebaseUtils;
 import br.com.belapp.belapp.exceptions.ValidationException;
 import br.com.belapp.belapp.model.Cliente;
 import br.com.belapp.belapp.utils.StringUtils;
 
-import static br.com.belapp.belapp.database.utils.FirebaseUtils.*;
+import static br.com.belapp.belapp.database.utils.FirebaseUtils.getUsuarioAtual;
+import static br.com.belapp.belapp.database.utils.FirebaseUtils.getmDatabaseReference;
 
 public class PerfilActivity extends AppCompatActivity {
 
@@ -151,7 +151,7 @@ public class PerfilActivity extends AppCompatActivity {
                                                 getText(R.string.error_email_ja_utilizado),
                                                 Toast.LENGTH_SHORT).show();
                                         Log.d(TAG, e.getMessage());
-                                        mClienteModificado.setmEmail(FirebaseUtils.getUsuarioAtual().getEmail());
+                                        mClienteModificado.setmEmail(getUsuarioAtual().getEmail());
                                     }
                                     Log.d(TAG, "nao alterou o email no firebase auth");
                                 }
