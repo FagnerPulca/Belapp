@@ -5,6 +5,7 @@ import android.os.Bundle;
 import br.com.belapp.belapp.R;
 import br.com.belapp.belapp.model.ConfiguracaoFireBase;
 
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import android.content.Intent;
@@ -15,6 +16,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
+import com.google.android.gms.tasks.OnCompleteListener;
 
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -34,10 +36,11 @@ import com.google.firebase.auth.GoogleAuthProvider;
 public class GoogleLoginActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener{
 
     private GoogleApiClient googleApiClient;
+    private static final String TAG = "GoogleLoginActivity";
 
     private SignInButton signInButton;
 
-    public static final int SIGN_IN_CODE = 777;
+    public static final int SIGN_IN_CODE = 9001;
 
     private FirebaseAuth firebaseAuth;
     private FirebaseAuth.AuthStateListener firebaseAuthListener;
@@ -83,6 +86,7 @@ public class GoogleLoginActivity extends AppCompatActivity implements GoogleApiC
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
                     goMainScreen();
+
                 }
             }
         };
@@ -115,8 +119,10 @@ public class GoogleLoginActivity extends AppCompatActivity implements GoogleApiC
     private void handleSignInResult(GoogleSignInResult result) {
         if (result.isSuccess()) {
             firebaseAuthWithGoogle(result.getSignInAccount());
+            Log.d(TAG, "handleSignInResult:" + result.getStatus().toString());
         } else {
-            Toast.makeText(this, "erro1", Toast.LENGTH_SHORT).show();
+
+            Toast.makeText(this, "erro ao inicair sessão", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -134,7 +140,8 @@ public class GoogleLoginActivity extends AppCompatActivity implements GoogleApiC
                 signInButton.setVisibility(View.VISIBLE);
 
                 if (!task.isSuccessful()) {
-                    Toast.makeText(getApplicationContext(), "erro2", Toast.LENGTH_SHORT).show();
+                    Log.d(TAG,"handleSignInResult: error:"+ task.getException().getMessage());
+                    Toast.makeText(getApplicationContext(), "erro ao iniciar sessão", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -154,4 +161,5 @@ public class GoogleLoginActivity extends AppCompatActivity implements GoogleApiC
             firebaseAuth.removeAuthStateListener(firebaseAuthListener);
         }
     }
+
 }
