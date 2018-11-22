@@ -46,6 +46,7 @@ public class BuscaActivitySteps extends DefaultTest {
 
     @After("@busca-feature")
     public void tearDown() {
+        getAtualActivity().finish();
         activityTestRule.finishActivity();
     }
 
