@@ -2,7 +2,7 @@ package br.com.belapp.belapp.test;
 
 import android.app.Activity;
 import android.support.test.espresso.Espresso;
-import android.view.View;
+import android.view.View; 
 import android.view.ViewGroup;
 
 import static android.support.test.espresso.Espresso.onView;
