@@ -66,7 +66,7 @@ public class DefaultTest {
 
     public void verificarMensagemToast(String mensagem){
         // Espera 2 segundos
-        esperar(2000);
+        esperar(1000);
         onView(withText(mensagem))
                 .inRoot(withDecorView(not(is(activity.getWindow().getDecorView()))))
                 .check(matches(isDisplayed()));
