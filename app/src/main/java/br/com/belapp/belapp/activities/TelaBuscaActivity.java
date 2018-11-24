@@ -44,10 +44,10 @@ public class TelaBuscaActivity extends AppCompatActivity {
                     intent.putExtra("longitude", longitude);
                     intent.putExtra("categoria", "");
                     startActivity(intent);
-                    Toast.makeText(TelaBuscaActivity.this, getString(R.string.resultados), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(TelaBuscaActivity.this, getString(R.string.resultados), Toast.LENGTH_LONG).show();
                 }
                 else {
-                    Toast.makeText(TelaBuscaActivity.this, getString(R.string.digite_algum_dado), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(TelaBuscaActivity.this, getString(R.string.digite_algum_dado), Toast.LENGTH_LONG).show();
                 }
             }
         });

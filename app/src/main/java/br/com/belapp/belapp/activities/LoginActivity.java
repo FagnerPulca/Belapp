@@ -47,7 +47,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
                 } else {
-                    Toast.makeText(LoginActivity.this, "preencha os campos de email e senha !", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "preencha os campos de email e senha !", Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -65,10 +65,10 @@ public class LoginActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
                     abrirTelaPrincipal();
-                    Toast.makeText(LoginActivity.this, getString(R.string.sucess_login_efetuado), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, getString(R.string.sucess_login_efetuado), Toast.LENGTH_LONG).show();
 
                 } else {
-                    Toast.makeText(LoginActivity.this, getString(R.string.error_login_invalido), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, getString(R.string.error_login_invalido), Toast.LENGTH_LONG).show();
 
                 }
             }
