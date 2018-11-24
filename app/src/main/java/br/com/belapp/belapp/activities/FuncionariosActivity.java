@@ -34,10 +34,10 @@ public class FuncionariosActivity extends AppCompatActivity implements Funcionar
         profissionais = new ArrayList<Profissional>();
         String servico = getIntent().getStringExtra("servico");
 
-        selProfissionais(servico);
+        /*selProfissionais(servico);
 
         myAdapter = new FuncionarioAdapter(this, profissionais);
-        recyclerView.setAdapter(myAdapter);
+        recyclerView.setAdapter(myAdapter);*/
     }
 
     @Override
@@ -45,12 +45,12 @@ public class FuncionariosActivity extends AppCompatActivity implements Funcionar
         Toast.makeText(this, "Profissional: "+profissionais.get(index).getNome(),Toast.LENGTH_SHORT).show();
     }
 
-    private void selProfissionais(String servico){
+    /*private void selProfissionais(String servico){
         //ArrayList<Profissional> profissionais = new ArrayList<Profissional>();
         for (int i = 0; i < ApplicationClass.servicos.size(); i++){
             if (ApplicationClass.servicos.get(i).getmId().equals(servico)){
                 profissionais.add(ApplicationClass.servicos.get(i).getProfissionais());
             }
         }
-    }
+    }*/
 }

@@ -16,12 +16,79 @@ import br.com.belapp.belapp.model.Promocoes;
 import br.com.belapp.belapp.model.Servico;
 
 public class EstabelecimentoDAO {
-    FirebaseDatabase firebaseDatabase;
+
+    /*private DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+    private DatabaseReference estabelecimentoReference = databaseReference.child("estabelecimentos");*/
+    ArrayList<Estabelecimento> lista = new ArrayList<>();
+
+    public static DatabaseReference getDatabaseReference() {
+        return FirebaseDatabase.getInstance().getReference("estabelecimentos");
+    }
+
+    public void save(Estabelecimento estabelecimento){
+        if (estabelecimento == null){
+            return;
+        }
+
+        DatabaseReference mDatabase = getDatabaseReference();
+        estabelecimento.setmEid(mDatabase.push().getKey());
+        mDatabase.child(estabelecimento.getmEid()).setValue(estabelecimento);
+    }
+
+    public void update(Estabelecimento estabelecimento){
+        if (estabelecimento == null){
+            return;
+        }
+
+        DatabaseReference mDatabase = getDatabaseReference();
+        mDatabase.child(estabelecimento.getmEid()).setValue(estabelecimento);
+    }
+
+    public ArrayList<Estabelecimento> getEstabelecimentos(){
+        try{
+            DatabaseReference databaseReference = getDatabaseReference();
+
+            databaseReference.addChildEventListener(new ChildEventListener() {
+                @Override
+                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                    Estabelecimento estabelecimento = dataSnapshot.getValue(Estabelecimento.class);
+                    lista.add(estabelecimento);
+                }
+
+                @Override
+                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+                }
+
+                @Override
+                public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+                }
+
+                @Override
+                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+        return lista;
+    }
+
+
+
+    /*FirebaseDatabase firebaseDatabase;
     ArrayList<Estabelecimento> listaEstabelecimentos;
     public EstabelecimentoDAO() {
     }
 
-    /*public void inserirEstabelecimento()
+    public void inserirEstabelecimento()
     {
         Endereco endereco = new Endereco("Av Santo Antonio", "150", "Centro","Garanhuns","","55333-000",
                 "L1234560");
@@ -39,12 +106,12 @@ public class EstabelecimentoDAO {
                 "foto.pnj", end, "L123456", -8, -37, servicos, agenda, promocoes, profissionais,avaliacoes);
 
      }
-*/
+
      public ArrayList<Estabelecimento> getEstabelecimentos()
      {
          firebaseDatabase = FirebaseDatabase.getInstance();
          DatabaseReference ref = firebaseDatabase.getReference("estabelecimentos");
-          listaEstabelecimentos = new ArrayList<>();
+         listaEstabelecimentos = new ArrayList<>();
 
          try
          {
@@ -87,5 +154,5 @@ public class EstabelecimentoDAO {
          }
 
          return listaEstabelecimentos;
-     }
+     }*/
 }

@@ -14,7 +14,6 @@ import java.util.ArrayList;
 
 import br.com.belapp.belapp.R;
 import br.com.belapp.belapp.model.Estabelecimento;
-import br.com.belapp.belapp.model.Teste;
 
 public class SalaoAdapter extends RecyclerView.Adapter<SalaoAdapter.ViewHolder> {
 
@@ -64,9 +63,9 @@ public class SalaoAdapter extends RecyclerView.Adapter<SalaoAdapter.ViewHolder> 
         DecimalFormat df2 = new DecimalFormat(".##");
         viewHolder.itemView.setTag(lista.get(i));
 
-        viewHolder.tvNomeSalao.setText(lista.get(i).getmNome());
+        /*viewHolder.tvNomeSalao.setText(lista.get(i).getmNome());
         viewHolder.tvEnderecoSalao.setText("Endereço: "+lista.get(i).getmEndereco_ID().getmCidade());
-        viewHolder.tvDistancia.setText("Distância: "+df2.format(lista.get(i).getDistancia())+" Km");
+        viewHolder.tvDistancia.setText("Distância: "+df2.format(lista.get(i).getDistancia())+" Km");*/
 
         viewHolder.ivFotoSalao.setImageResource(R.drawable.salao_teste);
     }

@@ -13,7 +13,6 @@ import java.util.ArrayList;
 
 import br.com.belapp.belapp.R;
 import br.com.belapp.belapp.model.Servico;
-import br.com.belapp.belapp.model.Teste;
 
 public class ServicoAdapter extends RecyclerView.Adapter<ServicoAdapter.ViewHolder> {
 
@@ -61,9 +60,9 @@ public class ServicoAdapter extends RecyclerView.Adapter<ServicoAdapter.ViewHold
         DecimalFormat df2 = new DecimalFormat(".##");
         viewHolder.itemView.setTag(testes.get(i));
 
-        viewHolder.tvServico.setText(testes.get(i).getNome());
+        /*viewHolder.tvServico.setText(testes.get(i).getNome());
         viewHolder.tvPreco.setText("R$ "+df2.format(testes.get(i).getPreco()));
-        viewHolder.tvDuracao.setText("Duração: "+testes.get(i).getDuracao());
+        viewHolder.tvDuracao.setText("Duração: "+testes.get(i).getDuracao());*/
 
     }
 
