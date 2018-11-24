@@ -3,7 +3,7 @@ jdk: oraclejdk8
 sudo: false
 install: true
 
-env:
+env: 
   global:
     - ANDROID_API_LEVEL=25
     - ANDROID_EMULATOR_LEVEL=22
