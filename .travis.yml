@@ -2,7 +2,7 @@ language: android
 jdk: oraclejdk8
 sudo: false
 
-env:
+env: 
   global:
     - ANDROID_API_LEVEL=28
     - ANDROID_EMULATOR_LEVEL=25
