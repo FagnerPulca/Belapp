@@ -19,7 +19,7 @@ public class EstabelecimentoDAO {
 
     /*private DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
     private DatabaseReference estabelecimentoReference = databaseReference.child("estabelecimentos");*/
-    ArrayList<Estabelecimento> lista = new ArrayList<>();
+    ArrayList<Estabelecimento> lista;
 
     public static DatabaseReference getDatabaseReference() {
         return FirebaseDatabase.getInstance().getReference("estabelecimentos");
@@ -46,7 +46,8 @@ public class EstabelecimentoDAO {
 
     public ArrayList<Estabelecimento> getEstabelecimentos(){
         try{
-            DatabaseReference databaseReference = getDatabaseReference();
+            lista = new ArrayList<Estabelecimento>();
+            final DatabaseReference databaseReference = getDatabaseReference();
 
             databaseReference.addChildEventListener(new ChildEventListener() {
                 @Override

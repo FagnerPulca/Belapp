@@ -1,5 +1,6 @@
 package br.com.belapp.belapp.activities;
 
+import android.app.ProgressDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -49,11 +50,15 @@ public class BuscaActivity extends AppCompatActivity{
         etNome = findViewById(R.id.etNome);
         etDescricao = findViewById(R.id.etDescricao);
         tvNome = findViewById(R.id.tvNome);
+        tvDescricao = findViewById(R.id.tvDescricao);
+
+
 
 
         /*FirebaseApp.initializeApp(BuscaActivity.this);
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference();*/
+
         estabelecimentos = novoEsDao.getEstabelecimentos();
 
         btnAdd.setOnClickListener(new View.OnClickListener() {
@@ -77,8 +82,8 @@ public class BuscaActivity extends AppCompatActivity{
             public void onClick(View v) {
                 try{
                     Toast.makeText(BuscaActivity.this, "Tamanho: " + estabelecimentos.size(), Toast.LENGTH_SHORT).show();
-                    tvNome.setText(estabelecimentos.get(0).getmNome());
-                    tvDescricao.setText(estabelecimentos.get(0).getmDescricao());
+                    tvNome.setText(estabelecimentos.get(1).getmNome());
+                    tvDescricao.setText(estabelecimentos.get(1).getmDescricao());
                 }catch(Exception e){
                     Toast.makeText(BuscaActivity.this, "Tamanho: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
