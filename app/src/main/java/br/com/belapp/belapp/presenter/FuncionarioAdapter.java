@@ -14,19 +14,21 @@ import java.util.ArrayList;
 
 import br.com.belapp.belapp.R;
 import br.com.belapp.belapp.model.Profissional;
-import br.com.belapp.belapp.model.Teste;
+import br.com.belapp.belapp.model.Servico;
 
 public class FuncionarioAdapter extends RecyclerView.Adapter<FuncionarioAdapter.ViewHolder> {
 
     private ArrayList<Profissional> profissionais;
+    private ArrayList<Servico> servicos;
     ItemClicked activity;
 
     public interface ItemClicked{
         void onItemClicked(int index);
     }
 
-    public FuncionarioAdapter (Context context, ArrayList<Profissional> list){
-        profissionais = list;
+    public FuncionarioAdapter (Context context, ArrayList<Profissional> list_profissionais, ArrayList<Servico> list_servicos){
+        profissionais = list_profissionais;
+        servicos = list_servicos;
         activity = (ItemClicked) context;
     }
 
@@ -64,12 +66,12 @@ public class FuncionarioAdapter extends RecyclerView.Adapter<FuncionarioAdapter.
         DecimalFormat df2 = new DecimalFormat(".##");
         viewHolder.itemView.setTag(profissionais.get(i));
 
-        for (int j = 0; j < ApplicationClass.servicos.size(); j++){
-            if (ApplicationClass.servicos.get(j).getProfissionais().getmId().equals(profissionais.get(i).getmId())){
-                viewHolder.tvPreco.setText("R$ "+df2.format(ApplicationClass.servicos.get(j).getPreco()));
+        for (int j = 0; j < profissionais.size(); j++){
+            if (servicos.get(i).getmProfissionais().equals(profissionais.get(j).getmId())){
+                viewHolder.tvPreco.setText("R$ "+df2.format(servicos.get(i).getmPreco()));
+                viewHolder.tvNome.setText("Nome: "+profissionais.get(i).getNome());
             }
         }
-        viewHolder.tvNome.setText("Nome: "+profissionais.get(i).getNome());
         viewHolder.ivProfissional.setImageResource(R.drawable.profissional_teste);
     }
 

@@ -45,10 +45,10 @@ public class PagSalaoActivity extends AppCompatActivity implements ServicoAdapte
         String salao = getIntent().getStringExtra("salao");
         servicos = new ArrayList<Servico>();
 
-        selServicos(salao);
+        /*selServicos(salao);
 
         myAdapter = new ServicoAdapter(this, servicos);
-        recyclerView.setAdapter(myAdapter);
+        recyclerView.setAdapter(myAdapter);*/
 
     }
 
@@ -57,10 +57,10 @@ public class PagSalaoActivity extends AppCompatActivity implements ServicoAdapte
         Intent intent = new Intent(PagSalaoActivity.this, FuncionariosActivity.class);
         intent.putExtra("servico", servicos.get(index).getmId());
         startActivity(intent);
-        Toast.makeText(this, "Salao: "+servicos.get(index).getNome(),Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "Salao: "+servicos.get(index).getNome(),Toast.LENGTH_SHORT).show();
     }
 
-    private void selServicos (String salao){
+    /*private void selServicos (String salao){
         for (int i = 0; i < ApplicationClass.estabelecimentos.size(); i++){
             if (ApplicationClass.estabelecimentos.get(i).getmNome().equals(salao)){
                 //Toast.makeText(this, "Salao: "+ApplicationClass.estabelecimentos.get(i).getmServicos().size(),Toast.LENGTH_SHORT).show();
@@ -69,5 +69,5 @@ public class PagSalaoActivity extends AppCompatActivity implements ServicoAdapte
                 }
             }
         }
-    }
+    }*/
 }

@@ -4,18 +4,15 @@ import android.app.Application;
 
 import java.util.ArrayList;
 
-import br.com.belapp.belapp.DAO.EstabelecimentoDAO;
 import br.com.belapp.belapp.model.Agenda;
 import br.com.belapp.belapp.model.Endereco;
 import br.com.belapp.belapp.model.Estabelecimento;
 import br.com.belapp.belapp.model.Profissional;
 import br.com.belapp.belapp.model.Promocoes;
 import br.com.belapp.belapp.model.Servico;
-import br.com.belapp.belapp.model.Teste;
 
 public class ApplicationClass extends Application {
 
-    public static ArrayList<Teste> testes;
     public static ArrayList<Estabelecimento> estabelecimentos;
     public static ArrayList<Endereco> enderecos;
     public static ArrayList<Servico> servicos;
@@ -36,15 +33,7 @@ public class ApplicationClass extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-
-        testes = new ArrayList<Teste>();
-        testes.add(new Teste("00","Salao Beauty", "Barba"));
-        testes.add(new Teste("01","Salao Great", "Cabelo"));
-        testes.add(new Teste("02","Salao Beauty", "Barba"));
-        testes.add(new Teste("03","Salao Great", "Olho"));
-        testes.add(new Teste("04","Salao Beauty", "Unha"));
-        testes.add(new Teste("05","Salao Great", "Olho"));
-
+        /*
         profissionais = new ArrayList<Profissional>();
         profissionais.add(new Profissional("01","João", "ABC", "Sim"));
         profissionais.add(new Profissional("02","José", "ABC", "Não"));
@@ -88,7 +77,7 @@ public class ApplicationClass extends Application {
         estabelecimentos.add(new Estabelecimento("Salão Great", "58966574", "Sua beleza é prioridade", "5", "Gal",
                 enderecos.get(1), "123", -8.5, -37, subServicos2, agenda, promocoes, subProfissionais2, avaliacoes, 0));
         estabelecimentos.add(new Estabelecimento("Salão Maximum", "58964712", "ABC", "5", "Gal",
-                enderecos.get(2), "123", -9, -39, subServicos3, agenda, promocoes, subProfissionais3, avaliacoes,0));
+                enderecos.get(2), "123", -9, -39, subServicos3, agenda, promocoes, subProfissionais3, avaliacoes,0));*/
     }
 
     public static double calculaDistancia(double lat1, double lng1, double lat2, double lng2) {

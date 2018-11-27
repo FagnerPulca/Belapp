@@ -12,10 +12,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-import br.com.belapp.belapp.DAO.EstabelecimentoDAO;
 import br.com.belapp.belapp.R;
 import br.com.belapp.belapp.model.Estabelecimento;
-import br.com.belapp.belapp.model.Teste;
 import br.com.belapp.belapp.presenter.ApplicationClass;
 import br.com.belapp.belapp.presenter.SalaoAdapter;
 
@@ -49,6 +47,7 @@ public class SaloesActivity extends AppCompatActivity implements SalaoAdapter.It
         recyclerView.setLayoutManager(layoutManager);
 
         estabelecimentos = new ArrayList<>();
+
         //estabelecimentoDAO = new EstabelecimentoDAO();
 
         /*try{
@@ -60,9 +59,9 @@ public class SaloesActivity extends AppCompatActivity implements SalaoAdapter.It
 
         //lista = new ArrayList<Estabelecimento>();
 
-        selEstabelecimentos(categoria, servico, cidade);
+        //selEstabelecimentos(categoria, servico, cidade);
 
-        for (int i = 0; i < estabelecimentos.size(); i++){
+        /*for (int i = 0; i < estabelecimentos.size(); i++){
             estabelecimentos.get(i).setDistancia(ApplicationClass.calculaDistancia(latitude, longitude,
                     estabelecimentos.get(i).getmLaititude(), estabelecimentos.get(i).getmLongitude()));
         }
@@ -74,7 +73,7 @@ public class SaloesActivity extends AppCompatActivity implements SalaoAdapter.It
         });
 
         myAdapter = new SalaoAdapter(this, estabelecimentos);
-        recyclerView.setAdapter(myAdapter);
+        recyclerView.setAdapter(myAdapter);*/
     }
 
 
@@ -86,7 +85,7 @@ public class SaloesActivity extends AppCompatActivity implements SalaoAdapter.It
         Toast.makeText(this, getString(R.string.servicos),Toast.LENGTH_SHORT).show();
     }
 
-    private void selEstabelecimentos(String categoria, String servico, String cidade){
+    /*private void selEstabelecimentos(String categoria, String servico, String cidade){
 
         if(!categoria.isEmpty()) { //apenas escolheu uma categoria
             for (int i = 0; i < ((Integer) ApplicationClass.estabelecimentos.size()); i++) {
@@ -126,5 +125,5 @@ public class SaloesActivity extends AppCompatActivity implements SalaoAdapter.It
                 }
             }
         }
-    }
+    }*/
 }

@@ -8,8 +8,65 @@ import java.util.ArrayList;
 
 public class Estabelecimento{
 
+    private String mEid;
+    private String mNome;
+    private String mDescricao;
+    private String mIdEndereco;
+    private String mDistancia;
+
+    public Estabelecimento(){
+
+    }
+
+    public Estabelecimento(String mEid, String mNome, String mDescricao, String mIdEndereco, String mDistancia) {
+        this.mEid = mEid;
+        this.mNome = mNome;
+        this.mDescricao = mDescricao;
+        this.mIdEndereco = mIdEndereco;
+        this.mDistancia = mDistancia;
+    }
+
+    public String getmEid() {
+        return mEid;
+    }
+
+    public void setmEid(String mEid) {
+        this.mEid = mEid;
+    }
+
+    public String getmNome() {
+        return mNome;
+    }
+
+    public void setmNome(String mNome) {
+        this.mNome = mNome;
+    }
+
+    public String getmDescricao() {
+        return mDescricao;
+    }
+
+    public void setmDescricao(String mDescricao) {
+        this.mDescricao = mDescricao;
+    }
+
+    public String getmIdEndereco() {
+        return mIdEndereco;
+    }
+
+    public void setmIdEndereco(String mIdEndereco) {
+        this.mIdEndereco = mIdEndereco;
+    }
+
+    public String getmDistancia() {
+        return mDistancia;
+    }
+
+    public void setmDistancia(String mDistancia) {
+        this.mDistancia = mDistancia;
+    }
     //Aqui atributos e metodos da classe
-    String mEId;
+    /*String mEId;
     String mNome;
     String mTelefone;
     String mDescricao;
@@ -28,6 +85,19 @@ public class Estabelecimento{
     private DatabaseReference mDataBase;
 
     public Estabelecimento() {
+    }
+
+
+    public Estabelecimento(String mDescricao, String mEId, String mGaleria, String mLocalizacao, String mMediaAvaliacoes,
+                           String mNome, String mTelefone){
+
+        this.mDescricao = mDescricao;
+        this.mGaleria = mGaleria;
+        this.mLocalizacao = mLocalizacao;
+        this.mMediaAvaliacoes = mMediaAvaliacoes;
+        this.mNome = mNome;
+        this.mTelefone = mTelefone;
+
     }
 
     public Estabelecimento(String mNome, String mTelefone, String mDescricao, String mMediaAvaliacoes,
@@ -52,7 +122,7 @@ public class Estabelecimento{
         this.distancia = distancia;
     }
 
-    /*public void addEstabelecimento(String nome, String telefone, String descricao, String mediaAvaliacoes,
+    public void addEstabelecimento(String nome, String telefone, String descricao, String mediaAvaliacoes,
                                    String galeria, String endereco, String localizacao, double latitude, double longitude, ArrayList<Servico> servicos_arl, ArrayList<Agenda> agenda_arl,
                                    ArrayList<Promocoes> promocoes_arl, ArrayList<Profissional> profissionais_arl, ArrayList<String> avaliacoes_arl) {
 
@@ -61,7 +131,7 @@ public class Estabelecimento{
 
         mDataBase = FirebaseDatabase.getInstance().getReference();
         mDataBase.child("estabelecimentos").push().setValue(estabelecimento);
-    }*/
+    }
 
     public double getDistancia() {
         return distancia;
@@ -193,6 +263,6 @@ public class Estabelecimento{
 
     public void setmDataBase(DatabaseReference mDataBase) {
         this.mDataBase = mDataBase;
-    }
+    }*/
 
 }
