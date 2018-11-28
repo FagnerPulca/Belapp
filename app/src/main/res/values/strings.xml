@@ -34,6 +34,10 @@
     <string name="et_email">Email</string>
     <string name="et_telefone">Telefone</string>
     <string name="et_senha">Senha</string>
+    <string name="erro_teefone">telefone não pode ficar em branco</string>
+    <string name="erro_Email">Email não pode ficar em branco</string>
+    <string name="erro_Nome">Nome não pode ficar em branco</string>
+    <string name="erro_Senha">Senha não pode ficar em branco</string>
 
     <!-- Facebook-->
     <string name="facebook_app_id">190569431853174</string>

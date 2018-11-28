@@ -132,6 +132,8 @@ public class CadastroActivitySteps extends DefaultTest {
 
     }
 
+
+
     @Entao("^devo ver uma mensagem de sucesso da operacao$")
     public void devoVerAMensagemSucessoo() {
         verificarMensagemToast((String)getActivity().getText(R.string.sucess_cadastro));

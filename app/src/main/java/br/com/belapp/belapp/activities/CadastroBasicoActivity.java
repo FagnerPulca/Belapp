@@ -86,25 +86,25 @@ public class CadastroBasicoActivity extends AppCompatActivity {
                         cadastrarUsuarios(cliente);
                     } else {
                         Toast.makeText(CadastroBasicoActivity.this,
-                                "Preencha o Telefone!",
+                                R.string.erro_Senha,
                                 Toast.LENGTH_SHORT).show();
                     }
 
                 } else {
                     Toast.makeText(CadastroBasicoActivity.this,
-                            "Preencha a Senha!",
+                            R.string.erro_teefone,
                             Toast.LENGTH_SHORT).show();
                 }
 
             } else {
                 Toast.makeText(CadastroBasicoActivity.this,
-                        "Preencha o Email!",
+                        R.string.erro_Email,
                         Toast.LENGTH_SHORT).show();
             }
 
         } else {
             Toast.makeText(CadastroBasicoActivity.this,
-                    "Preencha o Nome!",
+                    R.string.erro_Nome,
                     Toast.LENGTH_SHORT).show();
         }
 
@@ -120,7 +120,7 @@ public class CadastroBasicoActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             cliente.salvar(task.getResult().getUser().getUid());
                             Toast.makeText(CadastroBasicoActivity.this,
-                                    "Sucesso ao cadastrar usuário!",
+                                    R.string.sucess_cadastro,
                                     Toast.LENGTH_SHORT).show();
                             abrirTelaPrincipal();
                         } else {
