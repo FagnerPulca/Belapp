@@ -1,32 +1,32 @@
 package br.com.belapp.belapp.activities;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.widget.TextView;
+
 import android.widget.Toast;
 
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 
 import br.com.belapp.belapp.R;
 import br.com.belapp.belapp.model.Estabelecimento;
-import br.com.belapp.belapp.presenter.ApplicationClass;
 import br.com.belapp.belapp.presenter.SalaoAdapter;
 
 public class SaloesActivity extends AppCompatActivity implements SalaoAdapter.ItemClicked{
 
-    TextView tvTeste, tvLatitude, tvLongitude;
+    private ArrayList<Estabelecimento> estabelecimentos;
 
-    ArrayList<Estabelecimento> estabelecimentos;
-    //EstabelecimentoDAO estabelecimentoDAO;
-    RecyclerView recyclerView;
-    RecyclerView.Adapter myAdapter;
-    RecyclerView.LayoutManager layoutManager;
-    //ArrayList<Estabelecimento> lista;
+    private RecyclerView.Adapter myAdapter;
+
+    private ProgressDialog mProgressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,40 +40,18 @@ public class SaloesActivity extends AppCompatActivity implements SalaoAdapter.It
         double latitude = getIntent().getDoubleExtra("latitude", -8);
         double longitude = getIntent().getDoubleExtra("longitude", -36);
 
-        recyclerView = findViewById(R.id.rvSaloes);
+        RecyclerView recyclerView = findViewById(R.id.rvSaloes);
         recyclerView.setHasFixedSize(true);
 
-        layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
 
         estabelecimentos = new ArrayList<>();
 
-        //estabelecimentoDAO = new EstabelecimentoDAO();
-
-        /*try{
-            estabelecimentos = estabelecimentoDAO.getEstabelecimentos();
-        } catch (Exception e){
-            System.out.print(e.getMessage());
-            Toast.makeText(this, "Salao: "+e.getMessage(),Toast.LENGTH_SHORT).show();
-        }*/
-
-        //lista = new ArrayList<Estabelecimento>();
-
-        //selEstabelecimentos(categoria, servico, cidade);
-
-        /*for (int i = 0; i < estabelecimentos.size(); i++){
-            estabelecimentos.get(i).setDistancia(ApplicationClass.calculaDistancia(latitude, longitude,
-                    estabelecimentos.get(i).getmLaititude(), estabelecimentos.get(i).getmLongitude()));
-        }
-        Collections.sort(estabelecimentos, new Comparator<Estabelecimento>() {
-            @Override
-            public int compare(Estabelecimento o1, Estabelecimento o2) {
-                return Double.compare(o1.getDistancia(), o2.getDistancia());
-            }
-        });
-
         myAdapter = new SalaoAdapter(this, estabelecimentos);
-        recyclerView.setAdapter(myAdapter);*/
+        recyclerView.setAdapter(myAdapter);
+        buscar();
+        dialogBuscando();
     }
 
 
@@ -85,6 +63,48 @@ public class SaloesActivity extends AppCompatActivity implements SalaoAdapter.It
         Toast.makeText(this, getString(R.string.servicos),Toast.LENGTH_SHORT).show();
     }
 
+    private void buscar(){
+        Query query = FirebaseDatabase.getInstance().getReference("estabelecimentos");
+
+        query.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+               Estabelecimento estabelecimento = dataSnapshot.getValue(Estabelecimento.class);
+               estabelecimentos.add(estabelecimento);
+               myAdapter.notifyDataSetChanged();
+               mProgressDialog.dismiss();
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                // empty
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                // empty
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+                // empty
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // empty
+            }
+        });
+    }
+
+    void dialogBuscando(){
+        mProgressDialog = new ProgressDialog(SaloesActivity.this);
+        mProgressDialog.setMessage("Buscando...");
+        mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        mProgressDialog.setIndeterminate(true);
+        mProgressDialog.setProgress(0);
+        mProgressDialog.show();
+    }
     /*private void selEstabelecimentos(String categoria, String servico, String cidade){
 
         if(!categoria.isEmpty()) { //apenas escolheu uma categoria
