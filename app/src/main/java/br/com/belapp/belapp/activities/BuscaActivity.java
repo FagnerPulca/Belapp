@@ -30,7 +30,6 @@ import br.com.belapp.belapp.R;
 import br.com.belapp.belapp.model.Estabelecimento;
 import br.com.belapp.belapp.presenter.ClickRecyclerView_Interface;
 import br.com.belapp.belapp.presenter.EstabelecimentoAdapter;
-import br.com.belapp.belapp.services.BuscaService;
 
 public class BuscaActivity extends AppCompatActivity{
 
@@ -98,10 +97,10 @@ public class BuscaActivity extends AppCompatActivity{
 //                }catch(Exception e){
 //                    Toast.makeText(BuscaActivity.this, "Tamanho: " + e.getMessage(), Toast.LENGTH_SHORT).show();
 //                }
-                Intent intent = new Intent();
+                /*Intent intent = new Intent();
                 intent.setClass(BuscaActivity.this, BuscaService.class);
-                startService(intent);
-                dialogBuscando(v);
+                startService(intent);*/
+                //dialogBuscando(v);
                 //tvNome.setText(estabelecimentos.get(0).getmNome());
                 //tvDescricao.setText(estabelecimentos.get(0).getmDescricao());
 
