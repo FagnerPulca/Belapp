@@ -74,7 +74,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-core:16.0.1'
     implementation 'com.google.firebase:firebase-database:15.0.1'
     implementation 'com.google.firebase:firebase-auth:15.0.0'
-   
+    implementation 'org.jetbrains:annotations-java5:15.0'
+
 }
 
 apply plugin: 'com.google.gms.google-services'
