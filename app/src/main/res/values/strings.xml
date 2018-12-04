@@ -37,10 +37,31 @@
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_cliente_logado">ClienteLogadoActivity</string>
-    <string name="Slongan">Sua Belesa no mehor lugar</string>
-    <string name="site">belaapp.com.br</string>
+    <string name="app_slongan">Sua beleza no melhor lugar</string>
+    <string name="app_site">belapp.com.br</string>
+    <string name="sucess_cadastro">Cadastro realizado com sucesso!</string>
     <string name="sucess_login_efetuado">Login efetuado com sucesso!</string>
+    <string name="error_cadastro">Erro na autenticação!</string>
     <string name="error_login_invalido">Senha errada ou email invalido!</string>
+
+    <string name="tv_ou">OU</string>
+    <string name="tv_formulario">Preencha o Formulário</string>
+    <string name="button_cadastrar">Cadastrar</string>
+    <string name="et_nome">Nome</string>
+    <string name="et_email">Email</string>
+    <string name="et_telefone">Telefone</string>
+    <string name="et_senha">Senha</string>
+    <string name="erro_teefone">telefone não pode ficar em branco</string>
+    <string name="erro_Email">Email não pode ficar em branco</string>
+    <string name="erro_Nome">Nome não pode ficar em branco</string>
+    <string name="erro_Senha">Senha não pode ficar em branco</string>
+
+    <!-- Facebook-->
+    <string name="facebook_app_id">190569431853174</string>
+    <string name="fb_login_protocol_scheme">fb190569431853174</string>
+
+
+
 
     <string name="title_activity_perfil">Meu Perfil</string>
     <string name="app_nome">Nome</string>
@@ -65,4 +86,5 @@
     <string name="resultados">Resultados</string>
     <string name="digite_algum_dado">Digite algum dado</string>
     <string name="servicos">Serviços</string>
+
 </resources>

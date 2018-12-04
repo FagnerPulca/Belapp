@@ -36,6 +36,24 @@
             android:name=".activities.ClienteLogadoActivity"
             android:label="@string/title_activity_cliente_logado"
             android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity android:name=".activities.CadastroBasicoActivity" />
+
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id"
+            tools:replace="android:value" />
+
+        <activity
+            android:name="com.facebook.FacebookActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            tools:replace="android:theme" />
+        <activity android:name=".activities.FacebookLoginActivity" />
+        <activity android:name=".activities.EditarActivity" />
+        <activity android:name=".activities.GoogleLoginActivity" />
+
         <activity
             android:name=".activities.PerfilActivity"
             android:label="@string/title_activity_perfil"
@@ -50,6 +68,7 @@
         <activity android:name=".activities.PagSalaoActivity" />
         <activity android:name=".activities.FuncionariosActivity" />
         <activity android:name=".activities.TelaBuscaActivity"/>
+
 
     </application>
 

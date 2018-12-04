@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_header_logado"
     android:layout_width="match_parent"
     android:layout_height="@dimen/nav_header_height"
     android:background="@drawable/side_nav_bar"
@@ -21,17 +22,16 @@
         app:srcCompat="@android:drawable/sym_def_app_icon" />
 
     <TextView
+        android:id="@+id/tvTituloNavegadorLogado"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
-        android:text="@string/Slongan"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         android:textSize="@dimen/activity_vertical_margin" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/tvSubtituloNavegadorLogado"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/site" />
+        android:layout_height="wrap_content" />
 
 </LinearLayout>
