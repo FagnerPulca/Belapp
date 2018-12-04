@@ -4,11 +4,16 @@ public class Servico {
 
     //Aqui atributos e metodos da classe
     private String mId;
+    private String mEstabId;
     private String mNome;
     private double mPreco;
     private String mDuracao;
     private String mProfissionais;
     private String mCategoria;
+
+    public Servico(){
+
+    }
 
     public Servico(String mId, String mNome, double mPreco, String mDuracao, String mProfissionais, String mCategoria) {
         this.mId = mId;
@@ -25,6 +30,14 @@ public class Servico {
 
     public void setmId(String mId) {
         this.mId = mId;
+    }
+
+    public String getmEstabId() {
+        return mEstabId;
+    }
+
+    public void setmEstabId(String mEstabId) {
+        this.mEstabId = mEstabId;
     }
 
     public String getmNome() {

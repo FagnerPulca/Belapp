@@ -2,6 +2,7 @@ package br.com.belapp.belapp.activities;
 
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -25,10 +26,16 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 
 import java.util.ArrayList;
 
 import br.com.belapp.belapp.R;
+import br.com.belapp.belapp.model.Servico;
 import br.com.belapp.belapp.presenter.LocalizacaoCliente;
 import br.com.belapp.belapp.servicos.MyServiceLocation;
 
@@ -46,6 +53,11 @@ public class ClienteLogadoActivity extends AppCompatActivity
     private ArrayList permissionsToRequest;
     private ArrayList permissionsRejected = new ArrayList();
     private ArrayList permissions = new ArrayList();
+    private ProgressDialog mProgressDialog;
+    private ArrayList<String> ids;
+    private ArrayList<String> idcateg;
+    private ArrayList<Servico> servicos;
+    private String categoria;
 
     private final static int ALL_PERMISSIONS_RESULT = 101;
 
@@ -94,14 +106,23 @@ public class ClienteLogadoActivity extends AppCompatActivity
         btnSobrancelha = findViewById(R.id.ibSobrancelha);
         btnUnha = findViewById(R.id.ibUnha);
 
+        ids = new ArrayList<>();
+        idcateg = new ArrayList<>();
+        servicos = new ArrayList<>();
+
+        buscar();
+        dialogBuscando();
 
         btnBarba.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                categoria = "Barba";
                 Intent intent = new Intent(ClienteLogadoActivity.this, SaloesActivity.class);
                 intent.putExtra("categoria", "Barba");
                 intent.putExtra("latitude", localizao.getLatitude());
                 intent.putExtra("longitude", localizao.getLongitude());
+                intent.putExtra("ids", ids);
+                intent.putExtra("idcateg", idcateg);
                 startActivity(intent);
                 Toast.makeText(ClienteLogadoActivity.this, "Barba", Toast.LENGTH_SHORT).show();
             }
@@ -109,10 +130,13 @@ public class ClienteLogadoActivity extends AppCompatActivity
         btnCabelo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                categoria = "Cabelo";
                 Intent intent = new Intent(ClienteLogadoActivity.this, SaloesActivity.class);
                 intent.putExtra("categoria", "Cabelo");
                 intent.putExtra("latitude", localizao.getLatitude());
                 intent.putExtra("longitude", localizao.getLongitude());
+                intent.putExtra("ids", ids);
+                intent.putExtra("idcateg", idcateg);
                 startActivity(intent);
                 Toast.makeText(ClienteLogadoActivity.this, "Cabelo", Toast.LENGTH_SHORT).show();
             }
@@ -120,10 +144,13 @@ public class ClienteLogadoActivity extends AppCompatActivity
         btnDepilacao.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                categoria = "Depilação";
                 Intent intent = new Intent(ClienteLogadoActivity.this, SaloesActivity.class);
                 intent.putExtra("categoria", "Depilação");
                 intent.putExtra("latitude", localizao.getLatitude());
                 intent.putExtra("longitude", localizao.getLongitude());
+                intent.putExtra("ids", ids);
+                intent.putExtra("idcateg", idcateg);
                 startActivity(intent);
                 Toast.makeText(ClienteLogadoActivity.this, "Depilação", Toast.LENGTH_SHORT).show();
             }
@@ -131,10 +158,13 @@ public class ClienteLogadoActivity extends AppCompatActivity
         btnOlho.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                categoria = "Olho";
                 Intent intent = new Intent(ClienteLogadoActivity.this, SaloesActivity.class);
                 intent.putExtra("categoria", "Olho");
                 intent.putExtra("latitude", localizao.getLatitude());
                 intent.putExtra("longitude", localizao.getLongitude());
+                intent.putExtra("ids", ids);
+                intent.putExtra("idcateg", idcateg);
                 startActivity(intent);
                 Toast.makeText(ClienteLogadoActivity.this, "Olho", Toast.LENGTH_SHORT).show();
             }
@@ -142,10 +172,13 @@ public class ClienteLogadoActivity extends AppCompatActivity
         btnSobrancelha.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                categoria = "Sobrancelha";
                 Intent intent = new Intent(ClienteLogadoActivity.this, SaloesActivity.class);
                 intent.putExtra("categoria", "Sobrancelha");
                 intent.putExtra("latitude", localizao.getLatitude());
                 intent.putExtra("longitude", localizao.getLongitude());
+                intent.putExtra("ids", ids);
+                intent.putExtra("idcateg", idcateg);
                 startActivity(intent);
                 Toast.makeText(ClienteLogadoActivity.this, "Sobrancelha", Toast.LENGTH_SHORT).show();
             }
@@ -153,14 +186,68 @@ public class ClienteLogadoActivity extends AppCompatActivity
         btnUnha.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                categoria = "Unha";
                 Intent intent = new Intent(ClienteLogadoActivity.this, SaloesActivity.class);
                 intent.putExtra("categoria", "Unha");
                 intent.putExtra("latitude", localizao.getLatitude());
                 intent.putExtra("longitude", localizao.getLongitude());
+                intent.putExtra("ids", ids);
+                intent.putExtra("idcateg", idcateg);
                 startActivity(intent);
                 Toast.makeText(ClienteLogadoActivity.this, "Unha", Toast.LENGTH_SHORT).show();
             }
         });
+
+    }
+
+    private void buscar(){
+        Query query = FirebaseDatabase.getInstance().getReference("servicos");
+
+        query.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                Servico servico = dataSnapshot.getValue(Servico.class);
+                servicos.add(servico);
+
+                ids.add(servico.getmEstabId());
+                idcateg.add(servico.getmCategoria());
+
+                //myAdapter.notifyDataSetChanged();
+                mProgressDialog.dismiss();
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                // empty
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                // empty
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+                // empty
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // empty
+            }
+        });
+    }
+
+    void dialogBuscando(){
+        mProgressDialog = new ProgressDialog(ClienteLogadoActivity.this);
+        mProgressDialog.setMessage("Buscando...");
+        mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        mProgressDialog.setIndeterminate(true);
+        mProgressDialog.setProgress(0);
+        mProgressDialog.show();
+    }
+
+    void atualizaBusca(String categoria){
 
     }
 

@@ -1,5 +1,6 @@
 package br.com.belapp.belapp.activities;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
@@ -10,9 +11,16 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+
 import java.util.ArrayList;
 
 import br.com.belapp.belapp.R;
+import br.com.belapp.belapp.model.Estabelecimento;
 import br.com.belapp.belapp.model.Servico;
 import br.com.belapp.belapp.presenter.ApplicationClass;
 import br.com.belapp.belapp.presenter.ServicoAdapter;
@@ -25,6 +33,8 @@ public class PagSalaoActivity extends AppCompatActivity implements ServicoAdapte
     RecyclerView.LayoutManager layoutManager;
     RecyclerView.Adapter myAdapter;
     ArrayList<Servico> servicos;
+    private ProgressDialog mProgressDialog;
+    String salao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,22 +52,68 @@ public class PagSalaoActivity extends AppCompatActivity implements ServicoAdapte
         layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
 
-        String salao = getIntent().getStringExtra("salao");
-        servicos = new ArrayList<Servico>();
-
-        /*selServicos(salao);
+        salao = getIntent().getStringExtra("salao"); // id do salão
+        servicos = new ArrayList<>();
 
         myAdapter = new ServicoAdapter(this, servicos);
-        recyclerView.setAdapter(myAdapter);*/
+        recyclerView.setAdapter(myAdapter);
+
+        buscar();
+        dialogBuscando();
 
     }
 
     @Override
     public void onItemClicked(int index) {
         Intent intent = new Intent(PagSalaoActivity.this, FuncionariosActivity.class);
-        intent.putExtra("servico", servicos.get(index).getmId());
+        intent.putExtra("servico", servicos.get(index).getmProfissionais());
         startActivity(intent);
         //Toast.makeText(this, "Salao: "+servicos.get(index).getNome(),Toast.LENGTH_SHORT).show();
+    }
+
+    private void buscar(){
+        Query query = FirebaseDatabase.getInstance().getReference("servicos");
+
+        query.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                Servico servico = dataSnapshot.getValue(Servico.class);
+                if (servico.getmEstabId().equals(salao)){
+                    servicos.add(servico);
+                }
+                myAdapter.notifyDataSetChanged();
+                mProgressDialog.dismiss();
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                // empty
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                // empty
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+                // empty
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // empty
+            }
+        });
+    }
+
+    void dialogBuscando(){
+        mProgressDialog = new ProgressDialog(PagSalaoActivity.this);
+        mProgressDialog.setMessage("Buscando...");
+        mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        mProgressDialog.setIndeterminate(true);
+        mProgressDialog.setProgress(0);
+        mProgressDialog.show();
     }
 
     /*private void selServicos (String salao){

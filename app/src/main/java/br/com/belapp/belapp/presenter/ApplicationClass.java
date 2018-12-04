@@ -4,6 +4,8 @@ import android.app.Application;
 
 import java.util.ArrayList;
 
+import br.com.belapp.belapp.DAO.EnderecoDAO;
+import br.com.belapp.belapp.DAO.EstabelecimentoDAO;
 import br.com.belapp.belapp.model.Agenda;
 import br.com.belapp.belapp.model.Endereco;
 import br.com.belapp.belapp.model.Estabelecimento;
@@ -13,71 +15,40 @@ import br.com.belapp.belapp.model.Servico;
 
 public class ApplicationClass extends Application {
 
-    public static ArrayList<Estabelecimento> estabelecimentos;
-    public static ArrayList<Endereco> enderecos;
-    public static ArrayList<Servico> servicos;
-    public static ArrayList<Profissional> profissionais;
 
-    public static ArrayList<Servico> subServicos1;
-    public static ArrayList<Servico> subServicos2;
-    public static ArrayList<Servico> subServicos3;
-
-    public static ArrayList<Profissional> subProfissionais1;
-    public static ArrayList<Profissional> subProfissionais2;
-    public static ArrayList<Profissional> subProfissionais3;
-
-    public static ArrayList<String> avaliacoes;
-    public static ArrayList<Agenda> agenda;
-    public static ArrayList<Promocoes> promocoes;
+    /*public Estabelecimento estabelecimento1;
+    public Estabelecimento estabelecimento2;
+    public Estabelecimento estabelecimento3;
+    public Estabelecimento estabelecimento4;
+    public Estabelecimento estabelecimento5;
+    public Estabelecimento estabelecimento6;*/
 
     @Override
     public void onCreate() {
         super.onCreate();
+
+        /*estabelecimento1 = new Estabelecimento("-LS54ly9L9y6RsIuOGid", "Salão Beauty", "Descrição do salão Beauty", -8.899168, -36.490116, "Dr. Tomé Cavalcante", "186", "Santo Antônio", "Garanhuns", "","55293-440");
+        estabelecimento2 = new Estabelecimento("-LS5qQlPYFyFBCY4E0Uz", "Salão Great", "Descrição do salão Great", -8.896258, -36.492095, "R. da Esperança", "215", "Santo Antônio", "Garanhuns", "","55293-160");
+        estabelecimento3 = new Estabelecimento("-LS6-9l4lhGqiPxvZBFH", "Salão Maximum", "Descrição do salão Maximum", -8.895739, -36.494552, "Praça Dom Pedro II", "160", "Boa Vista", "Garanhuns", "","55292-625");
+        estabelecimento4 = new Estabelecimento("-LSCFl_m-CKuH18ghfmb", "Salão do Danilo", "Descrição do salão do Danillo", -8.892464, -36.498532, "R. Maj. Antônio Pedrosa", "164", " Aluísio Pinto", "Garanhuns", "","55292-145");
+        estabelecimento5 = new Estabelecimento("-LSHO0nkF9gGRlEBhypJ", "Salao do Fagner", "Descrição do salão do Fagner", -8.891617, -36.487891, "Av. Agamenon Magalhães", "616", "Santo Antônio", "Garanhuns", "","55293-290");
+        estabelecimento6 = new Estabelecimento("-LSHO7lWb_XYNoeN0zCk", "Imperador Darth Vader", "O salão do império", -8.052062, -34.884475, "R. dos Palmares", "170", "Santo Amaro", "Recife", "","74970-240");
+
+        EstabelecimentoDAO estabelecimentoDAO = new EstabelecimentoDAO();
+        estabelecimentoDAO.save(estabelecimento1);*/
+
         /*
-        profissionais = new ArrayList<Profissional>();
-        profissionais.add(new Profissional("01","João", "ABC", "Sim"));
-        profissionais.add(new Profissional("02","José", "ABC", "Não"));
-        profissionais.add(new Profissional("03","Maria", "ABC", "Não"));
-        profissionais.add(new Profissional("04","Fulano", "ABC", "Sim"));
-
-        servicos = new ArrayList<Servico>();
-        servicos.add(new Servico("01", "Corte simples", 10, "30 min",profissionais.get(0), "Cabelo"));
-        servicos.add(new Servico("02", "Corte channel", 15, "30 min",profissionais.get(1), "Cabelo"));
-        servicos.add(new Servico("03", "Alisamento", 20, "1:00 Hr",profissionais.get(2), "Cabelo"));
-        servicos.add(new Servico("04", "Pintura", 16, "30 min",profissionais.get(3), "Unha"));
-
-        enderecos = new ArrayList<Endereco>();
-        enderecos.add(new Endereco("Rua X", "11", "Boa Vista", "Garanhuns", "", "55292-000", "L123456"));
-        enderecos.add(new Endereco("Rua H", "15", "Boa Vista", "Garanhuns", "", "55292-000", "L123456"));
-        enderecos.add(new Endereco("Rua C", "120", "Boa Viagem", "Recife", "", "55292-000", "L123456"));
-
-        subServicos1 = new ArrayList<Servico>(); //serviços do Salao Beauty
-        subServicos1.add(servicos.get(0));
-        subServicos1.add(servicos.get(1));
-
-        subServicos2 = new ArrayList<Servico>(); //serviços do Salão Great
-        subServicos2.add(servicos.get(2));
-
-        subServicos3 = new ArrayList<Servico>(); //serviços do Salão Maximum
-        subServicos3.add(servicos.get(3));
-
-        subProfissionais1 = new ArrayList<Profissional>(); //funcionários do Salão Beauty
-        subProfissionais1.add(profissionais.get(0));
-        subProfissionais1.add(profissionais.get(1));
-
-        subProfissionais2 = new ArrayList<Profissional>(); //funcionários do Salão Great
-        subProfissionais2.add(profissionais.get(2));
-
-        subProfissionais3 = new ArrayList<Profissional>(); //funcionários do Salão Maximum
-        subProfissionais3.add(profissionais.get(3));
-
-        estabelecimentos = new ArrayList<Estabelecimento>();
-        estabelecimentos.add(new Estabelecimento("Salão Beauty", "58964712", "Sua beleza em 1º lugar", "5", "Gal",
-                enderecos.get(0), "123", -9, -37, subServicos1, agenda, promocoes, subProfissionais1, avaliacoes,0));
-        estabelecimentos.add(new Estabelecimento("Salão Great", "58966574", "Sua beleza é prioridade", "5", "Gal",
-                enderecos.get(1), "123", -8.5, -37, subServicos2, agenda, promocoes, subProfissionais2, avaliacoes, 0));
-        estabelecimentos.add(new Estabelecimento("Salão Maximum", "58964712", "ABC", "5", "Gal",
-                enderecos.get(2), "123", -9, -39, subServicos3, agenda, promocoes, subProfissionais3, avaliacoes,0));*/
+        * private String mEid;
+    private String mNome;
+    private String mDescricao;
+    private double mLatitude;
+    private double mLongitude;
+    private String mRua;
+    private String mNumero;
+    private String mBairro;
+    private String mCidade;
+    private String mComplemento;
+    private String mCep;*/
     }
 
     public static double calculaDistancia(double lat1, double lng1, double lat2, double lng2) {

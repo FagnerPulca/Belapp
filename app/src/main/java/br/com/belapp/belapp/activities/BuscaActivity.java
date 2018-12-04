@@ -18,16 +18,26 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import br.com.belapp.belapp.DAO.EnderecoDAO;
 import br.com.belapp.belapp.DAO.EstabelecimentoDAO;
+import br.com.belapp.belapp.DAO.ProfissionalDAO;
+import br.com.belapp.belapp.DAO.ServicoDAO;
 import br.com.belapp.belapp.R;
+import br.com.belapp.belapp.model.Endereco;
 import br.com.belapp.belapp.model.Estabelecimento;
+import br.com.belapp.belapp.model.Profissional;
+import br.com.belapp.belapp.model.Servico;
 import br.com.belapp.belapp.presenter.ClickRecyclerView_Interface;
 import br.com.belapp.belapp.presenter.EstabelecimentoAdapter;
 
@@ -36,12 +46,13 @@ public class BuscaActivity extends AppCompatActivity{
     private static final String TAG = "belapp.activities";
     private ProgressDialog mProgressDialog;
 
-    Estabelecimento estabelecimento = new Estabelecimento();
+    private Servico servico;
+    private ServicoDAO servicoDAO;
+    private ArrayList<Servico> servicos;
+
     Button btnAdd, btnListar;
     EditText etNome, etDescricao;
-    EstabelecimentoDAO novoEsDao;
 
-    List<Estabelecimento> estabelecimentos = new ArrayList<Estabelecimento>();
     ArrayAdapter<Estabelecimento> arrayAdapter;
     TextView tvNome, tvDescricao;
 
@@ -53,7 +64,8 @@ public class BuscaActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_busca);
 
-        novoEsDao = new EstabelecimentoDAO();
+        servicoDAO = new ServicoDAO();
+        servicos = new ArrayList<>();
 
         btnAdd = findViewById(R.id.btnAdd);
         btnListar = findViewById(R.id.btnListar);
@@ -63,11 +75,13 @@ public class BuscaActivity extends AppCompatActivity{
         tvDescricao = findViewById(R.id.tvDescricao);
 
 
-        registerReceiver(desabilitarDialog, new IntentFilter("desbloquear"));
+        //registerReceiver(desabilitarDialog, new IntentFilter("desbloquear"));
 
         /*FirebaseApp.initializeApp(BuscaActivity.this);
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference();*/
+
+        //enderecos = enderecoDAO.getEstabelecimentos();
 
 //        estabelecimentos = novoEsDao.getEstabelecimentos();
 
@@ -75,14 +89,18 @@ public class BuscaActivity extends AppCompatActivity{
             @Override
             public void onClick(View v) {
 
-                String nome = etNome.getText().toString().trim();
-                String descricao = etDescricao.getText().toString().trim();
-                estabelecimento.setmNome(nome);
-                estabelecimento.setmDescricao(descricao);
-                novoEsDao.save(estabelecimento);
-                Toast.makeText(BuscaActivity.this, "Descricao: " + estabelecimento.getmNome(), Toast.LENGTH_SHORT).show();
+                /*servico = new Servico();
 
-                //System.out.println("Tamanho do list: " + listaEstabelecimentos.size());
+                servico.setmCategoria("Corte");
+                servico.setmDuracao("00:30");
+                servico.setmEstabId("-LS54ly9L9y6RsIuOGid");
+                servico.setmNome("Corte simples");
+                servico.setmPreco(10.00);
+                servico.setmProfissionais("");
+
+                servicoDAO.save(servico);*/
+
+
 
             }
         });
@@ -100,11 +118,17 @@ public class BuscaActivity extends AppCompatActivity{
                 /*Intent intent = new Intent();
                 intent.setClass(BuscaActivity.this, BuscaService.class);
                 startService(intent);*/
-                //dialogBuscando(v);
-                //tvNome.setText(estabelecimentos.get(0).getmNome());
-                //tvDescricao.setText(estabelecimentos.get(0).getmDescricao());
+
+
+
+                buscar();
+                dialogBuscando(v);
+                tvNome.setText(servicos.get(0).getmDuracao());
+                tvDescricao.setText(servicos.get(0).getmCategoria());
+                Toast.makeText(BuscaActivity.this, "Tamanho: " + servicos.size(), Toast.LENGTH_SHORT).show();
 
             }
+
             void dialogBuscando(View v){
                 mProgressDialog = new ProgressDialog(BuscaActivity.this);
                 mProgressDialog.setMessage("Buscando...");
@@ -119,6 +143,8 @@ public class BuscaActivity extends AppCompatActivity{
 
     }
 
+
+
     public BroadcastReceiver desabilitarDialog = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -128,4 +154,38 @@ public class BuscaActivity extends AppCompatActivity{
             Log.d(TAG, String.format(Locale.getDefault(), "num estabelecimetnos %d %s", estabelecimentos.size(), estabelecimentos.toArray().toString()));
         }
     };
+
+    private void buscar() {
+        Query query = FirebaseDatabase.getInstance().getReference("servicos");
+
+        query.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                Servico servico = dataSnapshot.getValue(Servico.class);
+                servicos.add(servico);
+                //myAdapter.notifyDataSetChanged();
+                mProgressDialog.dismiss();
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                // empty
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                // empty
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+                // empty
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // empty
+            }
+        });
+    }
 }
