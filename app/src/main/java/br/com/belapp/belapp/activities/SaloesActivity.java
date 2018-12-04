@@ -1,90 +1,167 @@
 package br.com.belapp.belapp.activities;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.widget.TextView;
+
 import android.widget.Toast;
 
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
+import br.com.belapp.belapp.DAO.EnderecoDAO;
 import br.com.belapp.belapp.R;
+import br.com.belapp.belapp.model.Endereco;
 import br.com.belapp.belapp.model.Estabelecimento;
+import br.com.belapp.belapp.model.Servico;
 import br.com.belapp.belapp.presenter.ApplicationClass;
 import br.com.belapp.belapp.presenter.SalaoAdapter;
 
 public class SaloesActivity extends AppCompatActivity implements SalaoAdapter.ItemClicked{
 
-    TextView tvTeste, tvLatitude, tvLongitude;
+    private ArrayList<Estabelecimento> estabelecimentos;
+    private ArrayList<Estabelecimento> resultados;
+    ArrayList<String> ids;
+    ArrayList<String> idcateg;
+    String categoria;
+    String estab;
+    String endereco;
+    double latitude;
+    double longitude;
 
-    ArrayList<Estabelecimento> estabelecimentos;
-    //EstabelecimentoDAO estabelecimentoDAO;
-    RecyclerView recyclerView;
-    RecyclerView.Adapter myAdapter;
-    RecyclerView.LayoutManager layoutManager;
-    //ArrayList<Estabelecimento> lista;
+    private RecyclerView.Adapter myAdapter;
+
+    private ProgressDialog mProgressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_saloes);
 
-        String categoria = getIntent().getStringExtra("categoria");
-        String servico = getIntent().getStringExtra("servico");
-        String cidade = getIntent().getStringExtra("cidade");
+        categoria = getIntent().getStringExtra("categoria");
+        estab = getIntent().getStringExtra("estabelecimento");
+        endereco = getIntent().getStringExtra("endereco");
+        ids = new ArrayList<>();
+        idcateg = new ArrayList<>();
+        ids = getIntent().getStringArrayListExtra("ids");
+        idcateg = getIntent().getStringArrayListExtra("idcateg");
 
-        double latitude = getIntent().getDoubleExtra("latitude", -8);
-        double longitude = getIntent().getDoubleExtra("longitude", -36);
+        latitude = getIntent().getDoubleExtra("latitude", -8);
+        longitude = getIntent().getDoubleExtra("longitude", -36);
 
-        recyclerView = findViewById(R.id.rvSaloes);
+        RecyclerView recyclerView = findViewById(R.id.rvSaloes);
         recyclerView.setHasFixedSize(true);
 
-        layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
 
         estabelecimentos = new ArrayList<>();
+        resultados = new ArrayList<>();
 
-        //estabelecimentoDAO = new EstabelecimentoDAO();
+        myAdapter = new SalaoAdapter(this, resultados);
+        recyclerView.setAdapter(myAdapter);
+        buscar();
+        dialogBuscando();
 
-        /*try{
-            estabelecimentos = estabelecimentoDAO.getEstabelecimentos();
-        } catch (Exception e){
-            System.out.print(e.getMessage());
-            Toast.makeText(this, "Salao: "+e.getMessage(),Toast.LENGTH_SHORT).show();
-        }*/
-
-        //lista = new ArrayList<Estabelecimento>();
-
-        //selEstabelecimentos(categoria, servico, cidade);
-
-        /*for (int i = 0; i < estabelecimentos.size(); i++){
-            estabelecimentos.get(i).setDistancia(ApplicationClass.calculaDistancia(latitude, longitude,
-                    estabelecimentos.get(i).getmLaititude(), estabelecimentos.get(i).getmLongitude()));
-        }
-        Collections.sort(estabelecimentos, new Comparator<Estabelecimento>() {
+        Collections.sort(resultados, new Comparator<Estabelecimento>() {
             @Override
             public int compare(Estabelecimento o1, Estabelecimento o2) {
-                return Double.compare(o1.getDistancia(), o2.getDistancia());
+                return Double.compare(o1.getmDistancia(), o2.getmDistancia());
             }
         });
-
-        myAdapter = new SalaoAdapter(this, estabelecimentos);
-        recyclerView.setAdapter(myAdapter);*/
     }
 
 
     @Override
     public void onItemClicked(int index) {
         Intent intent = new Intent(SaloesActivity.this, PagSalaoActivity.class);
-        intent.putExtra("salao", estabelecimentos.get(index).getmNome());
+        intent.putExtra("salao", resultados.get(index).getmEid());
+        intent.putExtra("nome", resultados.get(index).getmNome());
         startActivity(intent);
-        Toast.makeText(this, getString(R.string.servicos),Toast.LENGTH_SHORT).show();
+        Toast.makeText(SaloesActivity.this, resultados.get(index).getmNome(), Toast.LENGTH_SHORT).show();
     }
 
+    private void buscar(){
+        Query query = FirebaseDatabase.getInstance().getReference("estabelecimentos");
+
+        query.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                Estabelecimento estabelecimento = dataSnapshot.getValue(Estabelecimento.class);
+                estabelecimento.setmDistancia(ApplicationClass.calculaDistancia(latitude, longitude,
+                        estabelecimento.getmLatitude(), estabelecimento.getmLongitude()));
+                estabelecimentos.add(estabelecimento);
+
+                if (!ids.isEmpty() && !categoria.isEmpty()){
+                    for (int i = 0; i < ids.size(); i++){
+                        if (estabelecimento.getmEid().equals(ids.get(i)) && idcateg.get(i).equals(categoria)){
+                            resultados.add(estabelecimento);
+                            break;
+                        }
+                    }
+                } else if (!endereco.isEmpty() && estab.isEmpty()){
+                    if (estabelecimento.getmCidade().toLowerCase().contains(endereco.toLowerCase()) ||
+                            estabelecimento.getmRua().toLowerCase().contains(endereco.toLowerCase()) ||
+                            estabelecimento.getmBairro().toLowerCase().contains(endereco.toLowerCase())){
+                        resultados.add(estabelecimento);
+                    }
+                } else if (endereco.isEmpty() && !estab.isEmpty()){
+                    if (estabelecimento.getmNome().toLowerCase().contains(estab.toLowerCase())){
+                        resultados.add(estabelecimento);
+                    }
+                } else if (!endereco.isEmpty() && !estab.isEmpty()){
+                    if (estabelecimento.getmNome().toLowerCase().contains(estab.toLowerCase()) &&
+                            (estabelecimento.getmCidade().toLowerCase().contains(endereco.toLowerCase()) ||
+                                    estabelecimento.getmRua().toLowerCase().contains(endereco.toLowerCase()) ||
+                                    estabelecimento.getmBairro().toLowerCase().contains(endereco.toLowerCase()))){
+                        resultados.add(estabelecimento);
+                    }
+                }
+
+
+                myAdapter.notifyDataSetChanged();
+                mProgressDialog.dismiss();
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                // empty
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                // empty
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+                // empty
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // empty
+            }
+        });
+    }
+
+    void dialogBuscando(){
+        mProgressDialog = new ProgressDialog(SaloesActivity.this);
+        mProgressDialog.setMessage("Buscando...");
+        mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        mProgressDialog.setIndeterminate(true);
+        mProgressDialog.setProgress(0);
+        mProgressDialog.show();
+    }
     /*private void selEstabelecimentos(String categoria, String servico, String cidade){
 
         if(!categoria.isEmpty()) { //apenas escolheu uma categoria

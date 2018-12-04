@@ -14,17 +14,17 @@
         android:layout_marginLeft="10dp"
         android:layout_marginTop="10dp"
         android:layout_marginRight="10dp"
-        android:text="Serviço" />
+        android:text="Nome de estabelecimento" />
 
     <EditText
-        android:id="@+id/etServico"
+        android:id="@+id/etEstabelecimento"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="10dp"
         android:layout_marginRight="10dp"
         android:ems="10"
-        android:hint="Serviço"
+        android:hint="Estabelecimento"
         android:inputType="textPersonName" />
 
     <TextView
@@ -34,17 +34,17 @@
         android:layout_marginLeft="10dp"
         android:layout_marginTop="30dp"
         android:layout_marginRight="10dp"
-        android:text="Cidade" />
+        android:text="Endereço" />
 
     <EditText
-        android:id="@+id/etCidade"
+        android:id="@+id/etEndereco"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="10dp"
         android:layout_marginRight="10dp"
         android:ems="10"
-        android:hint="Cidade"
+        android:hint="Rua, Bairro ou Cidade"
         android:inputType="textPersonName" />
 
     <Button
@@ -55,5 +55,12 @@
         android:layout_marginTop="50dp"
         android:layout_marginRight="10dp"
         android:text="Buscar" />
+
+    <TextView
+        android:id="@+id/tvResul"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:text="Preencha ao menos um dos campos" />
 
 </LinearLayout>

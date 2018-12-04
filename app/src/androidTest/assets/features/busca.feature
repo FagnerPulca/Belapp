@@ -5,21 +5,21 @@ Funcionalidade: Busca
   @busca-feature
   Cenario: Colocar somente cidade
     Dado Eu estou na tela de busca
-    Quando Eu coloco a cidade e não o serviço
+    Quando Eu coloco a cidade e não o estabelecimento
     E Eu clico em buscar
     Entao Eu devo ver os salões retornados
 
   @busca-feature
-  Cenario: Colocar somente serviço
+  Cenario: Colocar somente estabelecimento
     Dado Eu estou na tela de busca
-    Quando Eu coloco o serviço e não a cidade
+    Quando Eu coloco o estabelecimento e não a cidade
     E Eu clico em buscar
     Entao Eu devo ver os salões retornados
 
   @busca-feature
-  Cenario: Colocar cidade e servico
+  Cenario: Colocar cidade e o estabelecimento
     Dado Eu estou na tela de busca
-    Quando Eu coloco o serviço e a cidade
+    Quando Eu coloco o estabelecimento e a cidade
     E Eu clico em buscar
     Entao Eu devo ver os salões retornados
 

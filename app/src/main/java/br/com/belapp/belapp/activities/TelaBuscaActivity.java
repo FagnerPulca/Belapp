@@ -1,6 +1,8 @@
 package br.com.belapp.belapp.activities;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -9,42 +11,64 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+
 import br.com.belapp.belapp.R;
+import br.com.belapp.belapp.model.Estabelecimento;
+import br.com.belapp.belapp.presenter.ApplicationClass;
 
 public class TelaBuscaActivity extends AppCompatActivity {
 
-    EditText etServico, etCidade, etPreco;
+    EditText etEstabelecimento, etEndereco;
+    TextView tvResul;
     Button btnBuscar;
-
-
+    ArrayList<String> ids;
+    ArrayList<String> idcateg;
+    //ArrayList<Estabelecimento> estabelecimentos;
+    private ProgressDialog mProgressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tela_busca);
 
-        etServico = findViewById(R.id.etServico);
-        etCidade = findViewById(R.id.etCidade);
+        etEstabelecimento = findViewById(R.id.etEstabelecimento);
+        etEndereco = findViewById(R.id.etEndereco);
         btnBuscar = findViewById(R.id.btnBuscar);
+        tvResul = findViewById(R.id.tvResul);
+
+        ids = new ArrayList<>();
+        idcateg = new ArrayList<>();
+        //estabelecimentos = new ArrayList<>();
 
         btnBuscar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String servico = etServico.getText().toString().trim();
-                String cidade = etCidade.getText().toString().trim();
+                String estabelecimento = etEstabelecimento.getText().toString().trim();
+                String endereco = etEndereco.getText().toString().trim();
 
                 double latitude = getIntent().getDoubleExtra("latitude", -8);
                 double longitude = getIntent().getDoubleExtra("longitude", -36);
 
-                if (!cidade.isEmpty() || !servico.isEmpty()){
+                if (!estabelecimento.isEmpty() || !endereco.isEmpty()){
+                    Toast.makeText(TelaBuscaActivity.this, getString(R.string.resultados), Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(TelaBuscaActivity.this, SaloesActivity.class);
-                    intent.putExtra("servico", servico);
-                    intent.putExtra("cidade", cidade);
+                    intent.putExtra("estabelecimento", estabelecimento);
+                    intent.putExtra("endereco", endereco);
                     intent.putExtra("latitude", latitude);
                     intent.putExtra("longitude", longitude);
                     intent.putExtra("categoria", "");
+                    intent.putExtra("ids", ids);
+                    intent.putExtra("idcateg", idcateg);
                     startActivity(intent);
-                    Toast.makeText(TelaBuscaActivity.this, getString(R.string.resultados), Toast.LENGTH_LONG).show();
+
                 }
                 else {
                     Toast.makeText(TelaBuscaActivity.this, getString(R.string.digite_algum_dado), Toast.LENGTH_LONG).show();
@@ -52,5 +76,51 @@ public class TelaBuscaActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void buscarCidade(){
+        Query query = FirebaseDatabase.getInstance().getReference("estabelecimentos");
+
+        query.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                Estabelecimento estabelecimento = dataSnapshot.getValue(Estabelecimento.class);
+                //estabelecimentos.add(estabelecimento);
+
+                idcateg.add(estabelecimento.getmCidade());
+
+                //myAdapter.notifyDataSetChanged();
+                mProgressDialog.dismiss();
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                // empty
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                // empty
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+                // empty
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // empty
+            }
+        });
+    }
+
+    void dialogBuscando(){
+        mProgressDialog = new ProgressDialog(TelaBuscaActivity.this);
+        mProgressDialog.setMessage("Buscando...");
+        mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        mProgressDialog.setIndeterminate(true);
+        mProgressDialog.setProgress(0);
+        mProgressDialog.show();
     }
 }

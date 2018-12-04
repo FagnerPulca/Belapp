@@ -7,6 +7,12 @@ public class Profissional {
     private String nome;
     private String descricao;
     private String atendDomic;
+    private String foto;
+    private String horarios;
+
+    public Profissional(){
+
+    }
 
     public Profissional(String mId, String nome, String descricao, String atendDomic) {
         this.mId = mId;

@@ -60,14 +60,18 @@ public class SalaoAdapter extends RecyclerView.Adapter<SalaoAdapter.ViewHolder> 
     @Override
     public void onBindViewHolder(@NonNull SalaoAdapter.ViewHolder viewHolder, int i) {
 
-        DecimalFormat df2 = new DecimalFormat(".##");
-        viewHolder.itemView.setTag(lista.get(i));
+        DecimalFormat df2 = new DecimalFormat("#.##");
+        if(lista.size() != 0){
+            viewHolder.itemView.setTag(lista.get(i));
 
-        /*viewHolder.tvNomeSalao.setText(lista.get(i).getmNome());
-        viewHolder.tvEnderecoSalao.setText("Endereço: "+lista.get(i).getmEndereco_ID().getmCidade());
-        viewHolder.tvDistancia.setText("Distância: "+df2.format(lista.get(i).getDistancia())+" Km");*/
+            viewHolder.tvNomeSalao.setText(lista.get(i).getmNome());
+            viewHolder.tvEnderecoSalao.setText(lista.get(i).getmRua()+", "+lista.get(i).getmNumero()+", "+
+                    lista.get(i).getmBairro()+", "+lista.get(i).getmCidade());
+            viewHolder.tvDistancia.setText("Distância: "+df2.format(lista.get(i).getmDistancia())+" Km");
 
-        viewHolder.ivFotoSalao.setImageResource(R.drawable.salao_teste);
+            viewHolder.ivFotoSalao.setImageResource(R.drawable.salao_teste);
+        }
+
     }
 
     @Override

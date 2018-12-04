@@ -54,28 +54,28 @@ public class BuscaActivitySteps extends DefaultTest {
         assertNotNull(activity);
     }
 
-    @Quando("^Eu coloco a cidade e não o serviço$")
+    @Quando("^Eu coloco a cidade e não o estabelecimento$")
     public void euColocoACidade(){
-        onView(withId(R.id.etServico)).perform(typeText(""));
-        onView(withId(R.id.etCidade)).perform(typeText("Garanhuns"), closeSoftKeyboard());
+        onView(withId(R.id.etEstabelecimento)).perform(typeText(""));
+        onView(withId(R.id.etEndereco)).perform(typeText("Garanhuns"), closeSoftKeyboard());
     }
 
-    @Quando("^Eu coloco o serviço e não a cidade$")
+    @Quando("^Eu coloco o estabelecimento e não a cidade$")
     public void euColocoOServico(){
-        onView(withId(R.id.etCidade)).perform(typeText(""));
-        onView(withId(R.id.etServico)).perform(typeText("Corte simples"), closeSoftKeyboard());
+        onView(withId(R.id.etEndereco)).perform(typeText(""));
+        onView(withId(R.id.etEstabelecimento)).perform(typeText("beauty"), closeSoftKeyboard());
     }
 
-    @Quando("^Eu coloco o serviço e a cidade$")
+    @Quando("^Eu coloco o estabelecimento e a cidade$")
     public void euColocoOsDois(){
-        onView(withId(R.id.etCidade)).perform(typeText("Garanhuns"));
-        onView(withId(R.id.etServico)).perform(typeText("Corte simples"), closeSoftKeyboard());
+        onView(withId(R.id.etEndereco)).perform(typeText("Garanhuns"));
+        onView(withId(R.id.etEstabelecimento)).perform(typeText("Fagner"), closeSoftKeyboard());
     }
 
     @Quando("^Eu clico em buscar sem preencher os campos$")
     public void euColocoNenhum(){
-        onView(withId(R.id.etCidade)).perform(typeText(""));
-        onView(withId(R.id.etServico)).perform(typeText(""));
+        onView(withId(R.id.etEndereco)).perform(typeText(""));
+        onView(withId(R.id.etEstabelecimento)).perform(typeText(""));
     }
 
     @E("^Eu clico em buscar$")

@@ -19,16 +19,16 @@ import br.com.belapp.belapp.model.Servico;
 public class FuncionarioAdapter extends RecyclerView.Adapter<FuncionarioAdapter.ViewHolder> {
 
     private ArrayList<Profissional> profissionais;
-    private ArrayList<Servico> servicos;
+    //private ArrayList<Servico> servicos;
     ItemClicked activity;
 
     public interface ItemClicked{
         void onItemClicked(int index);
     }
 
-    public FuncionarioAdapter (Context context, ArrayList<Profissional> list_profissionais, ArrayList<Servico> list_servicos){
+    public FuncionarioAdapter (Context context, ArrayList<Profissional> list_profissionais){
         profissionais = list_profissionais;
-        servicos = list_servicos;
+        //servicos = list_servicos;
         activity = (ItemClicked) context;
     }
 
@@ -66,12 +66,14 @@ public class FuncionarioAdapter extends RecyclerView.Adapter<FuncionarioAdapter.
         DecimalFormat df2 = new DecimalFormat(".##");
         viewHolder.itemView.setTag(profissionais.get(i));
 
-        for (int j = 0; j < profissionais.size(); j++){
+        /*for (int j = 0; j < profissionais.size(); j++){
             if (servicos.get(i).getmProfissionais().equals(profissionais.get(j).getmId())){
                 viewHolder.tvPreco.setText("R$ "+df2.format(servicos.get(i).getmPreco()));
                 viewHolder.tvNome.setText("Nome: "+profissionais.get(i).getNome());
             }
-        }
+        }*/
+        viewHolder.tvNome.setText("Nome: "+profissionais.get(i).getNome());
+        viewHolder.tvPreco.setText(profissionais.get(i).getDescricao());
         viewHolder.ivProfissional.setImageResource(R.drawable.profissional_teste);
     }
 
