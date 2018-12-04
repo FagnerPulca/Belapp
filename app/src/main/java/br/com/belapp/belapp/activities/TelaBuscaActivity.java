@@ -68,9 +68,10 @@ public class TelaBuscaActivity extends AppCompatActivity {
                     intent.putExtra("ids", ids);
                     intent.putExtra("idcateg", idcateg);
                     startActivity(intent);
+
                 }
                 else {
-                    Toast.makeText(TelaBuscaActivity.this, getString(R.string.digite_algum_dado), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(TelaBuscaActivity.this, getString(R.string.digite_algum_dado), Toast.LENGTH_LONG).show();
                 }
             }
         });

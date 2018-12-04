@@ -1,5 +1,7 @@
 package br.com.belapp.belapp.model;
 
+import com.google.firebase.database.DatabaseReference;
+
 import java.util.ArrayList;
 
 
@@ -17,6 +19,11 @@ public class Cliente {
 
     public Cliente() {
 
+    }
+
+    public void salvar(String id){
+        DatabaseReference databaseReference = ConfiguracaoFireBase.getFirebase();
+        databaseReference.child("clientes").child(id).setValue(this);
     }
 
     public String getmEmail() {
@@ -81,5 +88,13 @@ public class Cliente {
 
     public void setmFavoritos(ArrayList<String> mFavoritos) {
         this.mFavoritos = mFavoritos;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof Cliente && ((Cliente) obj).mEmail.equalsIgnoreCase(getmEmail())
+                && ((Cliente) obj).mNome.equalsIgnoreCase(getmNome())
+                && ((Cliente) obj).mTelefone.equalsIgnoreCase(getmTelefone());
+
     }
 }

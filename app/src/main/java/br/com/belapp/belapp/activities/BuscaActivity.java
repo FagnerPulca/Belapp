@@ -89,6 +89,7 @@ public class BuscaActivity extends AppCompatActivity{
             @Override
             public void onClick(View v) {
 
+
                 /*servico = new Servico();
 
                 servico.setmCategoria("Corte");
@@ -102,9 +103,11 @@ public class BuscaActivity extends AppCompatActivity{
 
 
 
+
             }
         });
 
+        //exibir salao e descricao
         btnListar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
