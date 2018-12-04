@@ -2,10 +2,9 @@ package br.com.belapp.belapp.test;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.support.test.espresso.NoMatchingViewException;
-import android.support.test.espresso.ViewAssertion;
 import android.support.test.rule.ActivityTestRule;
 import android.view.View;
+import android.view.ViewGroup;
 
 import org.junit.Rule;
 
@@ -18,7 +17,6 @@ import cucumber.api.java.it.E;
 import cucumber.api.java.it.Quando;
 import cucumber.api.java.pt.Entao;
 
-
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
@@ -28,17 +26,15 @@ import static android.support.test.espresso.matcher.RootMatchers.withDecorView;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.isRoot;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
-
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static junit.framework.TestCase.assertNotNull;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.not;
 
-public class BuscaActivitySteps {
+public class BuscaActivitySteps extends DefaultTest {
 
     @Rule
     public ActivityTestRule<TelaBuscaActivity> activityTestRule = new ActivityTestRule<>(TelaBuscaActivity.class);
-
     private Activity activity;
 
     @Before("@busca-feature")
@@ -101,12 +97,25 @@ public class BuscaActivitySteps {
                 check(matches(isDisplayed()));
     }
 
-    private Activity getAtualActivity() {
+    /**
+     *
+     * @return referência da activity que está sendo exibida na tela
+     */
+    public Activity getAtualActivity() {
         final Activity[] activity = new Activity[1];
-        onView(isRoot()).check(new ViewAssertion() {
-            @Override
-            public void check(View view, NoMatchingViewException noViewFoundException) {
-                activity[0] = (Activity) view.getContext();
+
+        onView(isRoot()).check((view, noViewFoundException) -> {
+
+            View checkedView = view;
+
+            while (checkedView instanceof ViewGroup && ((ViewGroup) checkedView).getChildCount() > 0) {
+
+                checkedView = ((ViewGroup) checkedView).getChildAt(0);
+
+                if (checkedView.getContext() instanceof Activity) {
+                    activity[0] = (Activity) checkedView.getContext();
+                    return;
+                }
             }
         });
         return activity[0];

@@ -82,4 +82,12 @@ public class Cliente {
     public void setmFavoritos(ArrayList<String> mFavoritos) {
         this.mFavoritos = mFavoritos;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof Cliente && ((Cliente) obj).mEmail.equalsIgnoreCase(getmEmail())
+                && ((Cliente) obj).mNome.equalsIgnoreCase(getmNome())
+                && ((Cliente) obj).mTelefone.equalsIgnoreCase(getmTelefone());
+
+    }
 }

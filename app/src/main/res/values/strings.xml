@@ -2,7 +2,7 @@
     <string name="app_name">Belapp</string>
     <string name="title_activity_login">Entrar</string>
     <!-- Strings related to login -->
-    <string name="prompt_email">Email</string>
+    <string name="prompt_email">E-mail</string>
     <string name="prompt_password">Password (optional)</string>
     <string name="action_sign_in">Sign in or register</string>
     <string name="action_sign_in_short">Sign in</string>
@@ -10,6 +10,22 @@
     <string name="error_invalid_password">This password is too short</string>
     <string name="error_incorrect_password">This password is incorrect</string>
     <string name="error_field_required">This field is required</string>
+    <string name="error_atualizar_perfil">Erro ao atualizar perfil</string>
+    <string name="error_nome_nao_pode_ser_vazio">Campo nome não pode ser deixado em branco!</string>
+    <string name="error_email_nao_pode_ser_vazio">Campo e-mail não pode ser deixado em branco!</string>
+    <string name="error_telefone_nao_pode_ser_vazio">Campo telefone não pode ser deixado em branco!</string>
+    <string name="error_telefone_invalido">O telefone informado não é válido!</string>
+    <string name="error_email_invalido">O e-mail informado não é válido!</string>
+    <string name="error_email_ja_utilizado">O e-mail informado está vinculado a outra conta!</string>
+    <string name="error_senha_atual_vazia">A senha atual deve ser informada</string>
+    <string name="error_nova_senha_vazia">A nova senha deve ser informada</string>
+    <string name="error_confirmacao_nova_senha_vazia">A confirmação da nova senha deve ser informada</string>
+    <string name="error_alteracao_nao_realizada">A alteração não pode ser realizada</string>
+    <string name="error_autenticacao_falhou">A autenticação falhou</string>
+    <string name="error_nova_senha_confirmacao_diferem">A nova senha e sua confirmação devem ser iguais</string>
+    <string name="error_nova_senha_deve_ter_6_ou_mais_caracteres">A nova senha deverá ter 6 ou mais caracteres</string>
+
+
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
@@ -25,6 +41,24 @@
     <string name="site">belaapp.com.br</string>
     <string name="sucess_login_efetuado">Login efetuado com sucesso!</string>
     <string name="error_login_invalido">Senha errada ou email invalido!</string>
+
+    <string name="title_activity_perfil">Meu Perfil</string>
+    <string name="app_nome">Nome</string>
+    <string name="app_telefone">Telefone</string>
+    <string name="app_senha">Senha</string>
+    <string name="app_salvar">Salvar</string>
+
+    <string name="info_exemplo_email">exemplo@exemplo.com</string>
+    <string name="info_exemplo_nome">Meu nome</string>
+    <string name="info_exemplo_telefone">(87) 996623985</string>
+    <string name="app_alterar_senha">Alterar senha</string>
+
+    <string name="sucess_alteracao_realizada">Alteração realizada com sucesso!</string>
+    <string name="title_activity_alterar_senha">Alterar Senha</string>
+    <string name="app_senha_atual">Senha Atual</string>
+    <string name="app_nova_senha">Nova Senha</string>
+    <string name="app_confirmacao_nova_senha">Confirmação Nova Senha</string>
+    <string name="app_salvar_alteracao_senha">Salvar alteração de senha</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

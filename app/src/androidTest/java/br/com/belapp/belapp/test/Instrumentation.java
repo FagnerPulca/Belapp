@@ -1,10 +1,10 @@
 package br.com.belapp.belapp.test;
 
-import android.os.Bundle;
-import android.support.test.runner.MonitoringInstrumentation;
+        import android.os.Bundle;
+        import android.support.test.runner.MonitoringInstrumentation;
 
-import cucumber.api.CucumberOptions;
-import cucumber.api.android.CucumberInstrumentationCore;
+        import cucumber.api.CucumberOptions;
+        import cucumber.api.android.CucumberInstrumentationCore;
 @CucumberOptions(
         features = "features",
         glue = "br.com.belapp.belapp.test")
