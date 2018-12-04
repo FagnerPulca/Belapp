@@ -9,6 +9,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.database.ChildEventListener;
@@ -29,12 +30,14 @@ public class PagSalaoActivity extends AppCompatActivity implements ServicoAdapte
 
     ImageButton ibServicos, ibInformacoes, ibAvaliacoes;
     ImageView ivFotoSalao;
+    TextView tvNomeSalao;
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
     RecyclerView.Adapter myAdapter;
     ArrayList<Servico> servicos;
     private ProgressDialog mProgressDialog;
     String salao;
+    String nome;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +48,7 @@ public class PagSalaoActivity extends AppCompatActivity implements ServicoAdapte
         ibInformacoes = findViewById(R.id.ibInformacoes);
         ibAvaliacoes = findViewById(R.id.ibAvaliacoes);
         ivFotoSalao = findViewById(R.id.ivFotoSalao);
+        tvNomeSalao = findViewById(R.id.tvNomeSalao);
 
         recyclerView = findViewById(R.id.rvServicos);
         recyclerView.setHasFixedSize(true);
@@ -53,6 +57,8 @@ public class PagSalaoActivity extends AppCompatActivity implements ServicoAdapte
         recyclerView.setLayoutManager(layoutManager);
 
         salao = getIntent().getStringExtra("salao"); // id do salão
+        nome = getIntent().getStringExtra("nome");
+        tvNomeSalao.setText(nome);
         servicos = new ArrayList<>();
 
         myAdapter = new ServicoAdapter(this, servicos);

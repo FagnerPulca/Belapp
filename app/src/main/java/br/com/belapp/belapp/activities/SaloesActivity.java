@@ -33,6 +33,8 @@ public class SaloesActivity extends AppCompatActivity implements SalaoAdapter.It
     ArrayList<String> ids;
     ArrayList<String> idcateg;
     String categoria;
+    String estab;
+    String endereco;
     double latitude;
     double longitude;
 
@@ -46,8 +48,8 @@ public class SaloesActivity extends AppCompatActivity implements SalaoAdapter.It
         setContentView(R.layout.activity_saloes);
 
         categoria = getIntent().getStringExtra("categoria");
-        String servico = getIntent().getStringExtra("servico");
-        String cidade = getIntent().getStringExtra("cidade");
+        estab = getIntent().getStringExtra("estabelecimento");
+        endereco = getIntent().getStringExtra("endereco");
         ids = new ArrayList<>();
         idcateg = new ArrayList<>();
         ids = getIntent().getStringArrayListExtra("ids");
@@ -83,6 +85,7 @@ public class SaloesActivity extends AppCompatActivity implements SalaoAdapter.It
     public void onItemClicked(int index) {
         Intent intent = new Intent(SaloesActivity.this, PagSalaoActivity.class);
         intent.putExtra("salao", resultados.get(index).getmEid());
+        intent.putExtra("nome", resultados.get(index).getmNome());
         startActivity(intent);
         Toast.makeText(SaloesActivity.this, resultados.get(index).getmNome(), Toast.LENGTH_SHORT).show();
     }
@@ -94,17 +97,33 @@ public class SaloesActivity extends AppCompatActivity implements SalaoAdapter.It
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 Estabelecimento estabelecimento = dataSnapshot.getValue(Estabelecimento.class);
+                estabelecimento.setmDistancia(ApplicationClass.calculaDistancia(latitude, longitude,
+                        estabelecimento.getmLatitude(), estabelecimento.getmLongitude()));
                 estabelecimentos.add(estabelecimento);
 
                 if (!ids.isEmpty() && !categoria.isEmpty()){
                     for (int i = 0; i < ids.size(); i++){
                         if (estabelecimento.getmEid().equals(ids.get(i)) && idcateg.get(i).equals(categoria)){
-                            estabelecimento.setmDistancia(ApplicationClass.calculaDistancia(latitude, longitude,
-                                    estabelecimento.getmLatitude(), estabelecimento.getmLongitude()));
                             resultados.add(estabelecimento);
-
                             break;
                         }
+                    }
+                } else if (!endereco.isEmpty() && estab.isEmpty()){
+                    if (estabelecimento.getmCidade().toLowerCase().contains(endereco.toLowerCase()) ||
+                            estabelecimento.getmRua().toLowerCase().contains(endereco.toLowerCase()) ||
+                            estabelecimento.getmBairro().toLowerCase().contains(endereco.toLowerCase())){
+                        resultados.add(estabelecimento);
+                    }
+                } else if (endereco.isEmpty() && !estab.isEmpty()){
+                    if (estabelecimento.getmNome().toLowerCase().contains(estab.toLowerCase())){
+                        resultados.add(estabelecimento);
+                    }
+                } else if (!endereco.isEmpty() && !estab.isEmpty()){
+                    if (estabelecimento.getmNome().toLowerCase().contains(estab.toLowerCase()) &&
+                            (estabelecimento.getmCidade().toLowerCase().contains(endereco.toLowerCase()) ||
+                                    estabelecimento.getmRua().toLowerCase().contains(endereco.toLowerCase()) ||
+                                    estabelecimento.getmBairro().toLowerCase().contains(endereco.toLowerCase()))){
+                        resultados.add(estabelecimento);
                     }
                 }
 

@@ -247,10 +247,6 @@ public class ClienteLogadoActivity extends AppCompatActivity
         mProgressDialog.show();
     }
 
-    void atualizaBusca(String categoria){
-
-    }
-
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -277,7 +273,7 @@ public class ClienteLogadoActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            Intent intetAbrirTelaLogin = new Intent(ClienteLogadoActivity.this, BuscaActivity.class);
+            Intent intetAbrirTelaLogin = new Intent(ClienteLogadoActivity.this, TelaBuscaActivity.class);
             intetAbrirTelaLogin.putExtra("latitude", localizao.getLatitude());
             intetAbrirTelaLogin.putExtra("longitude", localizao.getLongitude());
             startActivity(intetAbrirTelaLogin);
