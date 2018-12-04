@@ -51,7 +51,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
                 } else {
-                    Toast.makeText(LoginActivity.this, "preencha os campos de email e senha !", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "preencha os campos de email e senha !", Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -62,14 +62,17 @@ public class LoginActivity extends AppCompatActivity {
     private void validarLogin() {
 
         autenticacao = ConfiguracaoFireBase.getFirebaseAutenticacao();
+
         autenticacao.signInWithEmailAndPassword(cliente.getmEmail(), cliente.getmSenha()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
                     abrirTelaPrincipal();
-                    Toast.makeText(LoginActivity.this, getString(R.string.sucess_login_efetuado), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, getString(R.string.sucess_login_efetuado), Toast.LENGTH_LONG).show();
 
                 } else {
+
                     //tratamento de exceções do cadastro
                     String excecao = "";
                     try {
@@ -86,6 +89,7 @@ public class LoginActivity extends AppCompatActivity {
                     Toast.makeText(LoginActivity.this,
                             excecao,
                             Toast.LENGTH_SHORT).show();
+
 
                 }
             }

@@ -1,5 +1,5 @@
 # Arquivo de construção de aplicação
-*.apk
+*.apk 
 *.ap_
 
 #Arquivos de classes java

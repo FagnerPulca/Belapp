@@ -1,6 +1,5 @@
 package br.com.belapp.belapp.test;
 
-import android.app.Activity;
 import android.content.Intent;
 
 import android.support.test.rule.ActivityTestRule;
@@ -18,27 +17,21 @@ import cucumber.api.java.pt.Quando;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
-import static android.support.test.espresso.action.ViewActions.typeText;
-import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.matcher.RootMatchers.withDecorView;
-import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static junit.framework.TestCase.assertNotNull;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.not;
 
-public class LoginActivitySteps {
+public class LoginActivitySteps extends DefaultTest{
 
     @Rule
     public ActivityTestRule<LoginActivity> activityTestRule = new ActivityTestRule<>(LoginActivity.class);
-    private Activity activity;
 
     @Before("@login-feature")
     public void setup() {
         activityTestRule.launchActivity(new Intent());
-        activity = activityTestRule.getActivity();
+        setActivity(activityTestRule.getActivity());
     }
 
     @After("@login-feature")
@@ -48,28 +41,26 @@ public class LoginActivitySteps {
 
     @Given("^que estou na tela de login")
     public void iamOnLoginScreen() {
-        assertNotNull(activity);
+        assertNotNull(getActivity());
     }
 
-    @Quando("^eu preencho o campo email teste@teste.com$")
+    @Quando("^eu preencho o campo email flp.d@hotmail.com$")
     public void euPreenchoOCampoEmailCorretamente() {
-        onView(withId(R.id.edtEmail)).perform(typeText("teste@teste.com"));
+        preencherCampoEditText(R.id.edtEmail,"flp.d@hotmail.com");
     }
 
-    @Quando("^eu preencho o campo senha senhateste$")
+    @Quando("^eu preencho o campo senha 1234567$")
     public void euPreenchoCampoSenhaCorreta() {
-        onView(withId(R.id.edtSenha)).perform(typeText("senhateste"), closeSoftKeyboard());
+        preencherCampoEditText(R.id.edtSenha,"1234567");
     }
 
     @E("^aperto o botão login$")
     public void apertoBotaoLogin() {
-        onView(withId(R.id.btnLogar)).perform(click());
+        apertarBotao(R.id.btnLogar);
     }
 
     @Entao("^devo ver a mensagem, Login efetuado com sucesso!$")
     public void devoVerAMensagemLoginEfetuadoComSucesso() {
-       onView(withText("Login efetuado com sucesso!")).
-                inRoot(withDecorView(not(is(activity.getWindow().getDecorView())))).
-                check(matches(isDisplayed()));
+       verificarMensagemToast("Login efetuado com sucesso!");
     }
 }
