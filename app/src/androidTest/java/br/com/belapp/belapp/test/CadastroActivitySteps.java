@@ -66,9 +66,8 @@ public class CadastroActivitySteps extends DefaultTest {
     public void euNaoPreenchoOCampoTelefone() {
         preencherCampoEditText(R.id.etNomeCadastro, "Maria Jose");
         preencherCampoEditText(R.id.etEmailCadastro,"teste3@teste.com");
-        preencherCampoEditText(R.id.etTelefoneCadastro,"");
         preencherCampoEditText(R.id.etSenhaCadastro,"8123456");
-
+        preencherCampoEditText(R.id.etTelefoneCadastro,"");
     }
 
     @E("^eu aperto em salvar$")

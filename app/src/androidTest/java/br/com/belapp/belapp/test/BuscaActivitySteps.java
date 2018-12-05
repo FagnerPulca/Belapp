@@ -6,6 +6,7 @@ import android.support.test.rule.ActivityTestRule;
 import android.view.View;
 import android.view.ViewGroup;
 
+import org.junit.Assert;
 import org.junit.Rule;
 
 import br.com.belapp.belapp.R;
@@ -84,7 +85,9 @@ public class BuscaActivitySteps extends DefaultTest {
 
     @Entao("^Eu devo ver os salões retornados$")
     public void verRetorno(){
-        verificarMensagemToast(getAtualActivity().getString(R.string.resultados));
+        esperar(2000);
+        onView(withText(getActivity().getString(R.string.title_activity_estabelecimentos)));
+
     }
 
     @Entao("^Devo ver uma mensagem dizendo para digitar algum dado$")

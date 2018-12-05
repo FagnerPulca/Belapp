@@ -26,6 +26,6 @@ public class StringUtils {
 
     public static String gerarEmail(){
         int numero = (int) (Math.random() * 10000) + 1;
-        return String.format(Locale.getDefault(), "teste%d@teste.com");
+        return String.format(Locale.getDefault(), "teste%d@teste.com", numero);
     }
 }

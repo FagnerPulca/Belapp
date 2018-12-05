@@ -76,8 +76,6 @@ public class SaloesActivity extends AppCompatActivity implements SalaoAdapter.It
         recyclerView.setAdapter(myAdapter);
         buscar();
         dialogBuscando();
-        esperar(2000);
-        Toast.makeText(SaloesActivity.this, getString(R.string.resultados), Toast.LENGTH_SHORT).show();
 
         Collections.sort(resultados, new Comparator<Estabelecimento>() {
             @Override

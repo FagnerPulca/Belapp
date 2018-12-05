@@ -62,8 +62,6 @@
             android:label="@string/title_activity_alterar_senha"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <activity android:name=".activities.BuscaActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".activities.SaloesActivity" />
         <activity android:name=".activities.PagSalaoActivity" />
         <activity android:name=".activities.FuncionariosActivity" />
