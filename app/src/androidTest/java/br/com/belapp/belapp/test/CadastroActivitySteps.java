@@ -105,7 +105,7 @@ public class CadastroActivitySteps extends DefaultTest {
     }
 
 
-    @Entao("^devo ver uma mensagem que diga que campo email nao pode ser deixado em branco$")
+    @Entao("^devo ver uma mensagem que diga que campo e-mail nao pode ser deixado em branco$")
     public void ddevo_ver_uma_mensagem_que_informe_que_campo_e_mail_nao_pode_ser_deixado_em_branco() {
         verificarMensagemToast((String)getActivity().getText(R.string.erro_Email));
     }
