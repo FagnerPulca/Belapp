@@ -144,6 +144,7 @@ public class GoogleLoginActivity extends AppCompatActivity implements GoogleApiC
                 signInButton.setVisibility(View.VISIBLE);
 
                 if (!task.isSuccessful()) {
+                    Log.d(TAG,"handleSignInResult: error:"+ task.getException().getMessage());
                     Toast.makeText(getApplicationContext(), "erro2", Toast.LENGTH_SHORT).show();
                 }
             }
