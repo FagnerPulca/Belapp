@@ -35,12 +35,11 @@ public class BuscaActivitySteps extends DefaultTest {
 
     @Rule
     public ActivityTestRule<TelaBuscaActivity> activityTestRule = new ActivityTestRule<>(TelaBuscaActivity.class);
-    private Activity activity;
 
     @Before("@busca-feature")
     public void setup(){
         activityTestRule.launchActivity(new Intent());
-        activity = activityTestRule.getActivity();
+        setActivity(activityTestRule.getActivity());
     }
 
     @After("@busca-feature")
@@ -51,73 +50,46 @@ public class BuscaActivitySteps extends DefaultTest {
 
     @Dado("^Eu estou na tela de busca$")
     public void euEstouNaTelaDeBusca(){
-        assertNotNull(activity);
+        assertNotNull(getActivity());
     }
 
     @Quando("^Eu coloco a cidade e não o estabelecimento$")
     public void euColocoACidade(){
-        onView(withId(R.id.etEstabelecimento)).perform(typeText(""));
-        onView(withId(R.id.etEndereco)).perform(typeText("Garanhuns"), closeSoftKeyboard());
+        preencherCampoEditText(R.id.etEstabelecimento, "");
+        preencherCampoEditText(R.id.etEndereco, "Garanhuns");
     }
 
     @Quando("^Eu coloco o estabelecimento e não a cidade$")
     public void euColocoOServico(){
-        onView(withId(R.id.etEndereco)).perform(typeText(""));
-        onView(withId(R.id.etEstabelecimento)).perform(typeText("beauty"), closeSoftKeyboard());
+        preencherCampoEditText(R.id.etEndereco, "");
+        preencherCampoEditText(R.id.etEstabelecimento, "beauty");
     }
 
     @Quando("^Eu coloco o estabelecimento e a cidade$")
     public void euColocoOsDois(){
-        onView(withId(R.id.etEndereco)).perform(typeText("Garanhuns"));
-        onView(withId(R.id.etEstabelecimento)).perform(typeText("Fagner"), closeSoftKeyboard());
+        preencherCampoEditText(R.id.etEndereco, "Garanhuns");
+        preencherCampoEditText(R.id.etEstabelecimento, "Fagner");
     }
 
     @Quando("^Eu clico em buscar sem preencher os campos$")
     public void euColocoNenhum(){
-        onView(withId(R.id.etEndereco)).perform(typeText(""));
-        onView(withId(R.id.etEstabelecimento)).perform(typeText(""));
+        preencherCampoEditText(R.id.etEndereco, "");
+        preencherCampoEditText(R.id.etEstabelecimento, "");
     }
 
     @E("^Eu clico em buscar$")
     public void clicoEmBuscar(){
-        onView(withId(R.id.btnBuscar)).perform(click());
+        apertarBotao(R.id.btnBuscar);
     }
 
     @Entao("^Eu devo ver os salões retornados$")
     public void verRetorno(){
-        onView(withText(R.string.resultados)).
-                inRoot(withDecorView(not(is(activity.getWindow().getDecorView())))).
-                check(matches(isDisplayed()));
+        verificarMensagemToast(getAtualActivity().getString(R.string.resultados));
     }
 
     @Entao("^Devo ver uma mensagem dizendo para digitar algum dado$")
     public void verMensagem(){
-        onView(withText(R.string.digite_algum_dado)).
-                inRoot(withDecorView(not(is(activity.getWindow().getDecorView())))).
-                check(matches(isDisplayed()));
+        verificarMensagemToast(getAtualActivity().getString(R.string.digite_algum_dado));
     }
 
-    /**
-     *
-     * @return referência da activity que está sendo exibida na tela
-     */
-    public Activity getAtualActivity() {
-        final Activity[] activity = new Activity[1];
-
-        onView(isRoot()).check((view, noViewFoundException) -> {
-
-            View checkedView = view;
-
-            while (checkedView instanceof ViewGroup && ((ViewGroup) checkedView).getChildCount() > 0) {
-
-                checkedView = ((ViewGroup) checkedView).getChildAt(0);
-
-                if (checkedView.getContext() instanceof Activity) {
-                    activity[0] = (Activity) checkedView.getContext();
-                    return;
-                }
-            }
-        });
-        return activity[0];
-    }
 }
