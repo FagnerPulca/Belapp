@@ -9,6 +9,7 @@ import org.junit.Rule;
 
 import br.com.belapp.belapp.R;
 import br.com.belapp.belapp.activities.CadastroBasicoActivity;
+import br.com.belapp.belapp.utils.StringUtils;
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
 import cucumber.api.java.pt.Dado;
@@ -61,26 +62,25 @@ public class CadastroActivitySteps extends DefaultTest {
         assertNotNull(getActivity());
     }
 
-    @Quando("^eu preencho todos os campos obrigatórios, exeto o telefone$")
+    @Quando("^eu preencho todos os campos, exeto o telefone$")
     public void euNaoPreenchoOCampoTelefone() {
-        preencherCampoEditText(R.id.etNomeCadastro, "jlhnkfff");
+        preencherCampoEditText(R.id.etNomeCadastro, "Maria Jose");
         preencherCampoEditText(R.id.etEmailCadastro,"teste3@teste.com");
-        preencherCampoEditText(R.id.etTelefoneCadastro,"");
         preencherCampoEditText(R.id.etSenhaCadastro,"8123456");
-
+        preencherCampoEditText(R.id.etTelefoneCadastro,"");
     }
 
-    @E("^eu aperto o botão salvar$")
+    @E("^eu aperto em salvar$")
     public void apertoBotaoCadastrarSemTelefone() {
         apertarBotao(R.id.btnCadastrar);
     }
 
-    @Entao("^devo ver uma mensagem que informe que campo telefone nao pode ser deixado em branco$")
+    @Entao("^devo ver uma mensagem que diga que campo telefone nao pode ser deixado em branco$")
     public void devoVerAMensagemTelefoneNaoPodeSerDeixadoVazio() {
         verificarMensagemToast((String)getActivity().getText(R.string.erro_teefone));
     }
 
-    @Quando("^eu preencho todos os campos obrigatórios, exeto o nome$")
+    @Quando("^eu preencho todos os campos, exeto o nome$")
     public void euNaoPreenchoOCampoNome() {
         preencherCampoEditText(R.id.etNomeCadastro, "");
         preencherCampoEditText(R.id.etEmailCadastro,"teste3@teste.com");
@@ -90,14 +90,14 @@ public class CadastroActivitySteps extends DefaultTest {
     }
 
 
-    @Entao("^devo ver uma mensagem que informe que campo nome nao pode ser deixado em branco$")
-    public void devoVerAMensagemNomeNaoPodeSerDeixadoVazio() {
+    @Entao("^devo ver uma mensagem que diga que campo nome nao pode ser deixado em branco$")
+    public void devoVerAMensagemNomeNaoPodeSerDeixadoVazio2() {
         verificarMensagemToast((String)getActivity().getText(R.string.erro_Nome));
     }
 
-    @Quando("^eu preencho todos os campos obrigatórios, exeto o Email")
+    @Quando("^eu preencho todos os campos, exeto o Email")
     public void euNaoPreenchoOCampoEmail() {
-        preencherCampoEditText(R.id.etNomeCadastro, "jlhnkfff");
+        preencherCampoEditText(R.id.etNomeCadastro, "Maria Jose");
         preencherCampoEditText(R.id.etEmailCadastro,"");
         preencherCampoEditText(R.id.etTelefoneCadastro,"12354674897");
         preencherCampoEditText(R.id.etSenhaCadastro,"8123456");
@@ -105,13 +105,13 @@ public class CadastroActivitySteps extends DefaultTest {
     }
 
 
-    @Entao("^devo ver uma mensagem que informe que campo email nao pode ser deixado em branco$")
+    @Entao("^devo ver uma mensagem que diga que campo e-mail nao pode ser deixado em branco$")
     public void ddevo_ver_uma_mensagem_que_informe_que_campo_e_mail_nao_pode_ser_deixado_em_branco() {
         verificarMensagemToast((String)getActivity().getText(R.string.erro_Email));
     }
-    @Quando("^eu preencho todos os campos obrigatórios, exeto o senha$")
+    @Quando("^eu preencho todos os campos, exeto a senha$")
     public void euNaoPreenchoOCampoSenha() {
-        preencherCampoEditText(R.id.etNomeCadastro, "jlhnkfff");
+        preencherCampoEditText(R.id.etNomeCadastro, "Maria Jose");
         preencherCampoEditText(R.id.etEmailCadastro,"teste3@teste.com");
         preencherCampoEditText(R.id.etTelefoneCadastro,"123126456");
         preencherCampoEditText(R.id.etSenhaCadastro,"");
@@ -119,14 +119,14 @@ public class CadastroActivitySteps extends DefaultTest {
     }
 
 
-    @Entao("^devo ver uma mensagem que informe que campo senha nao pode ser deixado em branco$")
+    @Entao("^devo ver uma mensagem que diga que campo senha nao pode ser deixado em branco$")
     public void devoVerAMensagemSenhaNaoPodeSerDeixadoVazio() {
         verificarMensagemToast((String)getActivity().getText(R.string.erro_Senha));
     }
-    @Quando("^eu preencho todos os campos obrigatórios corretamente$")
+    @Quando("^eu preencho todos os campos corretamente$")
     public void euNaoPreenchoOCampo() {
-        preencherCampoEditText(R.id.etNomeCadastro, "jlhnkfff");
-        preencherCampoEditText(R.id.etEmailCadastro,"teste8@teste.com");
+        preencherCampoEditText(R.id.etNomeCadastro, "Maria Jose");
+        preencherCampoEditText(R.id.etEmailCadastro, StringUtils.gerarEmail());
         preencherCampoEditText(R.id.etTelefoneCadastro,"21356456478");
         preencherCampoEditText(R.id.etSenhaCadastro,"8123456");
 
@@ -134,11 +134,9 @@ public class CadastroActivitySteps extends DefaultTest {
 
 
 
-    @Entao("^devo ver uma mensagem de sucesso da operacao$")
+    @Entao("^devo ver uma mensagem de sucesso do cadastro")
     public void devoVerAMensagemSucessoo() {
         verificarMensagemToast((String)getActivity().getText(R.string.sucess_cadastro));
     }
-
-
 
 }

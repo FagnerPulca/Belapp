@@ -2,11 +2,13 @@ package br.com.belapp.belapp.activities;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
+import android.support.v7.widget.Toolbar;
 import android.widget.Toast;
 
 import com.google.firebase.database.ChildEventListener;
@@ -18,11 +20,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-import br.com.belapp.belapp.DAO.EnderecoDAO;
 import br.com.belapp.belapp.R;
-import br.com.belapp.belapp.model.Endereco;
 import br.com.belapp.belapp.model.Estabelecimento;
-import br.com.belapp.belapp.model.Servico;
 import br.com.belapp.belapp.presenter.ApplicationClass;
 import br.com.belapp.belapp.presenter.SalaoAdapter;
 
@@ -46,6 +45,12 @@ public class SaloesActivity extends AppCompatActivity implements SalaoAdapter.It
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_saloes);
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle(R.string.title_activity_estabelecimentos);
+        toolbar.setTitleTextColor(Color.WHITE);
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
+        setSupportActionBar(toolbar);
 
         categoria = getIntent().getStringExtra("categoria");
         estab = getIntent().getStringExtra("estabelecimento");
@@ -92,7 +97,6 @@ public class SaloesActivity extends AppCompatActivity implements SalaoAdapter.It
 
     private void buscar(){
         Query query = FirebaseDatabase.getInstance().getReference("estabelecimentos");
-
         query.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -203,4 +207,22 @@ public class SaloesActivity extends AppCompatActivity implements SalaoAdapter.It
             }
         }
     }*/
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        // TODO: Verificar se ha alteracoes antes de voltar
+        onBackPressed();
+        return true;
+    }
+    /**
+     * Pausa a execuçao pelo tempo informado
+     * @param tempo em milisegundos
+     */
+    public void esperar(int tempo) {
+        try {
+            Thread.sleep(tempo);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
 }

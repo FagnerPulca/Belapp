@@ -51,7 +51,6 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar"
             tools:replace="android:theme" />
         <activity android:name=".activities.FacebookLoginActivity" />
-        <activity android:name=".activities.EditarActivity" />
         <activity android:name=".activities.GoogleLoginActivity" />
 
         <activity
@@ -63,7 +62,6 @@
             android:label="@string/title_activity_alterar_senha"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <activity android:name=".activities.BuscaActivity" />
         <activity android:name=".activities.SaloesActivity" />
         <activity android:name=".activities.PagSalaoActivity" />
         <activity android:name=".activities.FuncionariosActivity" />

@@ -2,9 +2,7 @@ package br.com.belapp.belapp.test;
 
 import android.app.Activity;
 import android.support.test.espresso.Espresso;
-
 import android.view.View;
-
 import android.view.ViewGroup;
 
 import static android.support.test.espresso.Espresso.onView;
@@ -68,11 +66,7 @@ public class DefaultTest {
 
     public void verificarMensagemToast(String mensagem){
         // Espera 2 segundos
-
-       // esperar(2000);
-
-        esperar(1000);
-
+        esperar(1500);
         onView(withText(mensagem))
                 .inRoot(withDecorView(not(is(activity.getWindow().getDecorView()))))
                 .check(matches(isDisplayed()));
