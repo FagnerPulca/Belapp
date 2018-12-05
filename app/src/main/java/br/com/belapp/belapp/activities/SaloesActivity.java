@@ -76,6 +76,8 @@ public class SaloesActivity extends AppCompatActivity implements SalaoAdapter.It
         recyclerView.setAdapter(myAdapter);
         buscar();
         dialogBuscando();
+        esperar(2000);
+        Toast.makeText(SaloesActivity.this, getString(R.string.resultados), Toast.LENGTH_SHORT).show();
 
         Collections.sort(resultados, new Comparator<Estabelecimento>() {
             @Override
@@ -97,7 +99,6 @@ public class SaloesActivity extends AppCompatActivity implements SalaoAdapter.It
 
     private void buscar(){
         Query query = FirebaseDatabase.getInstance().getReference("estabelecimentos");
-
         query.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -214,5 +215,16 @@ public class SaloesActivity extends AppCompatActivity implements SalaoAdapter.It
         // TODO: Verificar se ha alteracoes antes de voltar
         onBackPressed();
         return true;
+    }
+    /**
+     * Pausa a execuçao pelo tempo informado
+     * @param tempo em milisegundos
+     */
+    public void esperar(int tempo) {
+        try {
+            Thread.sleep(tempo);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }

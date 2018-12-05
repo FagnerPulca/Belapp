@@ -2,6 +2,8 @@ package br.com.belapp.belapp.utils;
 
 import android.text.TextUtils;
 
+import java.util.Locale;
+
 public class StringUtils {
 
     private StringUtils(){}
@@ -20,5 +22,10 @@ public class StringUtils {
             retorno = true;
         }
         return retorno;
+    }
+
+    public static String gerarEmail(){
+        int numero = (int) (Math.random() * 10000) + 1;
+        return String.format(Locale.getDefault(), "teste%d@teste.com");
     }
 }

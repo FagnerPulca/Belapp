@@ -9,6 +9,7 @@ import org.junit.Rule;
 
 import br.com.belapp.belapp.R;
 import br.com.belapp.belapp.activities.CadastroBasicoActivity;
+import br.com.belapp.belapp.utils.StringUtils;
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
 import cucumber.api.java.pt.Dado;
@@ -126,7 +127,7 @@ public class CadastroActivitySteps extends DefaultTest {
     @Quando("^eu preencho todos os campos corretamente$")
     public void euNaoPreenchoOCampo() {
         preencherCampoEditText(R.id.etNomeCadastro, "Maria Jose");
-        preencherCampoEditText(R.id.etEmailCadastro,"teste8@teste.com");
+        preencherCampoEditText(R.id.etEmailCadastro, StringUtils.gerarEmail());
         preencherCampoEditText(R.id.etTelefoneCadastro,"21356456478");
         preencherCampoEditText(R.id.etSenhaCadastro,"8123456");
 
@@ -138,7 +139,5 @@ public class CadastroActivitySteps extends DefaultTest {
     public void devoVerAMensagemSucessoo() {
         verificarMensagemToast((String)getActivity().getText(R.string.sucess_cadastro));
     }
-
-
 
 }

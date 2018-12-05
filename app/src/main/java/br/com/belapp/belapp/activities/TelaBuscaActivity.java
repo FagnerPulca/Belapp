@@ -62,7 +62,6 @@ public class TelaBuscaActivity extends AppCompatActivity {
                 double longitude = getIntent().getDoubleExtra("longitude", -36);
 
                 if (!estabelecimento.isEmpty() || !endereco.isEmpty()){
-                    Toast.makeText(TelaBuscaActivity.this, getString(R.string.resultados), Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(TelaBuscaActivity.this, SaloesActivity.class);
                     intent.putExtra("estabelecimento", estabelecimento);
                     intent.putExtra("endereco", endereco);
