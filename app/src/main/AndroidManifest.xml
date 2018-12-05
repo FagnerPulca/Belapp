@@ -34,7 +34,7 @@
         <activity android:name=".activities.LoginActivity" />
         <activity
             android:name=".activities.ClienteLogadoActivity"
-            android:label="@string/title_activity_cliente_logado"
+            android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity android:name=".activities.CadastroBasicoActivity" />

@@ -120,29 +120,6 @@ public class ClienteLogadoActivity extends AppCompatActivity
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
 
-    }
-
-    private void personalizarCabecalho(NavigationView navigationView) {
-        View header = navigationView.getHeaderView(0);
-        TextView titulo = header.findViewById(R.id.tvTituloNavegadorLogado);
-        TextView subtitulo = header.findViewById(R.id.tvSubtituloNavegadorLogado);
-
-        FirebaseUser usuario = logado.getCurrentUser();
-        if (usuario != null) {
-            String nome = usuario.getDisplayName();
-            String email = usuario.getEmail();
-            if (nome != null) titulo.setText(nome);
-            if (email != null) subtitulo.setText(email);
-        }
-    }
-
-
-    @Override
-    public void onConnectionFailed(ConnectionResult connectionResult) {
-    }
-
-
-
         permissions.add(ACCESS_FINE_LOCATION);
         permissions.add(ACCESS_COARSE_LOCATION);
 
@@ -266,6 +243,31 @@ public class ClienteLogadoActivity extends AppCompatActivity
 
     }
 
+    private void personalizarCabecalho(NavigationView navigationView) {
+        View header = navigationView.getHeaderView(0);
+        TextView titulo = header.findViewById(R.id.tvTituloNavegadorLogado);
+        TextView subtitulo = header.findViewById(R.id.tvSubtituloNavegadorLogado);
+
+        FirebaseUser usuario = logado.getCurrentUser();
+        if (usuario != null) {
+            String nome = usuario.getDisplayName();
+            String email = usuario.getEmail();
+            if (nome != null) titulo.setText(nome);
+            if (email != null) subtitulo.setText(email);
+        }
+    }
+
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+    }
+
+
+
+
+
+
+
     private void buscar(){
         Query query = FirebaseDatabase.getInstance().getReference("servicos");
 
@@ -357,15 +359,11 @@ public class ClienteLogadoActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_perfil) {
-            Intent intentEditarActivity = new Intent(ClienteLogadoActivity.this, EditarActivity.class);
-            startActivity(intentEditarActivity);
-        } else if (id == R.id.nav_notificacao) {
-
-
-        } else if (id == R.id.nav_perfil) {
             Intent intent = new Intent();
             intent.setClass(ClienteLogadoActivity.this, PerfilActivity.class);
             startActivity(intent);
+        } else if (id == R.id.nav_notificacao) {
+
 
         } else if (id == R.id.nav_agenda) {
 
