@@ -65,6 +65,7 @@
 
     <string name="title_activity_perfil">Meu Perfil</string>
     <string name="title_activity_estabelecimentos">Estabelecimentos</string>
+    <string name="title_activity_Pesquisar">Pesquisar</string>
     <string name="app_nome">Nome</string>
     <string name="app_telefone">Telefone</string>
     <string name="app_senha">Senha</string>
