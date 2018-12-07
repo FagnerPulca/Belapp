@@ -62,7 +62,7 @@
 
 
 
-
+    <string name="title_activity_salao">Salão</string>
     <string name="title_activity_perfil">Meu Perfil</string>
     <string name="title_activity_estabelecimentos">Estabelecimentos</string>
     <string name="title_activity_Pesquisar">Pesquisar</string>
