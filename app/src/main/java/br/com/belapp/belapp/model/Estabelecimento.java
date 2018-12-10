@@ -12,13 +12,21 @@ public class Estabelecimento{
     private String mNome;
     private String mDescricao;
     private String mIdEndereco;
-    private String mDistancia;
+    private double mDistancia;
+    private double mLatitude;
+    private double mLongitude;
+    private String mRua;
+    private String mNumero;
+    private String mBairro;
+    private String mCidade;
+    private String mComplemento;
+    private String mCep;
 
     public Estabelecimento(){
 
     }
 
-    public Estabelecimento(String mEid, String mNome, String mDescricao, String mIdEndereco, String mDistancia) {
+    public Estabelecimento(String mEid, String mNome, String mDescricao, double mDistancia) {
         this.mEid = mEid;
         this.mNome = mNome;
         this.mDescricao = mDescricao;
@@ -58,14 +66,79 @@ public class Estabelecimento{
         this.mIdEndereco = mIdEndereco;
     }
 
-    public String getmDistancia() {
+    public double getmDistancia() {
         return mDistancia;
     }
 
-    public void setmDistancia(String mDistancia) {
+    public void setmDistancia(double mDistancia) {
         this.mDistancia = mDistancia;
     }
-    //Aqui atributos e metodos da classe
+
+    public double getmLatitude() {
+        return mLatitude;
+    }
+
+    public void setmLatitude(double mLatitude) {
+        this.mLatitude = mLatitude;
+    }
+
+    public double getmLongitude() {
+        return mLongitude;
+    }
+
+    public void setmLongitude(double mLongitude) {
+        this.mLongitude = mLongitude;
+    }
+
+    public String getmRua() {
+        return mRua;
+    }
+
+    public void setmRua(String mRua) {
+        this.mRua = mRua;
+    }
+
+    public String getmNumero() {
+        return mNumero;
+    }
+
+    public void setmNumero(String mNumero) {
+        this.mNumero = mNumero;
+    }
+
+    public String getmBairro() {
+        return mBairro;
+    }
+
+    public void setmBairro(String mBairro) {
+        this.mBairro = mBairro;
+    }
+
+    public String getmCidade() {
+        return mCidade;
+    }
+
+    public void setmCidade(String mCidade) {
+        this.mCidade = mCidade;
+    }
+
+    public String getmComplemento() {
+        return mComplemento;
+    }
+
+    public void setmComplemento(String mComplemento) {
+        this.mComplemento = mComplemento;
+    }
+
+    public String getmCep() {
+        return mCep;
+    }
+
+    public void setmCep(String mCep) {
+        this.mCep = mCep;
+    }
+
+//Aqui atributos e metodos da classe
     /*String mEId;
     String mNome;
     String mTelefone;

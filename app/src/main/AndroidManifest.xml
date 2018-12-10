@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?><!-- suppress ALL -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="br.com.belapp.belapp">
 
     <!-- To auto-complete the email text field in the login form with the user's emails -->
@@ -18,7 +19,8 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        tools:ignore="GoogleAppIndexingWarning">
         <activity
             android:name=".activities.InicialActivity"
             android:label="@string/title_activity_main"
@@ -32,13 +34,40 @@
         <activity android:name=".activities.LoginActivity" />
         <activity
             android:name=".activities.ClienteLogadoActivity"
-            android:label="@string/title_activity_cliente_logado"
+            android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".activities.BuscaActivity" />
+
+        <activity android:name=".activities.CadastroBasicoActivity" />
+
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id"
+            tools:replace="android:value" />
+
+        <activity
+            android:name="com.facebook.FacebookActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            tools:replace="android:theme" />
+        <activity android:name=".activities.FacebookLoginActivity" />
+        <activity android:name=".activities.GoogleLoginActivity" />
+
+        <activity
+            android:name=".activities.PerfilActivity"
+            android:label="@string/title_activity_perfil"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activities.AlterarSenhaActivity"
+            android:label="@string/title_activity_alterar_senha"
+            android:theme="@style/AppTheme.NoActionBar" />
+
         <activity android:name=".activities.SaloesActivity" />
         <activity android:name=".activities.PagSalaoActivity" />
         <activity android:name=".activities.FuncionariosActivity" />
-        <activity android:name=".activities.TelaBuscaActivity"></activity>
+        <activity android:name=".activities.TelaBuscaActivity"/>
+
+
     </application>
 
 </manifest>

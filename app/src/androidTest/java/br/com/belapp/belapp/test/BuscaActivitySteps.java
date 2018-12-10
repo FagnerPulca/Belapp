@@ -2,11 +2,11 @@ package br.com.belapp.belapp.test;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.support.test.espresso.NoMatchingViewException;
-import android.support.test.espresso.ViewAssertion;
 import android.support.test.rule.ActivityTestRule;
 import android.view.View;
+import android.view.ViewGroup;
 
+import org.junit.Assert;
 import org.junit.Rule;
 
 import br.com.belapp.belapp.R;
@@ -18,7 +18,6 @@ import cucumber.api.java.it.E;
 import cucumber.api.java.it.Quando;
 import cucumber.api.java.pt.Entao;
 
-
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
@@ -28,23 +27,20 @@ import static android.support.test.espresso.matcher.RootMatchers.withDecorView;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.isRoot;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
-
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static junit.framework.TestCase.assertNotNull;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.not;
 
-public class BuscaActivitySteps {
+public class BuscaActivitySteps extends DefaultTest {
 
     @Rule
     public ActivityTestRule<TelaBuscaActivity> activityTestRule = new ActivityTestRule<>(TelaBuscaActivity.class);
 
-    private Activity activity;
-
     @Before("@busca-feature")
     public void setup(){
         activityTestRule.launchActivity(new Intent());
-        activity = activityTestRule.getActivity();
+        setActivity(activityTestRule.getActivity());
     }
 
     @After("@busca-feature")
@@ -55,60 +51,48 @@ public class BuscaActivitySteps {
 
     @Dado("^Eu estou na tela de busca$")
     public void euEstouNaTelaDeBusca(){
-        assertNotNull(activity);
+        assertNotNull(getActivity());
     }
 
-    @Quando("^Eu coloco a cidade e não o serviço$")
+    @Quando("^Eu coloco a cidade e não o estabelecimento$")
     public void euColocoACidade(){
-        onView(withId(R.id.etServico)).perform(typeText(""));
-        onView(withId(R.id.etCidade)).perform(typeText("Garanhuns"), closeSoftKeyboard());
+        preencherCampoEditText(R.id.etEstabelecimento, "");
+        preencherCampoEditText(R.id.etEndereco, "Garanhuns");
     }
 
-    @Quando("^Eu coloco o serviço e não a cidade$")
+    @Quando("^Eu coloco o estabelecimento e não a cidade$")
     public void euColocoOServico(){
-        onView(withId(R.id.etCidade)).perform(typeText(""));
-        onView(withId(R.id.etServico)).perform(typeText("Corte simples"), closeSoftKeyboard());
+        preencherCampoEditText(R.id.etEndereco, "");
+        preencherCampoEditText(R.id.etEstabelecimento, "beauty");
     }
 
-    @Quando("^Eu coloco o serviço e a cidade$")
+    @Quando("^Eu coloco o estabelecimento e a cidade$")
     public void euColocoOsDois(){
-        onView(withId(R.id.etCidade)).perform(typeText("Garanhuns"));
-        onView(withId(R.id.etServico)).perform(typeText("Corte simples"), closeSoftKeyboard());
+        preencherCampoEditText(R.id.etEndereco, "Garanhuns");
+        preencherCampoEditText(R.id.etEstabelecimento, "Fagner");
     }
 
     @Quando("^Eu clico em buscar sem preencher os campos$")
     public void euColocoNenhum(){
-        onView(withId(R.id.etCidade)).perform(typeText(""));
-        onView(withId(R.id.etServico)).perform(typeText(""));
+        preencherCampoEditText(R.id.etEndereco, "");
+        preencherCampoEditText(R.id.etEstabelecimento, "");
     }
 
     @E("^Eu clico em buscar$")
     public void clicoEmBuscar(){
-        onView(withId(R.id.btnBuscar)).perform(click());
+        apertarBotao(R.id.btnBuscar);
     }
 
     @Entao("^Eu devo ver os salões retornados$")
     public void verRetorno(){
-        onView(withText(R.string.resultados)).
-                inRoot(withDecorView(not(is(activity.getWindow().getDecorView())))).
-                check(matches(isDisplayed()));
+        esperar(2000);
+        onView(withText(getActivity().getString(R.string.title_activity_estabelecimentos)));
+
     }
 
     @Entao("^Devo ver uma mensagem dizendo para digitar algum dado$")
     public void verMensagem(){
-        onView(withText(R.string.digite_algum_dado)).
-                inRoot(withDecorView(not(is(activity.getWindow().getDecorView())))).
-                check(matches(isDisplayed()));
+        verificarMensagemToast(getAtualActivity().getString(R.string.digite_algum_dado));
     }
 
-    private Activity getAtualActivity() {
-        final Activity[] activity = new Activity[1];
-        onView(isRoot()).check(new ViewAssertion() {
-            @Override
-            public void check(View view, NoMatchingViewException noViewFoundException) {
-                activity[0] = (Activity) view.getContext();
-            }
-        });
-        return activity[0];
-    }
 }

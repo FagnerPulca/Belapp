@@ -1,5 +1,8 @@
 package br.com.belapp.belapp.DAO;
 
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -8,6 +11,8 @@ import java.util.ArrayList;
 import br.com.belapp.belapp.model.Profissional;
 
 public class ProfissionalDAO {
+
+    private ArrayList<Profissional> lista;
 
     public static DatabaseReference getDatabaseReference() {
         return FirebaseDatabase.getInstance().getReference("profissionais");
@@ -32,15 +37,41 @@ public class ProfissionalDAO {
         mDatabase.child(profissional.getmId()).setValue(profissional);
     }
 
+    public ArrayList<Profissional> getProfissionais(){
+        try{
+            lista = new ArrayList<Profissional>();
+            final DatabaseReference databaseReference = getDatabaseReference();
 
+            databaseReference.addChildEventListener(new ChildEventListener() {
+                @Override
+                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                    Profissional profissional = dataSnapshot.getValue(Profissional.class);
+                    lista.add(profissional);
+                }
 
-    FirebaseDatabase firebaseDatabase;
-    ArrayList<Profissional> listProfissionais;
+                @Override
+                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
 
+                }
 
-    public void inserirProfissional()
-    {
-        Profissional profissional = new Profissional();
-        profissional.addProfissional("Joana", "20 anos de experiência", "sim");
+                @Override
+                public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+                }
+
+                @Override
+                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+        return lista;
     }
 }

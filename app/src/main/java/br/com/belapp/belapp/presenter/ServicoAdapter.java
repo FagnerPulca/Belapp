@@ -60,9 +60,9 @@ public class ServicoAdapter extends RecyclerView.Adapter<ServicoAdapter.ViewHold
         DecimalFormat df2 = new DecimalFormat(".##");
         viewHolder.itemView.setTag(testes.get(i));
 
-        /*viewHolder.tvServico.setText(testes.get(i).getNome());
-        viewHolder.tvPreco.setText("R$ "+df2.format(testes.get(i).getPreco()));
-        viewHolder.tvDuracao.setText("Duração: "+testes.get(i).getDuracao());*/
+        viewHolder.tvServico.setText(testes.get(i).getmNome());
+        viewHolder.tvPreco.setText("R$ "+df2.format(testes.get(i).getmPreco()));
+        viewHolder.tvDuracao.setText("Duração: "+testes.get(i).getmDuracao());
 
     }
 

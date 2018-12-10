@@ -2,11 +2,13 @@ package br.com.belapp.belapp.activities;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
+import android.support.v7.widget.Toolbar;
 import android.widget.Toast;
 
 import com.google.firebase.database.ChildEventListener;
@@ -15,14 +17,25 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import br.com.belapp.belapp.R;
 import br.com.belapp.belapp.model.Estabelecimento;
+import br.com.belapp.belapp.presenter.ApplicationClass;
 import br.com.belapp.belapp.presenter.SalaoAdapter;
 
 public class SaloesActivity extends AppCompatActivity implements SalaoAdapter.ItemClicked{
 
     private ArrayList<Estabelecimento> estabelecimentos;
+    private ArrayList<Estabelecimento> resultados;
+    ArrayList<String> ids;
+    ArrayList<String> idcateg;
+    String categoria;
+    String estab;
+    String endereco;
+    double latitude;
+    double longitude;
 
     private RecyclerView.Adapter myAdapter;
 
@@ -33,12 +46,22 @@ public class SaloesActivity extends AppCompatActivity implements SalaoAdapter.It
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_saloes);
 
-        String categoria = getIntent().getStringExtra("categoria");
-        String servico = getIntent().getStringExtra("servico");
-        String cidade = getIntent().getStringExtra("cidade");
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle(R.string.title_activity_estabelecimentos);
+        toolbar.setTitleTextColor(Color.WHITE);
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
+        setSupportActionBar(toolbar);
 
-        double latitude = getIntent().getDoubleExtra("latitude", -8);
-        double longitude = getIntent().getDoubleExtra("longitude", -36);
+        categoria = getIntent().getStringExtra("categoria");
+        estab = getIntent().getStringExtra("estabelecimento");
+        endereco = getIntent().getStringExtra("endereco");
+        ids = new ArrayList<>();
+        idcateg = new ArrayList<>();
+        ids = getIntent().getStringArrayListExtra("ids");
+        idcateg = getIntent().getStringArrayListExtra("idcateg");
+
+        latitude = getIntent().getDoubleExtra("latitude", -8);
+        longitude = getIntent().getDoubleExtra("longitude", -36);
 
         RecyclerView recyclerView = findViewById(R.id.rvSaloes);
         recyclerView.setHasFixedSize(true);
@@ -47,32 +70,70 @@ public class SaloesActivity extends AppCompatActivity implements SalaoAdapter.It
         recyclerView.setLayoutManager(layoutManager);
 
         estabelecimentos = new ArrayList<>();
+        resultados = new ArrayList<>();
 
-        myAdapter = new SalaoAdapter(this, estabelecimentos);
+        myAdapter = new SalaoAdapter(this, resultados);
         recyclerView.setAdapter(myAdapter);
         buscar();
         dialogBuscando();
+
+        Collections.sort(resultados, new Comparator<Estabelecimento>() {
+            @Override
+            public int compare(Estabelecimento o1, Estabelecimento o2) {
+                return Double.compare(o1.getmDistancia(), o2.getmDistancia());
+            }
+        });
     }
 
 
     @Override
     public void onItemClicked(int index) {
         Intent intent = new Intent(SaloesActivity.this, PagSalaoActivity.class);
-        intent.putExtra("salao", estabelecimentos.get(index).getmNome());
+        intent.putExtra("salao", resultados.get(index).getmEid());
+        intent.putExtra("nome", resultados.get(index).getmNome());
         startActivity(intent);
-        Toast.makeText(this, getString(R.string.servicos),Toast.LENGTH_SHORT).show();
+        Toast.makeText(SaloesActivity.this, resultados.get(index).getmNome(), Toast.LENGTH_SHORT).show();
     }
 
     private void buscar(){
         Query query = FirebaseDatabase.getInstance().getReference("estabelecimentos");
-
         query.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-               Estabelecimento estabelecimento = dataSnapshot.getValue(Estabelecimento.class);
-               estabelecimentos.add(estabelecimento);
-               myAdapter.notifyDataSetChanged();
-               mProgressDialog.dismiss();
+                Estabelecimento estabelecimento = dataSnapshot.getValue(Estabelecimento.class);
+                estabelecimento.setmDistancia(ApplicationClass.calculaDistancia(latitude, longitude,
+                        estabelecimento.getmLatitude(), estabelecimento.getmLongitude()));
+                estabelecimentos.add(estabelecimento);
+
+                if (!ids.isEmpty() && !categoria.isEmpty()){
+                    for (int i = 0; i < ids.size(); i++){
+                        if (estabelecimento.getmEid().equals(ids.get(i)) && idcateg.get(i).equals(categoria)){
+                            resultados.add(estabelecimento);
+                            break;
+                        }
+                    }
+                } else if (!endereco.isEmpty() && estab.isEmpty()){
+                    if (estabelecimento.getmCidade().toLowerCase().contains(endereco.toLowerCase()) ||
+                            estabelecimento.getmRua().toLowerCase().contains(endereco.toLowerCase()) ||
+                            estabelecimento.getmBairro().toLowerCase().contains(endereco.toLowerCase())){
+                        resultados.add(estabelecimento);
+                    }
+                } else if (endereco.isEmpty() && !estab.isEmpty()){
+                    if (estabelecimento.getmNome().toLowerCase().contains(estab.toLowerCase())){
+                        resultados.add(estabelecimento);
+                    }
+                } else if (!endereco.isEmpty() && !estab.isEmpty()){
+                    if (estabelecimento.getmNome().toLowerCase().contains(estab.toLowerCase()) &&
+                            (estabelecimento.getmCidade().toLowerCase().contains(endereco.toLowerCase()) ||
+                                    estabelecimento.getmRua().toLowerCase().contains(endereco.toLowerCase()) ||
+                                    estabelecimento.getmBairro().toLowerCase().contains(endereco.toLowerCase()))){
+                        resultados.add(estabelecimento);
+                    }
+                }
+
+
+                myAdapter.notifyDataSetChanged();
+                mProgressDialog.dismiss();
             }
 
             @Override
@@ -146,4 +207,22 @@ public class SaloesActivity extends AppCompatActivity implements SalaoAdapter.It
             }
         }
     }*/
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        // TODO: Verificar se ha alteracoes antes de voltar
+        onBackPressed();
+        return true;
+    }
+    /**
+     * Pausa a execuçao pelo tempo informado
+     * @param tempo em milisegundos
+     */
+    public void esperar(int tempo) {
+        try {
+            Thread.sleep(tempo);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
 }

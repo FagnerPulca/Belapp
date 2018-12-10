@@ -13,6 +13,10 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseAuthInvalidUserException;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
+import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 
 import br.com.belapp.belapp.R;
 import br.com.belapp.belapp.model.Cliente;
@@ -47,7 +51,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
                 } else {
-                    Toast.makeText(LoginActivity.this, "preencha os campos de email e senha !", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "preencha os campos de email e senha !", Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -65,10 +69,27 @@ public class LoginActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
                     abrirTelaPrincipal();
-                    Toast.makeText(LoginActivity.this, getString(R.string.sucess_login_efetuado), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, getString(R.string.sucess_login_efetuado), Toast.LENGTH_LONG).show();
 
                 } else {
-                    Toast.makeText(LoginActivity.this, getString(R.string.error_login_invalido), Toast.LENGTH_SHORT).show();
+
+                    //tratamento de exceções do cadastro
+                    String excecao = "";
+                    try {
+                        throw task.getException();
+                    } catch (FirebaseAuthInvalidUserException e) {
+                        excecao = "Usuario não cadastrado!";
+                    } catch (FirebaseAuthInvalidCredentialsException e) {
+                        excecao = "email ou senha não correspndem a um usuario cadastrado !";
+                    } catch (Exception e) {
+                        excecao = "Erro ao logar usuario" + e.getMessage();
+                        e.printStackTrace();
+                    }
+
+                    Toast.makeText(LoginActivity.this,
+                            excecao,
+                            Toast.LENGTH_SHORT).show();
+
 
                 }
             }

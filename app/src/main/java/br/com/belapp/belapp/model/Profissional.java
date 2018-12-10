@@ -1,8 +1,5 @@
 package br.com.belapp.belapp.model;
 
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-
 public class Profissional {
 
     //Aqui atributos e metodos da classe
@@ -10,19 +7,13 @@ public class Profissional {
     private String nome;
     private String descricao;
     private String atendDomic;
+    private String foto;
+    private String horarios;
     DatabaseReference mDataBase;
+    public Profissional(){
 
-    public Profissional(){}
-
-    public Profissional(String nome, String descricao, String atendDomic)
-    {
-        this.nome = nome;
-        this.descricao = descricao;
-        this.atendDomic = atendDomic;
     }
-
-    public Profissional(String mId, String nome, String descricao, String atendDomic)
-    {
+    public Profissional(String mId, String nome, String descricao, String atendDomic) {
         this.mId = mId;
         this.nome = nome;
         this.descricao = descricao;

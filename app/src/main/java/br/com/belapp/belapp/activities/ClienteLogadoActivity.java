@@ -2,17 +2,22 @@ package br.com.belapp.belapp.activities;
 
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
+
+import android.app.ProgressDialog;
 import android.content.Context;
+
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
+import android.support.annotation.NonNull;
+
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.View;
+
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -21,14 +26,39 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import android.widget.TextView;
+
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.auth.api.Auth;
+
+import com.facebook.login.LoginManager;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.firebase.auth.FirebaseAuth;
+
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.android.gms.common.ConnectionResult;
 
 import java.util.ArrayList;
 
 import br.com.belapp.belapp.R;
+import br.com.belapp.belapp.model.Servico;
 import br.com.belapp.belapp.presenter.LocalizacaoCliente;
 import br.com.belapp.belapp.servicos.MyServiceLocation;
 
@@ -36,8 +66,12 @@ import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 
 public class ClienteLogadoActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+
+        implements NavigationView.OnNavigationItemSelectedListener, GoogleApiClient.OnConnectionFailedListener {
     private FirebaseAuth logado = FirebaseAuth.getInstance();
+    private GoogleApiClient mGoogleApiClient;
+
+        
 
     ImageButton btnBarba, btnCabelo, btnDepilacao, btnOlho, btnSobrancelha, btnUnha;
     LocalizacaoCliente localCliente;
@@ -46,25 +80,45 @@ public class ClienteLogadoActivity extends AppCompatActivity
     private ArrayList permissionsToRequest;
     private ArrayList permissionsRejected = new ArrayList();
     private ArrayList permissions = new ArrayList();
+    private ProgressDialog mProgressDialog;
+    private ArrayList<String> ids;
+    private ArrayList<String> idcateg;
+    private ArrayList<Servico> servicos;
+    private String categoria;
 
     private final static int ALL_PERMISSIONS_RESULT = 101;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cliente_logado);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+
+        NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        personalizarCabecalho(navigationView);
+
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .enableAutoManage(this, this)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .build();
 
         permissions.add(ACCESS_FINE_LOCATION);
         permissions.add(ACCESS_COARSE_LOCATION);
@@ -87,6 +141,7 @@ public class ClienteLogadoActivity extends AppCompatActivity
         }
 
 
+
         btnBarba = findViewById(R.id.ibBarba);
         btnCabelo = findViewById(R.id.ibCabelo);
         btnDepilacao = findViewById(R.id.ibDepilacao);
@@ -94,14 +149,23 @@ public class ClienteLogadoActivity extends AppCompatActivity
         btnSobrancelha = findViewById(R.id.ibSobrancelha);
         btnUnha = findViewById(R.id.ibUnha);
 
+        ids = new ArrayList<>();
+        idcateg = new ArrayList<>();
+        servicos = new ArrayList<>();
+
+        buscar();
+        dialogBuscando();
 
         btnBarba.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                categoria = "Barba";
                 Intent intent = new Intent(ClienteLogadoActivity.this, SaloesActivity.class);
                 intent.putExtra("categoria", "Barba");
                 intent.putExtra("latitude", localizao.getLatitude());
                 intent.putExtra("longitude", localizao.getLongitude());
+                intent.putExtra("ids", ids);
+                intent.putExtra("idcateg", idcateg);
                 startActivity(intent);
                 Toast.makeText(ClienteLogadoActivity.this, "Barba", Toast.LENGTH_SHORT).show();
             }
@@ -109,10 +173,13 @@ public class ClienteLogadoActivity extends AppCompatActivity
         btnCabelo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                categoria = "Cabelo";
                 Intent intent = new Intent(ClienteLogadoActivity.this, SaloesActivity.class);
                 intent.putExtra("categoria", "Cabelo");
                 intent.putExtra("latitude", localizao.getLatitude());
                 intent.putExtra("longitude", localizao.getLongitude());
+                intent.putExtra("ids", ids);
+                intent.putExtra("idcateg", idcateg);
                 startActivity(intent);
                 Toast.makeText(ClienteLogadoActivity.this, "Cabelo", Toast.LENGTH_SHORT).show();
             }
@@ -120,10 +187,13 @@ public class ClienteLogadoActivity extends AppCompatActivity
         btnDepilacao.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                categoria = "Depilação";
                 Intent intent = new Intent(ClienteLogadoActivity.this, SaloesActivity.class);
                 intent.putExtra("categoria", "Depilação");
                 intent.putExtra("latitude", localizao.getLatitude());
                 intent.putExtra("longitude", localizao.getLongitude());
+                intent.putExtra("ids", ids);
+                intent.putExtra("idcateg", idcateg);
                 startActivity(intent);
                 Toast.makeText(ClienteLogadoActivity.this, "Depilação", Toast.LENGTH_SHORT).show();
             }
@@ -131,10 +201,13 @@ public class ClienteLogadoActivity extends AppCompatActivity
         btnOlho.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                categoria = "Olho";
                 Intent intent = new Intent(ClienteLogadoActivity.this, SaloesActivity.class);
                 intent.putExtra("categoria", "Olho");
                 intent.putExtra("latitude", localizao.getLatitude());
                 intent.putExtra("longitude", localizao.getLongitude());
+                intent.putExtra("ids", ids);
+                intent.putExtra("idcateg", idcateg);
                 startActivity(intent);
                 Toast.makeText(ClienteLogadoActivity.this, "Olho", Toast.LENGTH_SHORT).show();
             }
@@ -142,10 +215,13 @@ public class ClienteLogadoActivity extends AppCompatActivity
         btnSobrancelha.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                categoria = "Sobrancelha";
                 Intent intent = new Intent(ClienteLogadoActivity.this, SaloesActivity.class);
                 intent.putExtra("categoria", "Sobrancelha");
                 intent.putExtra("latitude", localizao.getLatitude());
                 intent.putExtra("longitude", localizao.getLongitude());
+                intent.putExtra("ids", ids);
+                intent.putExtra("idcateg", idcateg);
                 startActivity(intent);
                 Toast.makeText(ClienteLogadoActivity.this, "Sobrancelha", Toast.LENGTH_SHORT).show();
             }
@@ -153,10 +229,13 @@ public class ClienteLogadoActivity extends AppCompatActivity
         btnUnha.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                categoria = "Unha";
                 Intent intent = new Intent(ClienteLogadoActivity.this, SaloesActivity.class);
                 intent.putExtra("categoria", "Unha");
                 intent.putExtra("latitude", localizao.getLatitude());
                 intent.putExtra("longitude", localizao.getLongitude());
+                intent.putExtra("ids", ids);
+                intent.putExtra("idcateg", idcateg);
                 startActivity(intent);
                 Toast.makeText(ClienteLogadoActivity.this, "Unha", Toast.LENGTH_SHORT).show();
             }
@@ -164,9 +243,83 @@ public class ClienteLogadoActivity extends AppCompatActivity
 
     }
 
+    private void personalizarCabecalho(NavigationView navigationView) {
+        View header = navigationView.getHeaderView(0);
+        TextView titulo = header.findViewById(R.id.tvTituloNavegadorLogado);
+        TextView subtitulo = header.findViewById(R.id.tvSubtituloNavegadorLogado);
+
+        FirebaseUser usuario = logado.getCurrentUser();
+        if (usuario != null) {
+            String nome = usuario.getDisplayName();
+            String email = usuario.getEmail();
+            if (nome != null) titulo.setText(nome);
+            if (email != null) subtitulo.setText(email);
+        }
+    }
+
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+    }
+
+
+
+
+
+
+
+    private void buscar(){
+        Query query = FirebaseDatabase.getInstance().getReference("servicos");
+
+        query.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                Servico servico = dataSnapshot.getValue(Servico.class);
+                servicos.add(servico);
+
+                ids.add(servico.getmEstabId());
+                idcateg.add(servico.getmCategoria());
+
+                //myAdapter.notifyDataSetChanged();
+                mProgressDialog.dismiss();
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                // empty
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                // empty
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+                // empty
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // empty
+            }
+        });
+    }
+
+    void dialogBuscando(){
+        mProgressDialog = new ProgressDialog(ClienteLogadoActivity.this);
+        mProgressDialog.setMessage("Buscando...");
+        mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        mProgressDialog.setIndeterminate(true);
+        mProgressDialog.setProgress(0);
+        mProgressDialog.show();
+    }
+
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -190,7 +343,7 @@ public class ClienteLogadoActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            Intent intetAbrirTelaLogin = new Intent(ClienteLogadoActivity.this, BuscaActivity.class);
+            Intent intetAbrirTelaLogin = new Intent(ClienteLogadoActivity.this, TelaBuscaActivity.class);
             intetAbrirTelaLogin.putExtra("latitude", localizao.getLatitude());
             intetAbrirTelaLogin.putExtra("longitude", localizao.getLongitude());
             startActivity(intetAbrirTelaLogin);
@@ -201,29 +354,40 @@ public class ClienteLogadoActivity extends AppCompatActivity
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_agenda) {
-            // Handle the camera action
+        if (id == R.id.nav_perfil) {
+            Intent intent = new Intent();
+            intent.setClass(ClienteLogadoActivity.this, PerfilActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_notificacao) {
 
-        } else if (id == R.id.nav_perfil) {
 
         } else if (id == R.id.nav_agenda) {
+
+        } else if (id == R.id.nav_favoritos) {
 
         } else if (id == R.id.nav_promocoes) {
 
         } else if (id == R.id.nav_sair) {
 
             logado.signOut();
+            LoginManager.getInstance().logOut();
+
+            if (mGoogleApiClient != null && mGoogleApiClient.isConnected()) {
+                Auth.GoogleSignInApi.signOut(mGoogleApiClient);
+            }
+
             Intent intentInicialActivity = new Intent(ClienteLogadoActivity.this, InicialActivity.class);
-            startActivity(intentInicialActivity );
+            startActivity(intentInicialActivity);
 
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
