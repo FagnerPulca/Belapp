@@ -44,6 +44,7 @@ import java.util.List;
 import java.util.Locale;
 
 import br.com.belapp.belapp.DAO.EstabelecimentoDAO;
+import br.com.belapp.belapp.DAO.ProfissionalDAO;
 import br.com.belapp.belapp.R;
 import br.com.belapp.belapp.model.Agenda;
 import br.com.belapp.belapp.model.Endereco;
@@ -137,6 +138,8 @@ public class InicialActivity extends AppCompatActivity
 
 //        EstabelecimentoDAO estabelecimentoDAO = new EstabelecimentoDAO();
 //        estabelecimentoDAO.inserirEstabelecimento();
+        ProfissionalDAO profDAO = new ProfissionalDAO();
+        profDAO.inserirProfissional();
 
 
 

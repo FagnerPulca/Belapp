@@ -3,6 +3,8 @@ package br.com.belapp.belapp.DAO;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.ArrayList;
+
 import br.com.belapp.belapp.model.Profissional;
 
 public class ProfissionalDAO {
@@ -28,5 +30,17 @@ public class ProfissionalDAO {
 
         DatabaseReference mDatabase = getDatabaseReference();
         mDatabase.child(profissional.getmId()).setValue(profissional);
+    }
+
+
+
+    FirebaseDatabase firebaseDatabase;
+    ArrayList<Profissional> listProfissionais;
+
+
+    public void inserirProfissional()
+    {
+        Profissional profissional = new Profissional();
+        profissional.addProfissional("Joana", "20 anos de experiência", "sim");
     }
 }
