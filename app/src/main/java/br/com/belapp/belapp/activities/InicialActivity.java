@@ -149,8 +149,8 @@ public class InicialActivity extends AppCompatActivity
 
 //        EstabelecimentoDAO estabelecimentoDAO = new EstabelecimentoDAO();
 //        estabelecimentoDAO.inserirEstabelecimento();
-        ProfissionalDAO profDAO = new ProfissionalDAO();
-        profDAO.inserirProfissional();
+        /*ProfissionalDAO profDAO = new ProfissionalDAO();
+        profDAO.inserirProfissional();*/
 
         ids = new ArrayList<>();
         idcateg = new ArrayList<>();

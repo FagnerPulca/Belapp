@@ -9,7 +9,7 @@ public class Profissional {
     private String atendDomic;
     private String foto;
     private String horarios;
-    DatabaseReference mDataBase;
+    //DatabaseReference mDataBase;
     public Profissional(){
 
     }
@@ -52,11 +52,11 @@ public class Profissional {
         this.atendDomic = atendDomic;
     }
 
-    public void addProfissional(String nome, String descricao, String domicilio)
+    /*public void addProfissional(String nome, String descricao, String domicilio)
     {
         Profissional prof = new Profissional(nome, descricao, domicilio);
         mDataBase = FirebaseDatabase.getInstance().getReference();
         mDataBase.child("estabelecimentos").push().setValue(prof);
 
-    }
+    }*/
 }
