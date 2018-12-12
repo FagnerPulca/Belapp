@@ -87,5 +87,8 @@
     <string name="digite_algum_dado">Digite algum dado</string>
     <string name="servicos">Serviços</string>
     <string name="title_activity_reset">ResetActivity</string>
+    <string name="falha_recuperar_senha_invalido">Falhou! Tente novamente.</string>
+    <string name="recuperar_senha_iniciada">Recuperação iniciada. Email enviado.</string>
+    <string name="recuperar_digite_email">Digite um email!</string>
 
 </resources>

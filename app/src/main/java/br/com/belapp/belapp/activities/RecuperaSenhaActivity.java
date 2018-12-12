@@ -1,5 +1,6 @@
 package br.com.belapp.belapp.activities;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -36,7 +37,7 @@ public class RecuperaSenhaActivity extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.tbRecSenha);
         setSupportActionBar(toolbar);
 
-        toolbar.setTitle("Recuperar Senha - Teste");
+        toolbar.setTitle("Recuperar Senha");
         etEmail = findViewById(R.id.etEmailRec);
         btnSolicitarRec = findViewById(R.id.btnSolicitarRec);
 
@@ -47,40 +48,34 @@ public class RecuperaSenhaActivity extends AppCompatActivity {
             public void onClick(View v) {
                 email = etEmail.getText().toString();
                 if(!email.isEmpty()){
-                    try{
-                        firebaseAuth
-                                .sendPasswordResetEmail(email)
-                                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
-                                        if (task.isSuccessful()){
-                                            etEmail.setText("");
-                                            Toast.makeText(
-                                                    RecuperaSenhaActivity.this,
-                                                    "Recuperação iniciada. Email enviado.",
-                                                    Toast.LENGTH_SHORT
-                                            ).show();
-                                        } else {
-                                            Toast.makeText(
-                                                    RecuperaSenhaActivity.this,
-                                                    "Falhou! Tente novamente.",
-                                                    Toast.LENGTH_SHORT
-                                            ).show();
-                                        }
+                    firebaseAuth
+                            .sendPasswordResetEmail(email)
+                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()){
+                                        etEmail.setText("");
+                                        Toast.makeText(
+                                                RecuperaSenhaActivity.this,
+                                                getString(R.string.recuperar_senha_iniciada),
+                                                Toast.LENGTH_SHORT
+                                        ).show();
+                                        Intent intent = new Intent(RecuperaSenhaActivity.this,
+                                                LoginActivity.class);
+                                        startActivity(intent);
+                                        finish();
+                                    } else {
+                                        Toast.makeText(
+                                                RecuperaSenhaActivity.this,
+                                                getString(R.string.falha_recuperar_senha_invalido),
+                                                Toast.LENGTH_SHORT
+                                        ).show();
                                     }
-                                }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                FirebaseCrash.report(e);
-
-                            }
-                        });
-                    } catch (Exception e){
-                        Toast.makeText(RecuperaSenhaActivity.this, "Email inexistente!", Toast.LENGTH_SHORT).show();
-                    }
+                                }
+                            });
                 }
                 else{
-                    Toast.makeText(RecuperaSenhaActivity.this, "Digite um email!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RecuperaSenhaActivity.this, getString(R.string.recuperar_digite_email), Toast.LENGTH_SHORT).show();
                 }
             }
         });

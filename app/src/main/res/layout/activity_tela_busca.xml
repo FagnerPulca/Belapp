@@ -27,7 +27,8 @@
         android:layout_marginLeft="10dp"
         android:layout_marginTop="10dp"
         android:layout_marginRight="10dp"
-        android:text="Nome de estabelecimento" />
+        android:text="Nome de estabelecimento"
+        android:textSize="24sp" />
 
     <EditText
         android:id="@+id/etEstabelecimento"
@@ -47,7 +48,8 @@
         android:layout_marginLeft="10dp"
         android:layout_marginTop="30dp"
         android:layout_marginRight="10dp"
-        android:text="Endereço" />
+        android:text="Endereço"
+        android:textSize="24sp" />
 
     <EditText
         android:id="@+id/etEndereco"
