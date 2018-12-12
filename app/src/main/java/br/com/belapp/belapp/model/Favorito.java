@@ -1,30 +1,24 @@
 package br.com.belapp.belapp.model;
 
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.Exclude;
 
 public class Favorito {
 
-    private String cliente;
-    public String estabelecimento;
-    private int curtida;
+    private String idEstabelecimento;
+    private int curtida = 0;
+    private String idCliente;
 
     public Favorito() {
     }
 
-    public String getCliente() {
-        return cliente;
+    @Exclude
+    public String getIdEstabelecimento() {
+        return idEstabelecimento;
     }
 
-    public void setCliente(String cliente) {
-        this.cliente = cliente;
-    }
-
-    public String getEstabelecimento() {
-        return estabelecimento;
-    }
-
-    public void setEstabelecimento(String estabelecimento) {
-        this.estabelecimento = estabelecimento;
+    public void setIdEstabelecimento(String idEstabelecimento) {
+        this.idEstabelecimento = idEstabelecimento;
     }
 
     public int getCurtida() {
@@ -35,10 +29,27 @@ public class Favorito {
         this.curtida = curtida;
     }
 
+    @Exclude
+    public String getIdCliente() {
+        return idCliente;
+    }
+
+    public void setIdCliente(String idCliente) {
+        this.idCliente = idCliente;
+    }
+
     public void salvar(){
-        DatabaseReference firebaseRef = ConfiguracaoFireBase.getFirebase();
-        DatabaseReference favoritoRef = firebaseRef.child("favoritos").child(getCliente());
-        favoritoRef.setValue(this);
+        DatabaseReference databaseReference = ConfiguracaoFireBase.getFirebase();
+        databaseReference.child("favoritos").child(getIdCliente()).child(getIdEstabelecimento()).setValue(this);
+
+   }
+
+    public void Remove(){
+        DatabaseReference databaseReference = ConfiguracaoFireBase.getFirebase();
+        databaseReference.child("favoritos").child(getIdCliente()).child(getIdEstabelecimento()).removeValue();
+
 
     }
+
+
 }

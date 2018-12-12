@@ -9,17 +9,21 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.google.android.gms.tasks.Task;
 
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.like.LikeButton;
+import com.like.OnLikeListener;
 
 import java.util.ArrayList;
 
@@ -45,6 +49,8 @@ public class PagSalaoActivity extends AppCompatActivity implements ServicoAdapte
     String salao;
     String nome;
     String userId;
+    LikeButton likeButton;
+    private static final String TAG = "PagSalao";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +64,7 @@ public class PagSalaoActivity extends AppCompatActivity implements ServicoAdapte
         ibAvaliacoes = findViewById(R.id.ibAvaliacoes);
         ivFotoSalao = findViewById(R.id.ivFotoSalao);
         tvNomeSalao = findViewById(R.id.tvNomeSalao);
+        likeButton = findViewById(R.id.star_button);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.title_activity_salao);
@@ -79,16 +86,29 @@ public class PagSalaoActivity extends AppCompatActivity implements ServicoAdapte
         myAdapter = new ServicoAdapter(this, servicos);
         recyclerView.setAdapter(myAdapter);
 
+
+
+
         buscar();
         dialogBuscando();
-        ibAvaliacoes.setOnClickListener(new View.OnClickListener() {
+
+
+
+        likeButton.setOnLikeListener(new OnLikeListener() {
             @Override
-            public void onClick(View v) {
+            public void liked(LikeButton likeButton) {
                 curti();
+            }
+
+            @Override
+            public void unLiked(LikeButton likeButton) {
+                descurti();
             }
         });
 
+
     }
+
 
     @Override
     public void onItemClicked(int index) {
@@ -152,14 +172,20 @@ public class PagSalaoActivity extends AppCompatActivity implements ServicoAdapte
 
     public void curti(){
 
-
         Favorito favorito = new Favorito();
-        favorito.setCliente(userId);
-        favorito.setEstabelecimento(salao);
         favorito.setCurtida(1);
-
+        favorito.setIdEstabelecimento(salao);
+        favorito.setIdCliente(userId);
         favorito.salvar();
 
+    }
+
+    public void descurti(){
+        Favorito favorito = new Favorito();
+        favorito.setCurtida(1);
+        favorito.setIdEstabelecimento(salao);
+        favorito.setIdCliente(userId);
+        favorito.Remove();
 
     }
 

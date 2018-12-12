@@ -38,28 +38,39 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:paddingEnd="5dp">
 
         <ImageButton
             android:id="@+id/ibServicos"
-            android:layout_width="wrap_content"
+            android:layout_width="10dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             app:srcCompat="@drawable/servicos_teste" />
 
+
         <ImageButton
             android:id="@+id/ibInformacoes"
-            android:layout_width="wrap_content"
+            android:layout_width="10dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             app:srcCompat="@drawable/informacoes_teste" />
 
         <ImageButton
             android:id="@+id/ibAvaliacoes"
-            android:layout_width="wrap_content"
+            android:layout_width="10dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             app:srcCompat="@drawable/avaliacao_teste" />
+
+        <com.like.LikeButton
+            android:id="@+id/star_button"
+            android:layout_width="10dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            app:icon_size="25dp"
+            app:icon_type="heart" />
+
 
     </LinearLayout>
 
