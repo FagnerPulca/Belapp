@@ -3,6 +3,8 @@ package br.com.belapp.belapp.activities;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -20,16 +22,20 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.like.LikeButton;
 import com.like.OnLikeListener;
 
 import java.util.ArrayList;
 
 import br.com.belapp.belapp.R;
+import br.com.belapp.belapp.model.ConfiguracaoFireBase;
 import br.com.belapp.belapp.model.Estabelecimento;
 import br.com.belapp.belapp.model.Favorito;
+import br.com.belapp.belapp.model.Profissional;
 import br.com.belapp.belapp.model.Servico;
 import br.com.belapp.belapp.presenter.ApplicationClass;
 import br.com.belapp.belapp.presenter.ServicoAdapter;
@@ -50,6 +56,8 @@ public class PagSalaoActivity extends AppCompatActivity implements ServicoAdapte
     String nome;
     String userId;
     LikeButton likeButton;
+    DatabaseReference databaseReference;
+
     private static final String TAG = "PagSalao";
 
     @Override
@@ -86,12 +94,15 @@ public class PagSalaoActivity extends AppCompatActivity implements ServicoAdapte
         myAdapter = new ServicoAdapter(this, servicos);
         recyclerView.setAdapter(myAdapter);
 
+        databaseReference = ConfiguracaoFireBase.getFirebase();
 
-
-
+        verificaCurtida();
         buscar();
         dialogBuscando();
 
+
+
+        //
 
 
         likeButton.setOnLikeListener(new OnLikeListener() {
@@ -154,6 +165,9 @@ public class PagSalaoActivity extends AppCompatActivity implements ServicoAdapte
         });
     }
 
+
+
+
     void dialogBuscando(){
         mProgressDialog = new ProgressDialog(PagSalaoActivity.this);
         mProgressDialog.setMessage("Buscando...");
@@ -186,6 +200,37 @@ public class PagSalaoActivity extends AppCompatActivity implements ServicoAdapte
         favorito.setIdEstabelecimento(salao);
         favorito.setIdCliente(userId);
         favorito.Remove();
+
+    }
+
+    public void verificaCurtida(){
+
+
+            databaseReference.child("favoritos")
+                    .child(userId)
+                    .child(salao)
+                    .addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            if (dataSnapshot.getValue() != null) {
+                                String idSalao = dataSnapshot.child("curtida").getValue().toString();
+                                Log.d(TAG, "borabora:" + idSalao);
+                                if (idSalao.equals("1")) {
+                                    likeButton.setLiked(true);
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+
+
+
+
+
 
     }
 
