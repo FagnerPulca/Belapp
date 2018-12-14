@@ -26,6 +26,7 @@ public class Estabelecimento{
     private String mLinkFacebook;
     private String mLinkInstagram;
     private String mLinkSite;
+    private String mLinkEmail;
 
     public Estabelecimento(){
 
@@ -181,6 +182,14 @@ public class Estabelecimento{
 
     public void setmLinkSite(String mLinkEmail) {
         this.mLinkSite = mLinkEmail;
+    }
+
+    public String getmLinkEmail() {
+        return mLinkEmail;
+    }
+
+    public void setmLinkEmail(String mLinkEmail) {
+        this.mLinkEmail = mLinkEmail;
     }
 
     //Aqui atributos e metodos da classe
