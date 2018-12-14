@@ -73,6 +73,7 @@ public class PagSalaoActivity extends AppCompatActivity implements ServicoAdapte
             public void onClick(View v) {
                 Intent intent = new Intent(PagSalaoActivity.this, InfoActivity.class);
                 intent.putExtra("salao", salao); //id do salão é passado para puxar informações do mesmo
+                Toast.makeText(PagSalaoActivity.this, "Informações", Toast.LENGTH_SHORT).show();
                 startActivity(intent);
             }
         });
