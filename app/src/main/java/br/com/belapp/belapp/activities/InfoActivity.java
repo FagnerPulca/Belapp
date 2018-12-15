@@ -2,7 +2,6 @@ package br.com.belapp.belapp.activities;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.Paint;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -10,7 +9,6 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -172,6 +170,19 @@ public class InfoActivity extends AppCompatActivity {
         tvInfoDescricao.setText(estab.getmDescricao());
         tvInfoHorario.setText(estab.getmHorarios());
         tvInfoTelefone.setText(estab.getmTelefone());
+
+        if (estab.getmLinkEmail().equals("-")){
+            ivGmail.setVisibility(View.GONE);
+        }
+        if (estab.getmLinkSite().equals("-")){
+            ivSite.setVisibility(View.GONE);
+        }
+        if (estab.getmLinkFacebook().equals("-")){
+            ivFacebook.setVisibility(View.GONE);
+        }
+        if (estab.getmLinkInstagram().equals("-")){
+            ivInstagram.setVisibility(View.GONE);
+        }
     }
 
     void dialogBuscando(){
