@@ -85,14 +85,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
                 android:orientation="horizontal">
-
-                <ImageView
-                    android:id="@+id/ivInfoEndereco"
-                    android:layout_width="0dp"
-                    android:layout_height="40dp"
-                    android:layout_weight="1"
-                    app:srcCompat="@drawable/ic_info_location" />
 
                 <TextView
                     android:id="@+id/tvInfoEndereco"
@@ -101,23 +95,24 @@
                     android:layout_marginLeft="20dp"
                     android:layout_marginTop="5dp"
                     android:layout_marginRight="20dp"
+                    android:layout_weight="5"
                     android:clickable="true"
                     android:text="-"
-                    android:layout_weight="5"
                     android:textSize="18sp" />
+
+                <ImageView
+                    android:id="@+id/ivInfoEndereco"
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    app:srcCompat="@drawable/ic_marker" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal">
-
-                <ImageView
-                    android:id="@+id/imageView3"
-                    android:layout_width="0dp"
-                    android:layout_height="40dp"
-                    android:layout_weight="1"
-                    app:srcCompat="@drawable/ic_info_phone" />
 
                 <TextView
                     android:id="@+id/tvInfoTelefone"
@@ -132,6 +127,14 @@
                     android:linksClickable="true"
                     android:text="-"
                     android:textSize="18sp" />
+
+                <ImageView
+                    android:id="@+id/ivInfoTelefone"
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    app:srcCompat="@drawable/ic_phone" />
             </LinearLayout>
 
             <View
@@ -156,105 +159,49 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginTop="20dp"
                 android:orientation="horizontal">
 
                 <ImageView
                     android:id="@+id/ivInfoFacebook"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="50dp"
                     android:layout_weight="1"
-                    app:srcCompat="@drawable/fui_ic_facebook_white_22dp" />
-
-                <TextView
-                    android:id="@+id/tvInfoFacebook"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginRight="20dp"
                     android:clickable="true"
-                    android:layout_weight="5"
-                    android:text="-"
-                    android:textSize="14sp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
-
-
+                    app:srcCompat="@drawable/ic_facebook" />
 
                 <ImageView
                     android:id="@+id/ivInfoInstagram"
                     android:layout_width="0dp"
-                    android:layout_height="25dp"
+                    android:layout_height="50dp"
                     android:layout_weight="1"
-                    app:srcCompat="@drawable/ic_info_instagram" />
-
-                <TextView
-                    android:id="@+id/tvInfoInstagram"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginRight="20dp"
                     android:clickable="true"
-                    android:layout_weight="5"
-                    android:text="-"
-                    android:textSize="14sp" />
+                    app:srcCompat="@drawable/ic_instagram" />
+
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:id="@+id/ivInfoSite"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    app:srcCompat="@drawable/ic_info_web" />
-
-                <TextView
-                    android:id="@+id/tvInfoSite"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginRight="20dp"
-                    android:layout_weight="5"
-                    android:clickable="true"
-                    android:text="-"
-                    android:textSize="14sp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_marginTop="20dp"
                 android:orientation="horizontal">
 
                 <ImageView
                     android:id="@+id/ivInfoEmail"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="50dp"
                     android:layout_weight="1"
-                    app:srcCompat="@drawable/ic_info_email" />
-
-                <TextView
-                    android:id="@+id/tvInfoEmail"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginRight="20dp"
-                    android:layout_weight="5"
                     android:clickable="true"
-                    android:text="-"
-                    android:textSize="14sp"
+                    app:srcCompat="@drawable/ic_gmail" />
 
-                    />
+                <ImageView
+                    android:id="@+id/ivInfoSite"
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    app:srcCompat="@drawable/ic_site" />
+
             </LinearLayout>
 
         </LinearLayout>

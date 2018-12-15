@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,13 +26,12 @@ import br.com.belapp.belapp.model.Estabelecimento;
 public class InfoActivity extends AppCompatActivity {
 
     private TextView tvInfoDescricao, tvInfoEndereco, tvInfoHorario,
-            tvInfoTelefone, tvInfoFacebook, tvInfoInstagram,
-            tvInfoSite, tvInfoEmail;
+            tvInfoTelefone;
+    private ImageView ivFacebook, ivInstagram, ivGmail, ivSite, ivTelefone, ivEndereco;
     private Toolbar toolbar;
     private String salao;
     private ProgressDialog mProgressDialog;
     private Estabelecimento estabelecimento;
-    private ScrollView scrollView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,17 +47,20 @@ public class InfoActivity extends AppCompatActivity {
         tvInfoEndereco = findViewById(R.id.tvInfoEndereco);
         tvInfoHorario = findViewById(R.id.tvInfoHorario);
         tvInfoTelefone = findViewById(R.id.tvInfoTelefone);
-        tvInfoFacebook = findViewById(R.id.tvInfoFacebook);
-        tvInfoInstagram = findViewById(R.id.tvInfoInstagram);
-        tvInfoSite = findViewById(R.id.tvInfoSite);
-        tvInfoEmail = findViewById(R.id.tvInfoEmail);
+
+        ivFacebook = findViewById(R.id.ivInfoFacebook);
+        ivInstagram = findViewById(R.id.ivInfoInstagram);
+        ivGmail = findViewById(R.id.ivInfoEmail);
+        ivSite = findViewById(R.id.ivInfoSite);
+        ivTelefone = findViewById(R.id.ivInfoTelefone);
+        ivEndereco = findViewById(R.id.ivInfoEndereco);
 
         estabelecimento = new Estabelecimento();
 
         buscar();
         dialogBuscando();
 
-        tvInfoEndereco.setOnClickListener(new View.OnClickListener() {
+        ivEndereco.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Uri gmmIntentUri = Uri.parse("geo:"
@@ -75,7 +78,7 @@ public class InfoActivity extends AppCompatActivity {
             }
         });
 
-        tvInfoTelefone.setOnClickListener(new View.OnClickListener() {
+        ivTelefone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (!estabelecimento.getmTelefone().equals("-")){
@@ -87,7 +90,7 @@ public class InfoActivity extends AppCompatActivity {
             }
         });
 
-        tvInfoFacebook.setOnClickListener(new View.OnClickListener() {
+        ivFacebook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (!estabelecimento.getmLinkFacebook().equals("-")){
@@ -99,7 +102,7 @@ public class InfoActivity extends AppCompatActivity {
             }
         });
 
-        tvInfoInstagram.setOnClickListener(new View.OnClickListener() {
+        ivInstagram.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (!estabelecimento.getmLinkInstagram().equals("-")){
@@ -111,7 +114,7 @@ public class InfoActivity extends AppCompatActivity {
             }
         });
 
-        tvInfoSite.setOnClickListener(new View.OnClickListener() {
+        ivSite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (!estabelecimento.getmLinkSite().equals("-")){
@@ -123,7 +126,7 @@ public class InfoActivity extends AppCompatActivity {
             }
         });
 
-        tvInfoEmail.setOnClickListener(new View.OnClickListener() {
+        ivGmail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (!estabelecimento.getmLinkEmail().equals("-")){
@@ -169,17 +172,6 @@ public class InfoActivity extends AppCompatActivity {
         tvInfoDescricao.setText(estab.getmDescricao());
         tvInfoHorario.setText(estab.getmHorarios());
         tvInfoTelefone.setText(estab.getmTelefone());
-        tvInfoFacebook.setText(estab.getmLinkFacebook());
-        tvInfoInstagram.setText(estab.getmLinkInstagram());
-        tvInfoSite.setText(estab.getmLinkSite());
-        tvInfoEmail.setText(estab.getmLinkEmail());
-
-        tvInfoEndereco.setPaintFlags(tvInfoEndereco.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
-        tvInfoTelefone.setPaintFlags(tvInfoTelefone.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
-        tvInfoFacebook.setPaintFlags(tvInfoFacebook.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
-        tvInfoInstagram.setPaintFlags(tvInfoInstagram.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
-        tvInfoSite.setPaintFlags(tvInfoSite.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
-        tvInfoEmail.setPaintFlags(tvInfoEmail.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
     }
 
     void dialogBuscando(){
