@@ -102,9 +102,6 @@ public class PagSalaoActivity extends AppCompatActivity implements ServicoAdapte
 
 
 
-        //
-
-
         likeButton.setOnLikeListener(new OnLikeListener() {
             @Override
             public void liked(LikeButton likeButton) {
@@ -227,12 +224,7 @@ public class PagSalaoActivity extends AppCompatActivity implements ServicoAdapte
                         }
                     });
 
-
-
-
-
-
-    }
+            }
 
     /*private void selServicos (String salao){
         for (int i = 0; i < ApplicationClass.estabelecimentos.size(); i++){

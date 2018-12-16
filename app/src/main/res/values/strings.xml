@@ -61,10 +61,10 @@
     <string name="fb_login_protocol_scheme">fb190569431853174</string>
 
 
-
     <string name="title_activity_salao">Salão</string>
     <string name="title_activity_perfil">Meu Perfil</string>
-    <string name="title_activity_estabelecimentos">Estabelecimentos</string>
+    <string name="title_activity_estabelecimentos">Estabelecimentos</string>,
+    <string name="title_activity_favoritos">Favoritos</string>,
     <string name="title_activity_Pesquisar">Pesquisar</string>
     <string name="app_nome">Nome</string>
     <string name="app_telefone">Telefone</string>
