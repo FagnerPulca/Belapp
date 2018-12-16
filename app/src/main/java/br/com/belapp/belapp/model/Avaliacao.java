@@ -8,7 +8,7 @@ public class Avaliacao {
     private String mData;
     private String mFoto;
     private String mNome;
-    private float mNota;
+    private double mNota;
 
     public Avaliacao(){}
 
@@ -44,11 +44,11 @@ public class Avaliacao {
         this.mNome = mNome;
     }
 
-    public float getmNota() {
+    public double getmNota() {
         return mNota;
     }
 
-    public void setmNota(float mNota) {
+    public void setmNota(double mNota) {
         this.mNota = mNota;
     }
 }
