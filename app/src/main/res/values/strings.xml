@@ -89,4 +89,7 @@
     <string name="digite_algum_dado">Digite algum dado</string>
     <string name="servicos">Serviços</string>
 
+    <string name="adicionando_favorito">adicionado aos favoritos</string>
+    <string name="retirando_favoritoo">Retirado dos faforitos</string>
+
 </resources>

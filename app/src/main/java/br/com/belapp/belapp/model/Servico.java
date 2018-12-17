@@ -7,7 +7,7 @@ public class Servico {
     private String mEstabId;
     private String mNome;
     private double mPreco;
-    private String mDuracao;
+    private int mDuracao;
     private String mProfissionais;
     private String mCategoria;
 
@@ -15,7 +15,7 @@ public class Servico {
 
     }
 
-    public Servico(String mId, String mNome, double mPreco, String mDuracao, String mProfissionais, String mCategoria) {
+    public Servico(String mId, String mNome, double mPreco, int mDuracao, String mProfissionais, String mCategoria) {
         this.mId = mId;
         this.mNome = mNome;
         this.mPreco = mPreco;
@@ -56,11 +56,11 @@ public class Servico {
         this.mPreco = mPreco;
     }
 
-    public String getmDuracao() {
+    public int getmDuracao() {
         return mDuracao;
     }
 
-    public void setmDuracao(String mDuracao) {
+    public void setmDuracao(int mDuracao) {
         this.mDuracao = mDuracao;
     }
 

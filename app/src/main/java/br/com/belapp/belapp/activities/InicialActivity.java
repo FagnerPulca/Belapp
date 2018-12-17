@@ -117,7 +117,7 @@ public class InicialActivity extends AppCompatActivity
         locationMangaer = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
         locationListener = new MyLocationListener();
 
-       locationMangaer.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 10,locationListener);
+        locationMangaer.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 10,locationListener);
 
         permissions.add(ACCESS_FINE_LOCATION);
         permissions.add(ACCESS_COARSE_LOCATION);
@@ -254,7 +254,7 @@ public class InicialActivity extends AppCompatActivity
                 ids.add(servico.getmEstabId());
                 idcateg.add(servico.getmCategoria());
 
-                //myAdapter.notifyDataSetChanged();
+               // myAdapter.notifyDataSetChanged();
                 mProgressDialog.dismiss();
             }
 
@@ -371,7 +371,7 @@ public class InicialActivity extends AppCompatActivity
         public void onLocationChanged(Location loc) {
 
             //editLocation.setText("");
-          //  pb.setVisibility(View.INVISIBLE);
+            //  pb.setVisibility(View.INVISIBLE);
             /*Toast.makeText(getBaseContext(),"Location changed : Lat: " +
                             loc.getLatitude()+ " Lng: " + loc.getLongitude(),
                     Toast.LENGTH_SHORT).show();*/
@@ -387,11 +387,11 @@ public class InicialActivity extends AppCompatActivity
             List<Address> addresses;
             try
             {
-             addresses = gcd.getFromLocation(loc.getLatitude(), loc
+                addresses = gcd.getFromLocation(loc.getLatitude(), loc
                         .getLongitude(), 1);
                 if (addresses.size() > 0)
                     System.out.println(addresses.get(0).getLocality());
-                    cityName=addresses.get(0).getLocality();
+                cityName=addresses.get(0).getLocality();
             }
             catch (IOException e)
             {

@@ -106,11 +106,13 @@ public class PagSalaoActivity extends AppCompatActivity implements ServicoAdapte
             @Override
             public void liked(LikeButton likeButton) {
                 curti();
+                Toast.makeText(PagSalaoActivity.this, getString(R.string.adicionando_favorito), Toast.LENGTH_LONG).show();
             }
 
             @Override
             public void unLiked(LikeButton likeButton) {
                 descurti();
+                Toast.makeText(PagSalaoActivity.this, getString(R.string.retirando_favoritoo), Toast.LENGTH_LONG).show();
             }
         });
 
