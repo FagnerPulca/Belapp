@@ -1,6 +1,8 @@
 package br.com.belapp.belapp.model;
 
-public class Profissional {
+import java.io.Serializable;
+
+public class Profissional implements Serializable {
 
     //Aqui atributos e metodos da classe
     private String mId;

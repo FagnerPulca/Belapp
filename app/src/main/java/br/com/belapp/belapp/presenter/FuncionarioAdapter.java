@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -14,22 +15,26 @@ import java.util.ArrayList;
 
 import br.com.belapp.belapp.R;
 import br.com.belapp.belapp.model.Profissional;
-import br.com.belapp.belapp.model.Servico;
 
 public class FuncionarioAdapter extends RecyclerView.Adapter<FuncionarioAdapter.ViewHolder> {
 
     private ArrayList<Profissional> profissionais;
     //private ArrayList<Servico> servicos;
     ItemClicked activity;
+    private AgendarButtonClicked agendarButtonClicked;
 
     public interface ItemClicked{
         void onItemClicked(int index);
+    }
+    public interface AgendarButtonClicked{
+        void onAgendarButtonClicked(int index);
     }
 
     public FuncionarioAdapter (Context context, ArrayList<Profissional> list_profissionais){
         profissionais = list_profissionais;
         //servicos = list_servicos;
         activity = (ItemClicked) context;
+        agendarButtonClicked = (AgendarButtonClicked) context;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
@@ -44,6 +49,15 @@ public class FuncionarioAdapter extends RecyclerView.Adapter<FuncionarioAdapter.
             ivProfissional = itemView.findViewById(R.id.ivProfissional);
             tvNome = itemView.findViewById(R.id.tvNome);
             tvPreco = itemView.findViewById(R.id.tvPreco);
+            Button btn = itemView.findViewById(R.id.btnAgendar);
+
+            btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    agendarButtonClicked.onAgendarButtonClicked(profissionais.indexOf((Profissional) itemView.getTag()));
+                }
+            });
+
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

@@ -64,6 +64,9 @@
     <string name="title_activity_perfil">Meu Perfil</string>
     <string name="title_activity_estabelecimentos">Estabelecimentos</string>
     <string name="title_activity_Pesquisar">Pesquisar</string>
+    <string name="title_activity_agendar_servico">Agendar Serviço</string>
+    <string name="title_activity_minha_agenda">Minha Agenda</string>
+    <string name="title_activity_agendamento">Agendamento</string>
     <string name="app_nome">Nome</string>
     <string name="app_telefone">Telefone</string>
     <string name="app_senha">Senha</string>
@@ -73,6 +76,7 @@
     <string name="info_exemplo_nome">Meu nome</string>
     <string name="info_exemplo_telefone">(87) 996623985</string>
     <string name="app_alterar_senha">Alterar senha</string>
+    <string name="app_agendar">Agendar</string>
 
     <string name="sucess_alteracao_realizada">Alteração realizada com sucesso!</string>
     <string name="title_activity_alterar_senha">Alterar Senha</string>
@@ -90,5 +94,9 @@
     <string name="falha_recuperar_senha_invalido">Falhou! Tente novamente.</string>
     <string name="recuperar_senha_iniciada">Recuperação iniciada. Email enviado.</string>
     <string name="recuperar_digite_email">Digite um email!</string>
+    <string name="app_cancelar">Cancelar</string>
+    <string name="app_sim">Sim</string>
+    <string name="app_nao">Não</string>
+    <string name="app_selecionar_data">Selecionar Data:</string>
 
 </resources>

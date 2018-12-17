@@ -2,7 +2,6 @@ package br.com.belapp.belapp.activities;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,7 +9,6 @@ import android.support.v7.widget.RecyclerView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -23,7 +21,6 @@ import java.util.ArrayList;
 import br.com.belapp.belapp.R;
 import br.com.belapp.belapp.model.Estabelecimento;
 import br.com.belapp.belapp.model.Servico;
-import br.com.belapp.belapp.presenter.ApplicationClass;
 import br.com.belapp.belapp.presenter.ServicoAdapter;
 
 public class PagSalaoActivity extends AppCompatActivity implements ServicoAdapter.ItemClicked {
@@ -36,8 +33,7 @@ public class PagSalaoActivity extends AppCompatActivity implements ServicoAdapte
     RecyclerView.Adapter myAdapter;
     ArrayList<Servico> servicos;
     private ProgressDialog mProgressDialog;
-    String salao;
-    String nome;
+    private Estabelecimento mEstabelecimento;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,9 +52,8 @@ public class PagSalaoActivity extends AppCompatActivity implements ServicoAdapte
         layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
 
-        salao = getIntent().getStringExtra("salao"); // id do salão
-        nome = getIntent().getStringExtra("nome");
-        tvNomeSalao.setText(nome);
+        mEstabelecimento = (Estabelecimento) getIntent().getSerializableExtra("estabelecimento");
+        tvNomeSalao.setText(mEstabelecimento.getmNome());
         servicos = new ArrayList<>();
 
         myAdapter = new ServicoAdapter(this, servicos);
@@ -72,7 +67,11 @@ public class PagSalaoActivity extends AppCompatActivity implements ServicoAdapte
     @Override
     public void onItemClicked(int index) {
         Intent intent = new Intent(PagSalaoActivity.this, FuncionariosActivity.class);
-        intent.putExtra("servico", servicos.get(index).getmProfissionais());
+
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("servico", servicos.get(index));
+        bundle.putSerializable("estabelecimento", mEstabelecimento);
+        intent.putExtras(bundle);
         startActivity(intent);
         //Toast.makeText(this, "Salao: "+servicos.get(index).getNome(),Toast.LENGTH_SHORT).show();
     }
@@ -84,7 +83,7 @@ public class PagSalaoActivity extends AppCompatActivity implements ServicoAdapte
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 Servico servico = dataSnapshot.getValue(Servico.class);
-                if (servico.getmEstabId().equals(salao)){
+                if (servico.getmEstabId().equals(mEstabelecimento.getmEid())){
                     servicos.add(servico);
                 }
                 myAdapter.notifyDataSetChanged();

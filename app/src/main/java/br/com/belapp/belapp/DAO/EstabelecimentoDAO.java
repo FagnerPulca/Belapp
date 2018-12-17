@@ -8,12 +8,9 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
-import br.com.belapp.belapp.model.Agenda;
-import br.com.belapp.belapp.model.Endereco;
+
 import br.com.belapp.belapp.model.Estabelecimento;
-import br.com.belapp.belapp.model.Profissional;
-import br.com.belapp.belapp.model.Promocoes;
-import br.com.belapp.belapp.model.Servico;
+
 
 public class EstabelecimentoDAO {
 
@@ -101,7 +98,6 @@ public class EstabelecimentoDAO {
         String end = endereco.addEndereco(endereco);
 
         ArrayList<Servico> servicos = new ArrayList<>();
-        ArrayList<Agenda> agenda = new ArrayList<>();
         ArrayList<Promocoes> promocoes = new ArrayList<>();
         ArrayList<Profissional> profissionais = new ArrayList<>();
         ArrayList<String> avaliacoes = new ArrayList<>();
