@@ -63,7 +63,8 @@
         <activity android:name=".activities.PagSalaoActivity" />
         <activity android:name=".activities.FuncionariosActivity" />
         <activity android:name=".activities.TelaBuscaActivity" />
-        <activity android:name=".activities.PagAvaliacaoActivity"/>
+        <activity android:name=".activities.PagAvaliacaoActivity" />
+        <activity android:name=".activities.AvaliarActitivy"></activity>
     </application>
 
 </manifest>

@@ -65,6 +65,7 @@
     <string name="title_activity_estabelecimentos">Estabelecimentos</string>
     <string name="title_activity_Pesquisar">Pesquisar</string>
     <string name="title_activity_avaliacoes">Avaliações</string>
+    <string name="title_activity_avaliar">Avaliar</string>
     <string name="app_nome">Nome</string>
     <string name="app_telefone">Telefone</string>
     <string name="app_senha">Senha</string>
@@ -87,5 +88,6 @@
     <string name="resultados">Resultados</string>
     <string name="digite_algum_dado">Digite algum dado</string>
     <string name="servicos">Serviços</string>
+    <string name="tv_informacao_avaliacao">Não há avaliações</string>
 
 </resources>

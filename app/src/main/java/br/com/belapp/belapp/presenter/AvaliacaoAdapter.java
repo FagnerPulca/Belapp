@@ -20,8 +20,6 @@ public class AvaliacaoAdapter extends RecyclerView.Adapter<AvaliacaoAdapter.MyVi
 
     private Context mContexto;
     private ArrayList<Avaliacao> mAvaliacoes;
-    private double mSomatorio = 0;
-    private int mContador = 0;
 
     public AvaliacaoAdapter(Context contexto, ArrayList<Avaliacao> avaliacoes){
         this.mContexto = contexto;
@@ -69,8 +67,6 @@ public class AvaliacaoAdapter extends RecyclerView.Adapter<AvaliacaoAdapter.MyVi
     private int carregarAvaliacao(double i) {
         int avaliacao = 5;
         double nota = i;
-        mSomatorio += i;
-        mContador++;
 
         if(nota > 4.5){
             avaliacao = R.drawable.estrela_5;
@@ -96,13 +92,5 @@ public class AvaliacaoAdapter extends RecyclerView.Adapter<AvaliacaoAdapter.MyVi
             avaliacao = R.drawable.estrela_0;
         }
         return avaliacao;
-    }
-
-    public double getmSomatorio() {
-        return mSomatorio;
-    }
-
-    public int getmContador() {
-        return mContador;
     }
 }

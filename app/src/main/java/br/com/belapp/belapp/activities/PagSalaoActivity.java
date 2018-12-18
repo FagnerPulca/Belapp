@@ -75,7 +75,6 @@ public class PagSalaoActivity extends AppCompatActivity implements ServicoAdapte
                 intent.putExtra("salao",salao);
                 intent.putExtra("nome",nome);
                 startActivity(intent);
-                finish();
             }
         });
 

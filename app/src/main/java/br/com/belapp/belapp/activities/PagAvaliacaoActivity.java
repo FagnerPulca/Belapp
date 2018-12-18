@@ -1,6 +1,7 @@
 package br.com.belapp.belapp.activities;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -10,11 +11,15 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -27,6 +32,7 @@ import java.util.ArrayList;
 
 import br.com.belapp.belapp.R;
 import br.com.belapp.belapp.model.Avaliacao;
+import br.com.belapp.belapp.model.ConfiguracaoFireBase;
 import br.com.belapp.belapp.model.Servico;
 import br.com.belapp.belapp.presenter.AvaliacaoAdapter;
 
@@ -43,6 +49,8 @@ public class PagAvaliacaoActivity extends AppCompatActivity {
     private ProgressDialog mProgressDialog;
     String salao;
     String nome;
+    double mSomatorio = 0;
+    int mContador = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,18 +75,42 @@ public class PagAvaliacaoActivity extends AppCompatActivity {
         nome = getIntent().getExtras().getString("nome");
         tvNomeSalao.setText(nome);
 
+        ibServicos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+                finish();
+            }
+        });
+
+        ibAvaliacoes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FirebaseUser usuario = ConfiguracaoFireBase.getFirebaseAutenticacao().getCurrentUser();
+                if (usuario != null) {
+                    Intent intent = new Intent(PagAvaliacaoActivity.this,AvaliarActitivy.class);
+                    intent.putExtra("nome",nome);
+                    intent.putExtra("idEstabelecimento",salao);
+                    intent.putExtra("idCliente",usuario.getUid());
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(PagAvaliacaoActivity.this,"Você precisa entrar para avaliar!",Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
         //RecycleView da avaliação
         avaliacoes = new ArrayList<>();
 
         buscar();
-        dialogBuscando();
+        //dialogBuscando();
 
         recyclerView = findViewById(R.id.rvAvaliacoes);
         myAdpter = new AvaliacaoAdapter(this,avaliacoes);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(myAdpter);
         //recyclerView.setHasFixedSize(false);
-        anotar();
+
     }
 
     private void buscar() {
@@ -90,8 +122,10 @@ public class PagAvaliacaoActivity extends AppCompatActivity {
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 Avaliacao avaliacao = dataSnapshot.getValue(Avaliacao.class);
                 avaliacoes.add(avaliacao);
+                contar(avaliacao.getmNota());
+                anotar();
                 myAdpter.notifyDataSetChanged();
-                mProgressDialog.dismiss();
+                //mProgressDialog.dismiss();
             }
 
             @Override
@@ -126,29 +160,23 @@ public class PagAvaliacaoActivity extends AppCompatActivity {
     }
 
     private void anotar(){
-        int quantidade = myAdpter.getmContador();
-        double somatorio = myAdpter.getmSomatorio();
-
-        try {
-            Thread.sleep(4000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        Log.i("ARRAY4",String.valueOf(somatorio));
+        int quantidade = mContador;
+        double somatorio = mSomatorio;
+        double resultado = 0;
 
         if(quantidade == 0) {tvInformacao.setText("Ninguém avaliou");}
         else if(quantidade == 1){tvInformacao.setText("1 cliente avaliou");}
         else {tvInformacao.setText(quantidade + " clientes avaliaram");}
 
-        for(int i=0; i < avaliacoes.size(); i++){
-            somatorio += avaliacoes.get(i).getmNota();
+        if(somatorio != 0){
+            resultado = somatorio/quantidade;
+            ivAvalicao.setImageResource(carregarAvaliacao(resultado));
         }
-
-        if(somatorio != 0){ivAvalicao.setImageResource(carregarAvaliacao(somatorio/quantidade));}
+        Log.i("ARRAY4",String.valueOf(resultado));
     }
 
     private int carregarAvaliacao(double i) {
-        int avaliacao = 5;
+        int avaliacao;
         double nota = i;
 
         if(nota > 4.5){
@@ -175,6 +203,12 @@ public class PagAvaliacaoActivity extends AppCompatActivity {
             avaliacao = R.drawable.estrela_0;
         }
         return avaliacao;
+    }
+
+    private void contar(double nota){
+        mSomatorio += nota;
+        mContador++;
+        Log.d("CONTAR: ",String.valueOf(nota));
     }
 
     @Override

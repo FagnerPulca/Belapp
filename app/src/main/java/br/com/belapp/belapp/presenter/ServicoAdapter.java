@@ -62,7 +62,7 @@ public class ServicoAdapter extends RecyclerView.Adapter<ServicoAdapter.ViewHold
 
         viewHolder.tvServico.setText(testes.get(i).getmNome());
         viewHolder.tvPreco.setText("R$ "+df2.format(testes.get(i).getmPreco()));
-        viewHolder.tvDuracao.setText("Duração: "+testes.get(i).getmDuracao());
+        viewHolder.tvDuracao.setText("Duração: "+String.valueOf(testes.get(i).getmDuracao()));
 
     }
 
