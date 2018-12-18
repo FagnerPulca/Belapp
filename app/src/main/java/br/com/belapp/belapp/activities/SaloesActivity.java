@@ -102,6 +102,7 @@ public class SaloesActivity extends AppCompatActivity implements SalaoAdapter.It
         Bundle bundle = new Bundle();
         bundle.putSerializable("estabelecimento", resultados.get(index));
         intent.putExtras(bundle);
+        intent.putExtra("salao", resultados.get(index).getmEid());
         startActivity(intent);
         Toast.makeText(SaloesActivity.this, resultados.get(index).getmNome(), Toast.LENGTH_SHORT).show();
     }

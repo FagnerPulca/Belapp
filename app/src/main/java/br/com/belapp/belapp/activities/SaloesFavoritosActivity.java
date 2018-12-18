@@ -104,6 +104,9 @@ public class SaloesFavoritosActivity extends AppCompatActivity implements SalaoA
         Intent intent = new Intent(SaloesFavoritosActivity.this, PagSalaoActivity.class);
         intent.putExtra("salao", resultados.get(index).getmEid());
         intent.putExtra("nome", resultados.get(index).getmNome());
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("estabelecimento", resultados.get(index));
+        intent.putExtras(bundle);
         startActivity(intent);
         Toast.makeText(SaloesFavoritosActivity.this, resultados.get(index).getmNome(), Toast.LENGTH_SHORT).show();
     }

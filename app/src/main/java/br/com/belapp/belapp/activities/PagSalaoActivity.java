@@ -98,6 +98,7 @@ public class PagSalaoActivity extends AppCompatActivity implements ServicoAdapte
 
         mEstabelecimento = (Estabelecimento) getIntent().getSerializableExtra("estabelecimento");
         tvNomeSalao.setText(mEstabelecimento.getmNome());
+        salao = getIntent().getStringExtra("salao");
         servicos = new ArrayList<>();
 
         myAdapter = new ServicoAdapter(this, servicos);
