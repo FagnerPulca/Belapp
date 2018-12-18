@@ -73,6 +73,9 @@
         <service android:name=".servicos.MyServiceLocation" />
 
         <activity android:name=".activities.RecuperaSenhaActivity" />
+        <activity android:name=".activities.AgendarServicoActivity" />
+        <activity android:name=".activities.AgendamentosActivity" />
+        <activity android:name=".activities.AgendamentoActivity"></activity>
 
     </application>
 

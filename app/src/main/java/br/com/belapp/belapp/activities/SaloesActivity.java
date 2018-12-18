@@ -20,6 +20,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 
 
+
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -97,8 +99,9 @@ public class SaloesActivity extends AppCompatActivity implements SalaoAdapter.It
     @Override
     public void onItemClicked(int index) {
         Intent intent = new Intent(SaloesActivity.this, PagSalaoActivity.class);
-        intent.putExtra("salao", resultados.get(index).getmEid());
-        intent.putExtra("nome", resultados.get(index).getmNome());
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("estabelecimento", resultados.get(index));
+        intent.putExtras(bundle);
         startActivity(intent);
         Toast.makeText(SaloesActivity.this, resultados.get(index).getmNome(), Toast.LENGTH_SHORT).show();
     }

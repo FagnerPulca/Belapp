@@ -1,6 +1,8 @@
 package br.com.belapp.belapp.model;
 
-public class Profissional {
+import java.io.Serializable;
+
+public class Profissional implements Serializable {
 
     //Aqui atributos e metodos da classe
     private String mId;
@@ -59,4 +61,9 @@ public class Profissional {
         mDataBase.child("estabelecimentos").push().setValue(prof);
 
     }*/
+
+    @Override
+    public boolean equals(Object obj) {
+        return (obj instanceof Profissional && ((Profissional)obj).mId == getmId());
+    }
 }

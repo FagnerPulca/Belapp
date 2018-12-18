@@ -1,12 +1,10 @@
 package br.com.belapp.belapp.model;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
-import java.util.ArrayList;
 
-public class Estabelecimento{
+import java.io.Serializable;
+
+public class Estabelecimento implements Serializable {
 
     private String mEid;
     private String mNome;
@@ -144,6 +142,11 @@ public class Estabelecimento{
         this.mCep = mCep;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        return (obj instanceof Estabelecimento && this.mEid == ((Estabelecimento) obj).mEid);
+    }
+
     public String getmTelefone() {
         return mTelefone;
     }
@@ -204,7 +207,6 @@ public class Estabelecimento{
     double mLaititude;
     double mLongitude;
     ArrayList<Servico> mServicos;
-    ArrayList<Agenda> mAgenda;
     ArrayList<Promocoes> mPromocoes;
     ArrayList<Profissional> mProfissionais;
     ArrayList<String> mAvaliacoes;
