@@ -25,8 +25,7 @@ public class InfoActivity extends AppCompatActivity {
 
     private TextView tvInfoDescricao, tvInfoEndereco, tvInfoHorario,
             tvInfoTelefone;
-    private ImageView ivFacebook, ivInstagram, ivGmail, ivSite, ivTelefone, ivEndereco;
-    private Toolbar toolbar;
+    private ImageView ivFacebook, ivInstagram, ivGmail, ivSite, ivEndereco;
     private String salao;
     private ProgressDialog mProgressDialog;
     private Estabelecimento estabelecimento;
@@ -35,6 +34,8 @@ public class InfoActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_info);
+        Toolbar toolbar;
+        ImageView ivTelefone;
         toolbar = findViewById(R.id.tbInfoSalao);
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
         setSupportActionBar(toolbar);
@@ -61,84 +62,42 @@ public class InfoActivity extends AppCompatActivity {
         ivEndereco.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Uri gmmIntentUri = Uri.parse("geo:"
-                        +estabelecimento.getmLatitude()+","
-                        +estabelecimento.getmLongitude()+"?q="
-                        +estabelecimento.getmRua()+", "
-                        +estabelecimento.getmNumero()+", "
-                        +estabelecimento.getmCidade());
-
-                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-                mapIntent.setPackage("com.google.android.apps.maps");
-                if (mapIntent.resolveActivity(getPackageManager()) != null) {
-                    startActivity(mapIntent);
-                }
+                abrirEndereco();
             }
         });
 
         ivTelefone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!estabelecimento.getmTelefone().equals("-")){
-                    Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:"+estabelecimento.getmTelefone()));
-                    if (intent.resolveActivity(getPackageManager()) != null) {
-                        startActivity(intent);
-                    }
-                }
+                ligar();
             }
         });
 
         ivFacebook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!estabelecimento.getmLinkFacebook().equals("-")){
-                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(estabelecimento.getmLinkFacebook()));
-                    if (intent.resolveActivity(getPackageManager()) != null) {
-                        startActivity(intent);
-                    }
-                }
+                abrirFacebook();
             }
         });
 
         ivInstagram.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!estabelecimento.getmLinkInstagram().equals("-")){
-                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(estabelecimento.getmLinkInstagram()));
-                    if (intent.resolveActivity(getPackageManager()) != null) {
-                        startActivity(intent);
-                    }
-                }
+                abrirInstagram();
             }
         });
 
         ivSite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!estabelecimento.getmLinkSite().equals("-")){
-                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://"+estabelecimento.getmLinkSite()));
-                    if (intent.resolveActivity(getPackageManager()) != null) {
-                        startActivity(intent);
-                    }
-                }
+                abrirSite();
             }
         });
 
         ivGmail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!estabelecimento.getmLinkEmail().equals("-")){
-                    String addresses[] = new String[1];
-                    addresses[0] = estabelecimento.getmLinkEmail();
-                    String subject = "Dúvidas";
-                    Intent intent = new Intent(Intent.ACTION_SENDTO);
-                    intent.setData(Uri.parse("mailto:")); // only email apps should handle this
-                    intent.putExtra(Intent.EXTRA_EMAIL, addresses);
-                    intent.putExtra(Intent.EXTRA_SUBJECT, subject);
-                    if (intent.resolveActivity(getPackageManager()) != null) {
-                        startActivity(intent);
-                    }
-                }
+                abrirGmail();
             }
         });
     }
@@ -185,7 +144,7 @@ public class InfoActivity extends AppCompatActivity {
         }
     }
 
-    void dialogBuscando(){
+    private void dialogBuscando(){
         mProgressDialog = new ProgressDialog(InfoActivity.this);
         mProgressDialog.setMessage("Buscando...");
         mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
@@ -193,6 +152,72 @@ public class InfoActivity extends AppCompatActivity {
         mProgressDialog.setProgress(0);
         mProgressDialog.setCanceledOnTouchOutside(false);
         mProgressDialog.show();
+    }
+
+    private void abrirEndereco(){
+        Uri gmmIntentUri = Uri.parse("geo:"
+                +estabelecimento.getmLatitude()+","
+                +estabelecimento.getmLongitude()+"?q="
+                +estabelecimento.getmRua()+", "
+                +estabelecimento.getmNumero()+", "
+                +estabelecimento.getmCidade());
+
+        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+        mapIntent.setPackage("com.google.android.apps.maps");
+        if (mapIntent.resolveActivity(getPackageManager()) != null) {
+            startActivity(mapIntent);
+        }
+    }
+
+    private void ligar(){
+        if (!estabelecimento.getmTelefone().equals("-")){
+            Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:"+estabelecimento.getmTelefone()));
+            if (intent.resolveActivity(getPackageManager()) != null) {
+                startActivity(intent);
+            }
+        }
+    }
+
+    private void abrirFacebook(){
+        if (!estabelecimento.getmLinkFacebook().equals("-")){
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(estabelecimento.getmLinkFacebook()));
+            if (intent.resolveActivity(getPackageManager()) != null) {
+                startActivity(intent);
+            }
+        }
+    }
+
+    private void abrirInstagram(){
+        if (!estabelecimento.getmLinkInstagram().equals("-")){
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(estabelecimento.getmLinkInstagram()));
+            if (intent.resolveActivity(getPackageManager()) != null) {
+                startActivity(intent);
+            }
+        }
+    }
+
+    private void abrirSite(){
+        if (!estabelecimento.getmLinkSite().equals("-")){
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://"+estabelecimento.getmLinkSite()));
+            if (intent.resolveActivity(getPackageManager()) != null) {
+                startActivity(intent);
+            }
+        }
+    }
+
+    private void abrirGmail(){
+        if (!estabelecimento.getmLinkEmail().equals("-")){
+            String addresses[] = new String[1];
+            addresses[0] = estabelecimento.getmLinkEmail();
+            String subject = "Dúvidas";
+            Intent intent = new Intent(Intent.ACTION_SENDTO);
+            intent.setData(Uri.parse("mailto:")); // only email apps should handle this
+            intent.putExtra(Intent.EXTRA_EMAIL, addresses);
+            intent.putExtra(Intent.EXTRA_SUBJECT, subject);
+            if (intent.resolveActivity(getPackageManager()) != null) {
+                startActivity(intent);
+            }
+        }
     }
 
     @Override
