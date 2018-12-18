@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.google.firebase.database.ChildEventListener;
@@ -43,6 +44,7 @@ public class SaloesFavoritosActivity extends AppCompatActivity implements SalaoA
     private double longitude;
     private DatabaseReference databaseReference;
     private String curtida = "1";
+    String datausuario="";
 
 
 
@@ -120,6 +122,7 @@ public class SaloesFavoritosActivity extends AppCompatActivity implements SalaoA
                     for (int i = 0; i < ids.size(); i++) {
 
                         verificaCurtida(estabelecimento.getmEid(), estabelecimento);
+                        break;
 
 
                     }
@@ -161,6 +164,10 @@ public class SaloesFavoritosActivity extends AppCompatActivity implements SalaoA
 
     public void verificaCurtida(String idSalao, Estabelecimento e) {
 
+
+
+
+
         databaseReference.child("favoritos")
                 .child(idUser)
                 .child(idSalao)
@@ -170,7 +177,7 @@ public class SaloesFavoritosActivity extends AppCompatActivity implements SalaoA
                         if (dataSnapshot.getValue() != null) {
                             String id = dataSnapshot.child("curtida").getValue().toString();
 
-                            if (id.equals(curtida)) {
+                            if (id.equals(curtida)  ) {
 
                                 resultados.add(e);
                                 myAdapter.notifyDataSetChanged();
