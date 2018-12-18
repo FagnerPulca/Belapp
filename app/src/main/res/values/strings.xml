@@ -83,6 +83,8 @@
 
     <string name="sucess_alteracao_realizada">Alteração realizada com sucesso!</string>
     <string name="sucess_agendamento_realizado">Agendamento realizado com sucesso!</string>
+    <string name="sucess_agendamento_cancelado">Agendamento cancelado com sucesso!</string>
+    <string name="info_agendamento_nao_cancelado">Agendamento não cancelado</string>
     <string name="title_activity_alterar_senha">Alterar Senha</string>
     <string name="app_senha_atual">Senha Atual</string>
     <string name="app_nova_senha">Nova Senha</string>
@@ -104,5 +106,7 @@
     <string name="app_selecionar_data">Selecionar Data:</string>
     <string name="app_selecionar_horario">Selecionar Horário:</string>
     <string name="app_selecionar">Selecionar</string>
+    <string name="app_confirmacao">Confirmação</string>
+    <string name="app_pergunta_confirmacao_cancelamento_agendamento">Confirma a intenção de cancelar o agendamento?</string>
 
 </resources>
