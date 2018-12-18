@@ -35,7 +35,8 @@ public class InfoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_info);
         Toolbar toolbar;
-        ImageView ivTelefone, ivEndereco;
+        ImageView ivTelefone;
+        ImageView ivEndereco;
         toolbar = findViewById(R.id.tbInfoSalao);
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
         setSupportActionBar(toolbar);
