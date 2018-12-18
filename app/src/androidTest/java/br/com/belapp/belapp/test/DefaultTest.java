@@ -2,9 +2,11 @@ package br.com.belapp.belapp.test;
 
 import android.app.Activity;
 import android.support.test.espresso.Espresso;
+import android.support.test.espresso.contrib.RecyclerViewActions;
 import android.view.View;
 import android.view.ViewGroup;
 
+import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
@@ -17,6 +19,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.isRoot;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.Matchers.anything;
 import static org.hamcrest.Matchers.not;
 
 public class DefaultTest {
@@ -111,5 +114,34 @@ public class DefaultTest {
             }
         });
         return activity[0];
+    }
+
+    public Activity finalizarActivities() {
+        final Activity[] activity = new Activity[1];
+
+        onView(isRoot()).check((view, noViewFoundException) -> {
+
+            View checkedView = view;
+
+            while (checkedView instanceof ViewGroup && ((ViewGroup) checkedView).getChildCount() > 0) {
+
+                checkedView = ((ViewGroup) checkedView).getChildAt(0);
+
+                if (checkedView.getContext() instanceof Activity) {
+                    ((Activity) checkedView.getContext()).finish();
+
+                }
+            }
+        });
+        return activity[0];
+    }
+    public void selecionarItemReciclerView(int idRecicledView, int posicao){
+        onView(withId(idRecicledView))
+                .perform(RecyclerViewActions.actionOnItemAtPosition(posicao, click()));
+    }
+
+    public void selecionarItemSpinnerByPosition(int idSpiner, int posicao){
+        onView(withId(idSpiner)).perform(click());
+        onData(anything()).atPosition(1).perform(click());
     }
 }

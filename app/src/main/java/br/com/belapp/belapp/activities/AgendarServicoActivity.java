@@ -222,7 +222,7 @@ public class AgendarServicoActivity extends AppCompatActivity implements DatePic
         filtrarHorarios();
     }
 
-    private void filtrarHorarios() {
+    public void filtrarHorarios() {
         mHorariosDisponiveis.clear();
         mHorariosDisponiveis.add(getString(R.string.app_selecionar));
         // gera todos os horarios ate as 23 horas
