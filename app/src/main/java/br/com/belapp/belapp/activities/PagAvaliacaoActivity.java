@@ -110,7 +110,6 @@ public class PagAvaliacaoActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(myAdpter);
         //recyclerView.setHasFixedSize(false);
-
     }
 
     private void buscar() {
@@ -162,17 +161,18 @@ public class PagAvaliacaoActivity extends AppCompatActivity {
     private void anotar(){
         int quantidade = mContador;
         double somatorio = mSomatorio;
-        double resultado = 0;
+        double resultado;
 
         if(quantidade == 0) {tvInformacao.setText("Ninguém avaliou");}
         else if(quantidade == 1){tvInformacao.setText("1 cliente avaliou");}
-        else {tvInformacao.setText(quantidade + " clientes avaliaram");}
+        else {tvInformacao.setText(String.valueOf(quantidade) + " clientes avaliaram");}
 
         if(somatorio != 0){
             resultado = somatorio/quantidade;
             ivAvalicao.setImageResource(carregarAvaliacao(resultado));
         }
-        Log.i("ARRAY4",String.valueOf(resultado));
+        //recyclerView.getChildCount()
+        //Log.i("RECY",String.valueOf(recyclerView.findViewHolderForAdapterPosition(0).getAdapterPosition()));
     }
 
     private int carregarAvaliacao(double i) {
@@ -208,7 +208,7 @@ public class PagAvaliacaoActivity extends AppCompatActivity {
     private void contar(double nota){
         mSomatorio += nota;
         mContador++;
-        Log.d("CONTAR: ",String.valueOf(nota));
+        //Log.d("CONTAR: ",String.valueOf(nota));
     }
 
     @Override
