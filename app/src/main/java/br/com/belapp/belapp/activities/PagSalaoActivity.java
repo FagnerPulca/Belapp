@@ -9,8 +9,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+
+import android.view.View;
+
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -99,6 +103,7 @@ public class PagSalaoActivity extends AppCompatActivity implements ServicoAdapte
 
 
 
+
         likeButton.setOnLikeListener(new OnLikeListener() {
             @Override
             public void liked(LikeButton likeButton) {
@@ -110,6 +115,18 @@ public class PagSalaoActivity extends AppCompatActivity implements ServicoAdapte
             public void unLiked(LikeButton likeButton) {
                 descurti();
                 Toast.makeText(PagSalaoActivity.this, getString(R.string.retirando_favoritoo), Toast.LENGTH_LONG).show();
+            }
+        });
+
+
+
+        ibInformacoes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(PagSalaoActivity.this, InfoActivity.class);
+                intent.putExtra("salao", salao); //id do salão é passado para puxar informações do mesmo
+                Toast.makeText(PagSalaoActivity.this, "Informações", Toast.LENGTH_SHORT).show();
+                startActivity(intent);
             }
         });
 

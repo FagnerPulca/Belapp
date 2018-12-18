@@ -21,11 +21,13 @@ public class EstabelecimentoDAO {
     private DatabaseReference estabelecimentoReference = databaseReference.child("estabelecimentos");*/
     ArrayList<Estabelecimento> lista;
 
-    public static DatabaseReference getDatabaseReference() {
+    public static DatabaseReference getDatabaseReference()
+    {
         return FirebaseDatabase.getInstance().getReference("estabelecimentos");
     }
 
-    public void save(Estabelecimento estabelecimento){
+    public void save(Estabelecimento estabelecimento)
+    {
         if (estabelecimento == null){
             return;
         }
@@ -35,7 +37,8 @@ public class EstabelecimentoDAO {
         mDatabase.child(estabelecimento.getmEid()).setValue(estabelecimento);
     }
 
-    public void update(Estabelecimento estabelecimento){
+    public void update(Estabelecimento estabelecimento)
+    {
         if (estabelecimento == null){
             return;
         }
@@ -44,7 +47,8 @@ public class EstabelecimentoDAO {
         mDatabase.child(estabelecimento.getmEid()).setValue(estabelecimento);
     }
 
-    public ArrayList<Estabelecimento> getEstabelecimentos(){
+    public ArrayList<Estabelecimento> getEstabelecimentos()
+    {
         try{
             lista = new ArrayList<Estabelecimento>();
             final DatabaseReference databaseReference = getDatabaseReference();

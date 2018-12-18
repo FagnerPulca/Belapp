@@ -90,12 +90,7 @@ public class SaloesActivity extends AppCompatActivity implements SalaoAdapter.It
         buscar();
         dialogBuscando();
 
-        Collections.sort(resultados, new Comparator<Estabelecimento>() {
-            @Override
-            public int compare(Estabelecimento o1, Estabelecimento o2) {
-                return Double.compare(o1.getmDistancia(), o2.getmDistancia());
-            }
-        });
+
     }
 
 
@@ -156,6 +151,12 @@ public class SaloesActivity extends AppCompatActivity implements SalaoAdapter.It
                     }
                 }
 
+                Collections.sort(resultados, new Comparator<Estabelecimento>() {
+                    @Override
+                    public int compare(Estabelecimento o1, Estabelecimento o2) {
+                        return Double.compare(o1.getmDistancia(), o2.getmDistancia());
+                    }
+                });
 
                 myAdapter.notifyDataSetChanged();
                 mProgressDialog.dismiss();

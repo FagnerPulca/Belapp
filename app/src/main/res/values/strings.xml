@@ -61,7 +61,9 @@
     <string name="fb_login_protocol_scheme">fb190569431853174</string>
 
 
+
     <string name="title_activity_salao">Salão</string>
+
     <string name="title_activity_perfil">Meu Perfil</string>
     <string name="title_activity_estabelecimentos">Estabelecimentos</string>,
     <string name="title_activity_favoritos">Favoritos</string>,
@@ -88,6 +90,10 @@
     <string name="resultados">Resultados</string>
     <string name="digite_algum_dado">Digite algum dado</string>
     <string name="servicos">Serviços</string>
+    <string name="title_activity_reset">ResetActivity</string>
+    <string name="falha_recuperar_senha_invalido">Falhou! Tente novamente.</string>
+    <string name="recuperar_senha_iniciada">Recuperação iniciada. Email enviado.</string>
+    <string name="recuperar_digite_email">Digite um email!</string>
 
     <string name="adicionando_favorito">adicionado aos favoritos</string>
     <string name="retirando_favoritoo">Retirado dos faforitos</string>
