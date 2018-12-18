@@ -3,7 +3,6 @@ package br.com.belapp.belapp.activities;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -19,7 +18,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
+
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -31,7 +30,7 @@ import br.com.belapp.belapp.model.Estabelecimento;
 import br.com.belapp.belapp.presenter.ApplicationClass;
 import br.com.belapp.belapp.presenter.SalaoAdapter;
 
-import static br.com.belapp.belapp.database.utils.FirebaseUtils.getUsuarioAtual;
+
 
 public class SaloesActivity extends AppCompatActivity implements SalaoAdapter.ItemClicked{
 
@@ -44,11 +43,9 @@ public class SaloesActivity extends AppCompatActivity implements SalaoAdapter.It
     String endereco;
     double latitude;
     double longitude;
-    String userId;
+    private String userId;
     DatabaseReference databaseReference;
-    boolean result;
-
-    private static final String TAG = "PagSalao";
+    private boolean result;
 
     private RecyclerView.Adapter myAdapter;
 

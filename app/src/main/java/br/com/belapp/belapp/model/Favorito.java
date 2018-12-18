@@ -9,8 +9,7 @@ public class Favorito {
     private int curtida = 0;
     private String idCliente;
 
-    public Favorito() {
-    }
+
 
     @Exclude
     public String getIdEstabelecimento() {
@@ -44,7 +43,7 @@ public class Favorito {
 
    }
 
-    public void Remove(){
+    public void remove(){
         DatabaseReference databaseReference = ConfiguracaoFireBase.getFirebase();
         databaseReference.child("favoritos").child(getIdCliente()).child(getIdEstabelecimento()).removeValue();
 

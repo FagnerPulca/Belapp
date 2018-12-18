@@ -9,7 +9,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.google.firebase.database.ChildEventListener;
@@ -27,7 +26,6 @@ import java.util.Comparator;
 import br.com.belapp.belapp.R;
 import br.com.belapp.belapp.model.ConfiguracaoFireBase;
 import br.com.belapp.belapp.model.Estabelecimento;
-import br.com.belapp.belapp.model.Favorito;
 import br.com.belapp.belapp.presenter.ApplicationClass;
 import br.com.belapp.belapp.presenter.SalaoAdapter;
 
@@ -37,16 +35,16 @@ public class SaloesFavoritosActivity extends AppCompatActivity implements SalaoA
 
     private ArrayList<Estabelecimento> estabelecimentos;
     private ArrayList<Estabelecimento> resultados;
-    ArrayList<String> ids;
-    String estab;
-    String idUser;
-    String endereco;
-    double latitude;
-    double longitude;
-    DatabaseReference databaseReference;
+    private ArrayList<String> ids;
+    private String estab;
+    private String idUser;
+    private String endereco;
+    private double latitude;
+    private double longitude;
+    private DatabaseReference databaseReference;
+    private String curtida = "1";
 
 
-    private static final String TAG = "PagSalaoFavoritos";
 
     private RecyclerView.Adapter myAdapter;
 
@@ -122,7 +120,7 @@ public class SaloesFavoritosActivity extends AppCompatActivity implements SalaoA
                     for (int i = 0; i < ids.size(); i++) {
 
                         verificaCurtida(estabelecimento.getmEid(), estabelecimento);
-                        break;
+
 
                     }
                 }
@@ -172,7 +170,7 @@ public class SaloesFavoritosActivity extends AppCompatActivity implements SalaoA
                         if (dataSnapshot.getValue() != null) {
                             String id = dataSnapshot.child("curtida").getValue().toString();
 
-                            if (id.equals("1")) {
+                            if (id.equals(curtida)) {
 
                                 resultados.add(e);
                                 myAdapter.notifyDataSetChanged();
@@ -184,7 +182,7 @@ public class SaloesFavoritosActivity extends AppCompatActivity implements SalaoA
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                        // empty
                     }
                 });
 

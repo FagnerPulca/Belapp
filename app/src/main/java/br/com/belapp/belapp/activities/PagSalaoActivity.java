@@ -4,7 +4,6 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,12 +11,11 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.google.android.gms.tasks.Task;
+
 
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -35,7 +33,6 @@ import br.com.belapp.belapp.R;
 import br.com.belapp.belapp.model.ConfiguracaoFireBase;
 import br.com.belapp.belapp.model.Estabelecimento;
 import br.com.belapp.belapp.model.Favorito;
-import br.com.belapp.belapp.model.Profissional;
 import br.com.belapp.belapp.model.Servico;
 import br.com.belapp.belapp.presenter.ApplicationClass;
 import br.com.belapp.belapp.presenter.ServicoAdapter;
@@ -54,10 +51,10 @@ public class PagSalaoActivity extends AppCompatActivity implements ServicoAdapte
     private ProgressDialog mProgressDialog;
     String salao;
     String nome;
-    String userId;
-    LikeButton likeButton;
-    DatabaseReference databaseReference;
-
+    private String userId;
+    private LikeButton likeButton;
+    private DatabaseReference databaseReference;
+    private String curtida = "1";
     private static final String TAG = "PagSalao";
 
     @Override
@@ -198,7 +195,7 @@ public class PagSalaoActivity extends AppCompatActivity implements ServicoAdapte
         favorito.setCurtida(1);
         favorito.setIdEstabelecimento(salao);
         favorito.setIdCliente(userId);
-        favorito.Remove();
+        favorito.remove();
 
     }
 
@@ -214,7 +211,7 @@ public class PagSalaoActivity extends AppCompatActivity implements ServicoAdapte
                             if (dataSnapshot.getValue() != null) {
                                 String idSalao = dataSnapshot.child("curtida").getValue().toString();
                                 Log.d(TAG, "borabora:" + idSalao);
-                                if (idSalao.equals("1")) {
+                                if (idSalao.equals(curtida)) {
                                     likeButton.setLiked(true);
                                 }
                             }
@@ -222,7 +219,7 @@ public class PagSalaoActivity extends AppCompatActivity implements ServicoAdapte
 
                         @Override
                         public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                            // empty
                         }
                     });
 

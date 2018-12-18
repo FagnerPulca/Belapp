@@ -81,8 +81,8 @@ public class ClienteLogadoActivity extends AppCompatActivity
     private ArrayList permissionsRejected = new ArrayList();
     private ArrayList permissions = new ArrayList();
     private ProgressDialog mProgressDialog;
-     ArrayList<String> ids;
-     ArrayList<String> idcateg;
+    private ArrayList<String> ids;
+    private ArrayList<String> idcateg;
     private ArrayList<Servico> servicos;
     private String categoria;
 
