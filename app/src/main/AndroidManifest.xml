@@ -64,9 +64,13 @@
         <activity android:name=".activities.FuncionariosActivity" />
         <activity android:name=".activities.TelaBuscaActivity" />
 
+        <activity android:name=".activities.InfoActivity"></activity>
+
+
         <service android:name=".servicos.MyServiceLocation" />
 
         <activity android:name=".activities.RecuperaSenhaActivity" />
+
     </application>
 
 </manifest>
