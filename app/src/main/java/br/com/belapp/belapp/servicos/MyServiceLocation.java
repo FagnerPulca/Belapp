@@ -40,6 +40,10 @@ public class MyServiceLocation extends Service implements LocationListener {
     private static final long MIN_TIME_BW_UPDATES = 1000 * 60 * 1;
     protected LocationManager locationManager;
 
+    /*public MyServiceLocation(){
+        mContext = null;
+    }*/
+
     public MyServiceLocation(Context mContext) {
         this.mContext = mContext;
         getLocation();

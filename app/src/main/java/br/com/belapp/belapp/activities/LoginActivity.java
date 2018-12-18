@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -29,6 +30,7 @@ public class LoginActivity extends AppCompatActivity {
     private Button btnlogar;
     private FirebaseAuth autenticacao;
     private Cliente cliente;
+    private TextView tvEsqueciSenha;
 
 
     @Override
@@ -39,6 +41,7 @@ public class LoginActivity extends AppCompatActivity {
         edtEmail = findViewById(R.id.edtEmail);
         edtSenha = findViewById(R.id.edtSenha);
         btnlogar = findViewById(R.id.btnLogar);
+        tvEsqueciSenha = findViewById(R.id.tvEsqueciSenha);
 
         btnlogar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -53,6 +56,14 @@ public class LoginActivity extends AppCompatActivity {
                 } else {
                     Toast.makeText(LoginActivity.this, "preencha os campos de email e senha !", Toast.LENGTH_LONG).show();
                 }
+            }
+        });
+
+        tvEsqueciSenha.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LoginActivity.this, RecuperaSenhaActivity.class);
+                startActivity(intent);
             }
         });
 
