@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -56,12 +57,14 @@ public class PagSalaoActivity extends AppCompatActivity implements ServicoAdapte
     private DatabaseReference databaseReference;
     private String curtida = "1";
     private static final String TAG = "PagSalao";
+    private FirebaseAuth logado = FirebaseAuth.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pag_salao);
 
+        isLogado();
         userId = getUsuarioAtual().getUid();
 
         ibServicos = findViewById(R.id.ibServicos);
@@ -90,6 +93,9 @@ public class PagSalaoActivity extends AppCompatActivity implements ServicoAdapte
 
         myAdapter = new ServicoAdapter(this, servicos);
         recyclerView.setAdapter(myAdapter);
+
+        isLogado();
+        userId = getUsuarioAtual().getUid();
 
         databaseReference = ConfiguracaoFireBase.getFirebase();
 
@@ -224,6 +230,14 @@ public class PagSalaoActivity extends AppCompatActivity implements ServicoAdapte
                     });
 
             }
+
+    public void isLogado() {
+        if (logado.getCurrentUser() == null) {
+            Intent intentAbritCadastro = new Intent(PagSalaoActivity.this , CadastroBasicoActivity.class);
+            startActivity(intentAbritCadastro);
+
+        }
+    }
 
     /*private void selServicos (String salao){
         for (int i = 0; i < ApplicationClass.estabelecimentos.size(); i++){
