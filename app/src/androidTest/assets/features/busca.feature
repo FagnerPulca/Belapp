@@ -1,6 +1,6 @@
 #language: pt
-Funcionalidade: Busca
-  Fazer uma busca preenchendo as informações.
+ Funcionalidade: Busca
+   Fazer uma busca preenchendo as informações.
 
   @busca-feature
   Cenario: Colocar somente cidade

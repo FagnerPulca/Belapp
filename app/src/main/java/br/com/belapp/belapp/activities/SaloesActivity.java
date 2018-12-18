@@ -9,21 +9,28 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
 import br.com.belapp.belapp.R;
+import br.com.belapp.belapp.model.ConfiguracaoFireBase;
 import br.com.belapp.belapp.model.Estabelecimento;
 import br.com.belapp.belapp.presenter.ApplicationClass;
 import br.com.belapp.belapp.presenter.SalaoAdapter;
+
+
 
 public class SaloesActivity extends AppCompatActivity implements SalaoAdapter.ItemClicked{
 
@@ -36,6 +43,9 @@ public class SaloesActivity extends AppCompatActivity implements SalaoAdapter.It
     String endereco;
     double latitude;
     double longitude;
+    private String userId;
+    DatabaseReference databaseReference;
+    private boolean result;
 
     private RecyclerView.Adapter myAdapter;
 
@@ -45,6 +55,8 @@ public class SaloesActivity extends AppCompatActivity implements SalaoAdapter.It
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_saloes);
+
+
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.title_activity_estabelecimentos);
@@ -68,6 +80,7 @@ public class SaloesActivity extends AppCompatActivity implements SalaoAdapter.It
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
+        databaseReference = ConfiguracaoFireBase.getFirebase();
 
         estabelecimentos = new ArrayList<>();
         resultados = new ArrayList<>();
@@ -98,12 +111,15 @@ public class SaloesActivity extends AppCompatActivity implements SalaoAdapter.It
                 Estabelecimento estabelecimento = dataSnapshot.getValue(Estabelecimento.class);
                 estabelecimento.setmDistancia(ApplicationClass.calculaDistancia(latitude, longitude,
                         estabelecimento.getmLatitude(), estabelecimento.getmLongitude()));
-                estabelecimentos.add(estabelecimento);
+                        estabelecimentos.add(estabelecimento);
 
                 if (!ids.isEmpty() && !categoria.isEmpty()){
                     for (int i = 0; i < ids.size(); i++){
                         if (estabelecimento.getmEid().equals(ids.get(i)) && idcateg.get(i).equals(categoria)){
-                            resultados.add(estabelecimento);
+
+                               resultados.add(estabelecimento);
+
+
                             break;
                         }
                     }
@@ -111,18 +127,27 @@ public class SaloesActivity extends AppCompatActivity implements SalaoAdapter.It
                     if (estabelecimento.getmCidade().toLowerCase().contains(endereco.toLowerCase()) ||
                             estabelecimento.getmRua().toLowerCase().contains(endereco.toLowerCase()) ||
                             estabelecimento.getmBairro().toLowerCase().contains(endereco.toLowerCase())){
-                        resultados.add(estabelecimento);
+
+                            resultados.add(estabelecimento);
+
+
                     }
                 } else if (endereco.isEmpty() && !estab.isEmpty()){
                     if (estabelecimento.getmNome().toLowerCase().contains(estab.toLowerCase())){
-                        resultados.add(estabelecimento);
+
+                            resultados.add(estabelecimento);
+
+
                     }
                 } else if (!endereco.isEmpty() && !estab.isEmpty()){
                     if (estabelecimento.getmNome().toLowerCase().contains(estab.toLowerCase()) &&
                             (estabelecimento.getmCidade().toLowerCase().contains(endereco.toLowerCase()) ||
                                     estabelecimento.getmRua().toLowerCase().contains(endereco.toLowerCase()) ||
                                     estabelecimento.getmBairro().toLowerCase().contains(endereco.toLowerCase()))){
-                        resultados.add(estabelecimento);
+
+                                            resultados.add(estabelecimento);
+
+
                     }
                 }
 
@@ -167,6 +192,8 @@ public class SaloesActivity extends AppCompatActivity implements SalaoAdapter.It
         mProgressDialog.setProgress(0);
         mProgressDialog.show();
     }
+
+
     /*private void selEstabelecimentos(String categoria, String servico, String cidade){
 
         if(!categoria.isEmpty()) { //apenas escolheu uma categoria

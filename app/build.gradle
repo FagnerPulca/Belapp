@@ -83,6 +83,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-database:16.0.5'
 
 
+
     implementation 'com.google.firebase:firebase-crash:9.0.2'
 
     implementation 'org.jetbrains:annotations-java5:15.0'
@@ -95,6 +96,8 @@ dependencies {
 
     implementation 'com.google.firebase:firebase-auth:16.0.5'
     implementation 'com.google.android.gms:play-services-auth:16.0.1'
+
+    implementation 'com.github.jd-alexander:LikeButton:0.2.3'
 
 
 }
