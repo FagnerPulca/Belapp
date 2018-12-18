@@ -64,6 +64,9 @@
         <activity android:name=".activities.FuncionariosActivity" />
         <activity android:name=".activities.TelaBuscaActivity" />
 
+        <activity android:name=".activities.SaloesFavoritosActivity"></activity>
+
+
         <activity android:name=".activities.InfoActivity"></activity>
 
 

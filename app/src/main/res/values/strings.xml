@@ -64,8 +64,12 @@
     <string name="fb_login_protocol_scheme">fb190569431853174</string>
 
 
+
+    <string name="title_activity_salao">Salão</string>
+
     <string name="title_activity_perfil">Meu Perfil</string>
-    <string name="title_activity_estabelecimentos">Estabelecimentos</string>
+    <string name="title_activity_estabelecimentos">Estabelecimentos</string>,
+    <string name="title_activity_favoritos">Favoritos</string>,
     <string name="title_activity_Pesquisar">Pesquisar</string>
     <string name="title_activity_agendar_servico">Agendar Serviço</string>
     <string name="title_activity_minha_agenda">Minha Agenda</string>
@@ -108,5 +112,8 @@
     <string name="app_selecionar">Selecionar</string>
     <string name="app_confirmacao">Confirmação</string>
     <string name="app_pergunta_confirmacao_cancelamento_agendamento">Confirma a intenção de cancelar o agendamento?</string>
+
+    <string name="adicionando_favorito">adicionado aos favoritos</string>
+    <string name="retirando_favoritoo">Retirado dos faforitos</string>
 
 </resources>

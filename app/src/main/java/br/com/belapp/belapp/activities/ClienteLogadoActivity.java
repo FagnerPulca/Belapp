@@ -362,6 +362,15 @@ public class ClienteLogadoActivity extends AppCompatActivity
             startActivity(intent);
         } else if (id == R.id.nav_favoritos) {
 
+            Intent intent = new Intent(ClienteLogadoActivity.this, SaloesFavoritosActivity.class);
+            intent.putExtra("latitude", localizao.getLatitude());
+            intent.putExtra("longitude", localizao.getLongitude());
+            intent.putExtra("ids", ids);
+
+            startActivity(intent);
+            Toast.makeText(ClienteLogadoActivity.this, "Favoritos", Toast.LENGTH_SHORT).show();
+
+
         } else if (id == R.id.nav_promocoes) {
 
         } else if (id == R.id.nav_sair) {
