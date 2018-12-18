@@ -3,8 +3,12 @@ package br.com.belapp.belapp.activities;
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
 
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
 
+import android.app.TaskStackBuilder;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -13,6 +17,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 
 
+import android.support.v4.app.NotificationCompat;
 import android.view.View;
 
 import android.support.design.widget.NavigationView;
@@ -146,6 +151,7 @@ public class ClienteLogadoActivity extends AppCompatActivity
 
         buscar();
         dialogBuscando();
+        notificacao();
 
         btnBarba.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -459,6 +465,37 @@ public class ClienteLogadoActivity extends AppCompatActivity
     protected void onDestroy() {
         super.onDestroy();
         localizao.stopListener();
+    }
+
+
+
+    public void notificacao()
+    {
+
+        String tittle = "teste";
+        String subject = "Agendamento";
+        String body = "Você tem um agendamento de serviço";
+
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this)
+                .setSmallIcon(R.drawable.salao_teste)
+                .setContentTitle(body)
+                .setContentText(subject);
+
+        Intent resultIntent = new Intent(this, InicialActivity.class);
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+        stackBuilder.addParentStack(InicialActivity.class);
+        stackBuilder.addNextIntent(resultIntent);
+        PendingIntent resultPendingIntent =
+                stackBuilder.getPendingIntent(
+                        1,
+                        PendingIntent.FLAG_UPDATE_CURRENT
+                );
+        mBuilder.setContentIntent(resultPendingIntent);
+        NotificationManager mNotificationManager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        int mId = 1;
+        mNotificationManager.notify(mId, mBuilder.build());
+
     }
 
 }

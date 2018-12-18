@@ -3,7 +3,11 @@ package br.com.belapp.belapp.activities;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
+import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -16,6 +20,7 @@ import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -136,14 +141,16 @@ public class InicialActivity extends AppCompatActivity
         btnSobrancelha = findViewById(R.id.ibSobrancelha);
         btnUnha = findViewById(R.id.ibUnha);
 
-//        EstabelecimentoDAO estabelecimentoDAO = new EstabelecimentoDAO();
-//        estabelecimentoDAO.inserirEstabelecimento();
-        /*ProfissionalDAO profDAO = new ProfissionalDAO();
-        profDAO.inserirProfissional();*/
-
         ids = new ArrayList<>();
         idcateg = new ArrayList<>();
         servicos = new ArrayList<>();
+        try{
+            notificacao();
+            System.out.println("ESTAMOS AQUI na chamada!!");
+        }catch(Exception e){
+            System.out.println("Erro na chamada: " + e);
+        }
+
 
         buscar();
         dialogBuscando();
@@ -165,6 +172,7 @@ public class InicialActivity extends AppCompatActivity
         btnCabelo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 categoria = "Cabelo";
                 Intent intent = new Intent(InicialActivity.this, SaloesActivity.class);
                 intent.putExtra("categoria", "Cabelo");
@@ -488,4 +496,36 @@ public class InicialActivity extends AppCompatActivity
         super.onDestroy();
         localizao.stopListener();
     }
+
+
+    public void notificacao()
+    {
+
+        String tittle = "teste";
+        String subject = "Agendamento";
+        String body = "Você tem um agendamento de serviço";
+
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this)
+                .setSmallIcon(R.drawable.salao_teste)
+                .setContentTitle(body)
+                .setContentText(subject);
+
+        Intent resultIntent = new Intent(this, InicialActivity.class);
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+        stackBuilder.addParentStack(InicialActivity.class);
+        stackBuilder.addNextIntent(resultIntent);
+        PendingIntent resultPendingIntent =
+                stackBuilder.getPendingIntent(
+                        1,
+                        PendingIntent.FLAG_UPDATE_CURRENT
+                );
+        mBuilder.setContentIntent(resultPendingIntent);
+        NotificationManager mNotificationManager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        int mId = 1;
+        mNotificationManager.notify(mId, mBuilder.build());
+
+    }
+
+
 }
