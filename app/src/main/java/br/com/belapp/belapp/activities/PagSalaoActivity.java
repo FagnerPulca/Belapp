@@ -224,29 +224,44 @@ public class PagSalaoActivity extends AppCompatActivity implements ServicoAdapte
 
     public void verificaCurtida(){
 
-
-            databaseReference.child("favoritos")
-                    .child(userId)
-                    .child(salao)
-                    .addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            if (dataSnapshot.getValue() != null) {
-                                String idSalao = dataSnapshot.child("curtida").getValue().toString();
-                                Log.d(TAG, "borabora:" + idSalao);
-                                if (idSalao.equals(curtida)) {
-                                    likeButton.setLiked(true);
+        databaseReference.child("favoritos").child(userId).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.getValue() != null){
+                    databaseReference.child("favoritos")
+                            .child(userId)
+                            .child(salao)
+                            .addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    if (dataSnapshot.getValue() != null) {
+                                        String idSalao = dataSnapshot.child("curtida").getValue().toString();
+                                        //Log.d(TAG, "borabora:" + idSalao);
+                                        if (idSalao.equals(curtida)) {
+                                            likeButton.setLiked(true);
+                                        }
+                                    }
                                 }
-                            }
-                        }
 
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-                            // empty
-                        }
-                    });
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+                                    // empty
+                                }
+                            });
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
+        });
+
+
+
+
+
+    }
 
     public void isLogado() {
         if (logado.getCurrentUser() == null) {
