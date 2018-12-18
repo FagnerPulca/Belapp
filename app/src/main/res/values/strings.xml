@@ -24,6 +24,9 @@
     <string name="error_autenticacao_falhou">A autenticação falhou</string>
     <string name="error_nova_senha_confirmacao_diferem">A nova senha e sua confirmação devem ser iguais</string>
     <string name="error_nova_senha_deve_ter_6_ou_mais_caracteres">A nova senha deverá ter 6 ou mais caracteres</string>
+    <string name="error_selecione_uma_data">Selecione uma data</string>
+    <string name="error_selecione_um_horario">Selecione um horário para o agendamento</string>
+    <string name="error_nao_ha_horario_disponivel_para_data">Não há horários disponíveis para a data selecionada</string>
 
 
     <string name="permission_rationale">"Contacts permissions are needed for providing email
@@ -79,6 +82,7 @@
     <string name="app_agendar">Agendar</string>
 
     <string name="sucess_alteracao_realizada">Alteração realizada com sucesso!</string>
+    <string name="sucess_agendamento_realizado">Agendamento realizado com sucesso!</string>
     <string name="title_activity_alterar_senha">Alterar Senha</string>
     <string name="app_senha_atual">Senha Atual</string>
     <string name="app_nova_senha">Nova Senha</string>
@@ -98,5 +102,7 @@
     <string name="app_sim">Sim</string>
     <string name="app_nao">Não</string>
     <string name="app_selecionar_data">Selecionar Data:</string>
+    <string name="app_selecionar_horario">Selecionar Horário:</string>
+    <string name="app_selecionar">Selecionar</string>
 
 </resources>
