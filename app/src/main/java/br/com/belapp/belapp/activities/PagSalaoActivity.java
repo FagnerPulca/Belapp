@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -61,6 +62,16 @@ public class PagSalaoActivity extends AppCompatActivity implements ServicoAdapte
 
         buscar();
         dialogBuscando();
+
+        ibInformacoes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(PagSalaoActivity.this, InfoActivity.class);
+                intent.putExtra("salao", salao); //id do salão é passado para puxar informações do mesmo
+                Toast.makeText(PagSalaoActivity.this, "Informações", Toast.LENGTH_SHORT).show();
+                startActivity(intent);
+            }
+        });
 
     }
 
