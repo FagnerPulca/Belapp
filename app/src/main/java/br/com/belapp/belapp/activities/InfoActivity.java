@@ -25,7 +25,7 @@ public class InfoActivity extends AppCompatActivity {
 
     private TextView tvInfoDescricao, tvInfoEndereco, tvInfoHorario,
             tvInfoTelefone;
-    private ImageView ivFacebook, ivInstagram, ivGmail, ivSite, ivEndereco;
+    private ImageView ivFacebook, ivInstagram, ivGmail, ivSite;
     private String salao;
     private ProgressDialog mProgressDialog;
     private Estabelecimento estabelecimento;
@@ -35,7 +35,7 @@ public class InfoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_info);
         Toolbar toolbar;
-        ImageView ivTelefone;
+        ImageView ivTelefone, ivEndereco;
         toolbar = findViewById(R.id.tbInfoSalao);
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
         setSupportActionBar(toolbar);
