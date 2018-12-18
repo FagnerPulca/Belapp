@@ -2,6 +2,7 @@ package br.com.belapp.belapp.activities;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.widget.Toast;
 
 import android.graphics.Color;
 import android.support.annotation.NonNull;
@@ -22,6 +23,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -63,6 +65,7 @@ public class PagSalaoActivity extends AppCompatActivity implements ServicoAdapte
     private DatabaseReference databaseReference;
     private String curtida = "1";
     private static final String TAG = "PagSalao";
+    private FirebaseAuth logado = FirebaseAuth.getInstance();
 
 
     @Override
@@ -70,7 +73,9 @@ public class PagSalaoActivity extends AppCompatActivity implements ServicoAdapte
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pag_salao);
 
+        isLogado();
         userId = getUsuarioAtual().getUid();
+
 
         ibServicos = findViewById(R.id.ibServicos);
         ibInformacoes = findViewById(R.id.ibInformacoes);
@@ -225,29 +230,52 @@ public class PagSalaoActivity extends AppCompatActivity implements ServicoAdapte
 
     public void verificaCurtida(){
 
-
-            databaseReference.child("favoritos")
-                    .child(userId)
-                    .child(salao)
-                    .addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            if (dataSnapshot.getValue() != null) {
-                                String idSalao = dataSnapshot.child("curtida").getValue().toString();
-                                Log.d(TAG, "borabora:" + idSalao);
-                                if (idSalao.equals(curtida)) {
-                                    likeButton.setLiked(true);
+        databaseReference.child("favoritos").child(userId).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.getValue() != null){
+                    databaseReference.child("favoritos")
+                            .child(userId)
+                            .child(salao)
+                            .addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    if (dataSnapshot.getValue() != null) {
+                                        String idSalao = dataSnapshot.child("curtida").getValue().toString();
+                                        //Log.d(TAG, "borabora:" + idSalao);
+                                        if (idSalao.equals(curtida)) {
+                                            likeButton.setLiked(true);
+                                        }
+                                    }
                                 }
-                            }
-                        }
 
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-                            // empty
-                        }
-                    });
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+                                    // empty
+                                }
+                            });
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
+        });
+
+
+
+
+
+            }
+
+    public void isLogado() {
+        if (logado.getCurrentUser() == null) {
+            Intent intentAbritCadastro = new Intent(PagSalaoActivity.this , CadastroBasicoActivity.class);
+            startActivity(intentAbritCadastro);
+
+        }
+    }
 
     /*private void selServicos (String salao){
         for (int i = 0; i < ApplicationClass.estabelecimentos.size(); i++){
