@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 
 import br.com.belapp.belapp.R;
 import br.com.belapp.belapp.model.Servico;
@@ -61,8 +62,21 @@ public class ServicoAdapter extends RecyclerView.Adapter<ServicoAdapter.ViewHold
         viewHolder.itemView.setTag(testes.get(i));
 
         viewHolder.tvServico.setText(testes.get(i).getmNome());
-        viewHolder.tvPreco.setText("R$ "+df2.format(testes.get(i).getmPreco()));
-        viewHolder.tvDuracao.setText("Duração: "+String.valueOf(testes.get(i).getmDuracao()));
+
+        viewHolder.tvPreco.setText(String.format(Locale.getDefault(),"R$ %s", df2.format(testes.get(i).getmPreco())));
+        int horas = testes.get(i).getmDuracao()/60;
+        int minutos = testes.get(i).getmDuracao()%60;
+
+        if(horas == 0) {
+            viewHolder.tvDuracao.setText(String.format(Locale.getDefault(), "Duração: %d min", minutos));
+        }
+        else if(minutos == 0){
+            viewHolder.tvDuracao.setText(String.format(Locale.getDefault(), "Duração: %d hora(s)", horas));
+        }
+        else{
+            viewHolder.tvDuracao.setText(String.format(Locale.getDefault(), "Duração: %d hora(s) e %d min", horas, minutos));
+        }
+
 
     }
 

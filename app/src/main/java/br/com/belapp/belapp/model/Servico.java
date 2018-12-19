@@ -1,12 +1,18 @@
 package br.com.belapp.belapp.model;
 
-public class Servico {
+import java.io.Serializable;
+
+public class Servico implements Serializable {
 
     //Aqui atributos e metodos da classe
     private String mId;
     private String mEstabId;
     private String mNome;
     private double mPreco;
+
+
+    // duraçao em minutos
+
     private int mDuracao;
     private String mProfissionais;
     private String mCategoria;

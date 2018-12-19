@@ -1,6 +1,7 @@
 package br.com.belapp.belapp.activities;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,19 +17,23 @@ import com.google.firebase.database.Query;
 import java.util.ArrayList;
 
 import br.com.belapp.belapp.R;
+import br.com.belapp.belapp.database.utils.FirebaseUtils;
+import br.com.belapp.belapp.model.Agendamento;
+import br.com.belapp.belapp.model.Estabelecimento;
 import br.com.belapp.belapp.model.Profissional;
 import br.com.belapp.belapp.model.Servico;
-import br.com.belapp.belapp.presenter.ApplicationClass;
 import br.com.belapp.belapp.presenter.FuncionarioAdapter;
 
-public class FuncionariosActivity extends AppCompatActivity implements FuncionarioAdapter.ItemClicked{
+public class FuncionariosActivity extends AppCompatActivity implements FuncionarioAdapter.ItemClicked, FuncionarioAdapter.AgendarButtonClicked{
 
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
     RecyclerView.Adapter myAdapter;
     ArrayList<Profissional> profissionais;
     private ProgressDialog mProgressDialog;
-    String servico;
+
+    private Estabelecimento mEstabelecimento;
+    private Servico mServico;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +47,10 @@ public class FuncionariosActivity extends AppCompatActivity implements Funcionar
         recyclerView.setLayoutManager(layoutManager);
 
         profissionais = new ArrayList<Profissional>();
-        servico = getIntent().getStringExtra("servico");
+        mEstabelecimento = (Estabelecimento) getIntent().getSerializableExtra("estabelecimento");
+        mServico = (Servico) getIntent().getSerializableExtra("servico");
+
+
 
         myAdapter = new FuncionarioAdapter(this, profissionais);
         recyclerView.setAdapter(myAdapter);
@@ -63,7 +71,7 @@ public class FuncionariosActivity extends AppCompatActivity implements Funcionar
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 Profissional profissional = dataSnapshot.getValue(Profissional.class);
-                if (profissional.getmId().equals(servico)){
+                if (profissional.getmId().equals(mServico.getmProfissionais())){
                     profissionais.add(profissional);
                 }
                 myAdapter.notifyDataSetChanged();
@@ -99,6 +107,25 @@ public class FuncionariosActivity extends AppCompatActivity implements Funcionar
         mProgressDialog.setIndeterminate(true);
         mProgressDialog.setProgress(0);
         mProgressDialog.show();
+    }
+
+    @Override
+    public void onAgendarButtonClicked(int index) {
+        Agendamento agendamento = new Agendamento();
+        agendamento.setmCliente(FirebaseUtils.getUsuarioAtual().getUid());
+        agendamento.setmEstabelecimento(mEstabelecimento);
+        agendamento.setmData("20/12/2018");
+        agendamento.setmHora("11:00");
+        agendamento.setmServico(mServico);
+        agendamento.setmProfissional(profissionais.get(index));
+
+        Intent intent = new Intent();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("agendamento", agendamento);
+        intent.setClass(FuncionariosActivity.this, AgendarServicoActivity.class);
+        intent.putExtras(bundle);
+        startActivity(intent);
+
     }
 
     /*private void selProfissionais(String servico){

@@ -3,7 +3,11 @@ package br.com.belapp.belapp.test;
 import android.app.Activity;
 import android.support.annotation.NonNull;
 import android.support.test.espresso.Espresso;
+
 import android.util.Log;
+
+import android.support.test.espresso.contrib.RecyclerViewActions;
+
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -127,6 +131,7 @@ public class DefaultTest {
         return activity[0];
     }
 
+
     public void logarPorEmail(String email, String senha){
         FirebaseAuth autenticacao = ConfiguracaoFireBase.getFirebaseAutenticacao();
         if(autenticacao.getUid() == null) {
@@ -165,5 +170,10 @@ public class DefaultTest {
     public void deslogar(){
         FirebaseAuth usuario = ConfiguracaoFireBase.getFirebaseAutenticacao();
         if(usuario.getUid() != null) usuario.signOut();
+
+    public void selecionarItemReciclerView(int idRecicledView, int posicao){
+        onView(withId(idRecicledView))
+                .perform(RecyclerViewActions.actionOnItemAtPosition(posicao, click()));
+
     }
 }

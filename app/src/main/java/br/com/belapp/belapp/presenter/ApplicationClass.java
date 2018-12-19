@@ -2,17 +2,6 @@ package br.com.belapp.belapp.presenter;
 
 import android.app.Application;
 
-import java.util.ArrayList;
-
-import br.com.belapp.belapp.DAO.EnderecoDAO;
-import br.com.belapp.belapp.DAO.EstabelecimentoDAO;
-import br.com.belapp.belapp.model.Agenda;
-import br.com.belapp.belapp.model.Endereco;
-import br.com.belapp.belapp.model.Estabelecimento;
-import br.com.belapp.belapp.model.Profissional;
-import br.com.belapp.belapp.model.Promocoes;
-import br.com.belapp.belapp.model.Servico;
-
 public class ApplicationClass extends Application {
 
 

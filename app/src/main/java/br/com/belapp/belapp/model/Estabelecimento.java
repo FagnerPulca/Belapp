@@ -1,12 +1,10 @@
 package br.com.belapp.belapp.model;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
-import java.util.ArrayList;
 
-public class Estabelecimento{
+import java.io.Serializable;
+
+public class Estabelecimento implements Serializable {
 
     private String mEid;
     private String mNome;
@@ -21,6 +19,12 @@ public class Estabelecimento{
     private String mCidade;
     private String mComplemento;
     private String mCep;
+    private String mTelefone;
+    private String mHorarios;
+    private String mLinkFacebook;
+    private String mLinkInstagram;
+    private String mLinkSite;
+    private String mLinkEmail;
 
     public Estabelecimento(){
 
@@ -30,7 +34,7 @@ public class Estabelecimento{
         this.mEid = mEid;
         this.mNome = mNome;
         this.mDescricao = mDescricao;
-        this.mIdEndereco = mIdEndereco;
+        //this.mIdEndereco = mIdEndereco;
         this.mDistancia = mDistancia;
     }
 
@@ -138,7 +142,60 @@ public class Estabelecimento{
         this.mCep = mCep;
     }
 
-//Aqui atributos e metodos da classe
+    @Override
+    public boolean equals(Object obj) {
+        return (obj instanceof Estabelecimento && this.mEid == ((Estabelecimento) obj).mEid);
+    }
+
+    public String getmTelefone() {
+        return mTelefone;
+    }
+
+    public void setmTelefone(String mTelefone) {
+        this.mTelefone = mTelefone;
+    }
+
+    public String getmHorarios() {
+        return mHorarios;
+    }
+
+    public void setmHorarios(String mHorarios) {
+        this.mHorarios = mHorarios;
+    }
+
+    public String getmLinkFacebook() {
+        return mLinkFacebook;
+    }
+
+    public void setmLinkFacebook(String mLinkFacebook) {
+        this.mLinkFacebook = mLinkFacebook;
+    }
+
+    public String getmLinkInstagram() {
+        return mLinkInstagram;
+    }
+
+    public void setmLinkInstagram(String mLinkInstagram) {
+        this.mLinkInstagram = mLinkInstagram;
+    }
+
+    public String getmLinkSite() {
+        return mLinkSite;
+    }
+
+    public void setmLinkSite(String mLinkEmail) {
+        this.mLinkSite = mLinkEmail;
+    }
+
+    public String getmLinkEmail() {
+        return mLinkEmail;
+    }
+
+    public void setmLinkEmail(String mLinkEmail) {
+        this.mLinkEmail = mLinkEmail;
+    }
+
+    //Aqui atributos e metodos da classe
     /*String mEId;
     String mNome;
     String mTelefone;
@@ -150,7 +207,6 @@ public class Estabelecimento{
     double mLaititude;
     double mLongitude;
     ArrayList<Servico> mServicos;
-    ArrayList<Agenda> mAgenda;
     ArrayList<Promocoes> mPromocoes;
     ArrayList<Profissional> mProfissionais;
     ArrayList<String> mAvaliacoes;

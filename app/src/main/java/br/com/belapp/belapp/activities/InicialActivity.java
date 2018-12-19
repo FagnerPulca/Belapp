@@ -1,6 +1,5 @@
 package br.com.belapp.belapp.activities;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
@@ -16,9 +15,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.ActivityCompat;
+
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -29,10 +26,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Button;
-import android.widget.EditText;
+
 import android.widget.ImageButton;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,7 +35,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 
@@ -49,13 +43,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import br.com.belapp.belapp.DAO.EstabelecimentoDAO;
+
 import br.com.belapp.belapp.R;
-import br.com.belapp.belapp.model.Agenda;
-import br.com.belapp.belapp.model.Endereco;
-import br.com.belapp.belapp.model.Estabelecimento;
-import br.com.belapp.belapp.model.Profissional;
-import br.com.belapp.belapp.model.Promocoes;
+
 import br.com.belapp.belapp.model.Servico;
 import br.com.belapp.belapp.presenter.LocalizacaoCliente;
 import br.com.belapp.belapp.servicos.MyServiceLocation;
@@ -148,6 +138,8 @@ public class InicialActivity extends AppCompatActivity
 
 //        EstabelecimentoDAO estabelecimentoDAO = new EstabelecimentoDAO();
 //        estabelecimentoDAO.inserirEstabelecimento();
+        /*ProfissionalDAO profDAO = new ProfissionalDAO();
+        profDAO.inserirProfissional();*/
 
         ids = new ArrayList<>();
         idcateg = new ArrayList<>();
@@ -254,7 +246,7 @@ public class InicialActivity extends AppCompatActivity
                 ids.add(servico.getmEstabId());
                 idcateg.add(servico.getmCategoria());
 
-                //myAdapter.notifyDataSetChanged();
+               // myAdapter.notifyDataSetChanged();
                 mProgressDialog.dismiss();
             }
 
@@ -371,7 +363,7 @@ public class InicialActivity extends AppCompatActivity
         public void onLocationChanged(Location loc) {
 
             //editLocation.setText("");
-          //  pb.setVisibility(View.INVISIBLE);
+            //  pb.setVisibility(View.INVISIBLE);
             /*Toast.makeText(getBaseContext(),"Location changed : Lat: " +
                             loc.getLatitude()+ " Lng: " + loc.getLongitude(),
                     Toast.LENGTH_SHORT).show();*/
@@ -387,11 +379,11 @@ public class InicialActivity extends AppCompatActivity
             List<Address> addresses;
             try
             {
-             addresses = gcd.getFromLocation(loc.getLatitude(), loc
+                addresses = gcd.getFromLocation(loc.getLatitude(), loc
                         .getLongitude(), 1);
                 if (addresses.size() > 0)
                     System.out.println(addresses.get(0).getLocality());
-                    cityName=addresses.get(0).getLocality();
+                cityName=addresses.get(0).getLocality();
             }
             catch (IOException e)
             {
