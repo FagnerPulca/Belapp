@@ -114,11 +114,13 @@ public class PagSalaoActivity extends AppCompatActivity implements ServicoAdapte
 
         ibAvaliacoes.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(PagSalaoActivity.this,PagAvaliacaoActivity.class);
-                intent.putExtra("salao",salao);
-                intent.putExtra("nome",nome);
-
+            public void onClick(View v) {
+                Intent intent = new Intent(PagSalaoActivity.this, PagAvaliacaoActivity.class);
+                intent.putExtra("salao", salao);
+                intent.putExtra("nome", nome);
+                startActivity(intent);
+            }
+        });
 
 
         likeButton.setOnLikeListener(new OnLikeListener() {
@@ -288,15 +290,4 @@ public class PagSalaoActivity extends AppCompatActivity implements ServicoAdapte
 
         }
     }
-
-    /*private void selServicos (String salao){
-        for (int i = 0; i < ApplicationClass.estabelecimentos.size(); i++){
-            if (ApplicationClass.estabelecimentos.get(i).getmNome().equals(salao)){
-                //Toast.makeText(this, "Salao: "+ApplicationClass.estabelecimentos.get(i).getmServicos().size(),Toast.LENGTH_SHORT).show();
-                for (int j = 0; j < ApplicationClass.estabelecimentos.get(i).getmServicos().size(); j++){
-                    servicos.add(ApplicationClass.estabelecimentos.get(i).getmServicos().get(j));
-                }
-            }
-        }
-    }*/
 }
