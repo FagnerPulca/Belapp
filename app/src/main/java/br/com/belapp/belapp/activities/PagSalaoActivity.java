@@ -18,6 +18,7 @@ import android.util.Log;
 
 import android.view.View;
 
+
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -111,6 +112,13 @@ public class PagSalaoActivity extends AppCompatActivity implements ServicoAdapte
         dialogBuscando();
 
 
+        ibAvaliacoes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(PagSalaoActivity.this,PagAvaliacaoActivity.class);
+                intent.putExtra("salao",salao);
+                intent.putExtra("nome",nome);
+
 
 
         likeButton.setOnLikeListener(new OnLikeListener() {
@@ -135,9 +143,12 @@ public class PagSalaoActivity extends AppCompatActivity implements ServicoAdapte
                 Intent intent = new Intent(PagSalaoActivity.this, InfoActivity.class);
                 intent.putExtra("salao", salao); //id do salão é passado para puxar informações do mesmo
                 Toast.makeText(PagSalaoActivity.this, "Informações", Toast.LENGTH_SHORT).show();
+
                 startActivity(intent);
             }
         });
+
+
 
 
     }

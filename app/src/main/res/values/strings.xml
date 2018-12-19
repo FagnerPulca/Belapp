@@ -65,15 +65,22 @@
 
 
 
+
     <string name="title_activity_salao">Salão</string>
+
 
     <string name="title_activity_perfil">Meu Perfil</string>
     <string name="title_activity_estabelecimentos">Estabelecimentos</string>,
     <string name="title_activity_favoritos">Favoritos</string>,
     <string name="title_activity_Pesquisar">Pesquisar</string>
+
+    <string name="title_activity_avaliacoes">Avaliações</string>
+    <string name="title_activity_avaliar">Avaliar</string>
+
     <string name="title_activity_agendar_servico">Agendar Serviço</string>
     <string name="title_activity_minha_agenda">Minha Agenda</string>
     <string name="title_activity_agendamento">Agendamento</string>
+
     <string name="app_nome">Nome</string>
     <string name="app_telefone">Telefone</string>
     <string name="app_senha">Senha</string>
@@ -100,6 +107,9 @@
     <string name="resultados">Resultados</string>
     <string name="digite_algum_dado">Digite algum dado</string>
     <string name="servicos">Serviços</string>
+
+    <string name="tv_informacao_avaliacao">Não há avaliações</string>
+
     <string name="title_activity_reset">ResetActivity</string>
     <string name="falha_recuperar_senha_invalido">Falhou! Tente novamente.</string>
     <string name="recuperar_senha_iniciada">Recuperação iniciada. Email enviado.</string>
@@ -115,5 +125,6 @@
 
     <string name="adicionando_favorito">adicionado aos favoritos</string>
     <string name="retirando_favoritoo">Retirado dos faforitos</string>
+
 
 </resources>

@@ -10,7 +10,9 @@ public class Servico implements Serializable {
     private String mNome;
     private double mPreco;
 
+
     // duraçao em minutos
+
     private int mDuracao;
     private String mProfissionais;
     private String mCategoria;
