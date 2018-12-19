@@ -1,9 +1,23 @@
 package br.com.belapp.belapp.test;
 
 import android.app.Activity;
+import android.support.annotation.NonNull;
 import android.support.test.espresso.Espresso;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseAuthInvalidUserException;
+
+import br.com.belapp.belapp.R;
+import br.com.belapp.belapp.activities.LoginActivity;
+import br.com.belapp.belapp.model.ConfiguracaoFireBase;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
@@ -111,5 +125,45 @@ public class DefaultTest {
             }
         });
         return activity[0];
+    }
+
+    public void logarPorEmail(String email, String senha){
+        FirebaseAuth autenticacao = ConfiguracaoFireBase.getFirebaseAutenticacao();
+        if(autenticacao.getUid() == null) {
+            autenticacao.signInWithEmailAndPassword(email, senha).
+                    addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                //Toast.makeText(getAtualActivity().getApplicationContext(), "Login realizado com sucesso!", Toast.LENGTH_LONG).show();
+                            } else {
+
+                                //tratamento de exceções do cadastro
+                                String excecao = "";
+                                try {
+                                    throw task.getException();
+                                } catch (FirebaseAuthInvalidUserException e) {
+                                    excecao = "Usuario não cadastrado!";
+                                } catch (FirebaseAuthInvalidCredentialsException e) {
+                                    excecao = "email ou senha não correspndem a um usuario cadastrado !";
+                                } catch (Exception e) {
+                                    excecao = "Erro ao logar usuario" + e.getMessage();
+                                    e.printStackTrace();
+                                }
+
+                                /*Toast.makeText(getAtualActivity().getApplicationContext(),
+                                        excecao,
+                                        Toast.LENGTH_SHORT).show();*/
+                            }
+                        }
+                    });
+            esperar(10000);
+        }
+    }
+
+    public void deslogar(){
+        FirebaseAuth usuario = ConfiguracaoFireBase.getFirebaseAutenticacao();
+        if(usuario.getUid() != null) usuario.signOut();
     }
 }
