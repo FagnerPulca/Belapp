@@ -28,4 +28,9 @@ public class StringUtils {
         int numero = (int) (Math.random() * 10000) + 1;
         return String.format(Locale.getDefault(), "teste%d@teste.com", numero);
     }
+
+    public static String getDinheiro(double valor){
+        return String.format(Locale.getDefault(),"R$ %.2f", valor);
+    }
+
 }

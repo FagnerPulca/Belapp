@@ -61,4 +61,9 @@ public class Profissional implements Serializable {
         mDataBase.child("estabelecimentos").push().setValue(prof);
 
     }*/
+
+    @Override
+    public boolean equals(Object obj) {
+        return (obj instanceof Profissional && ((Profissional)obj).mId == getmId());
+    }
 }

@@ -78,7 +78,7 @@ dependencies {
     androidTestImplementation 'info.cukes:cucumber-android:1.2.5@jar'
     androidTestImplementation 'info.cukes:cucumber-picocontainer:1.2.4'
     androidTestImplementation 'com.android.support.test.espresso:espresso-intents:3.0.2'
-
+    androidTestImplementation 'com.android.support.test.espresso:espresso-contrib:3.0.2'
     implementation 'com.google.firebase:firebase-core:16.0.6'
     implementation 'com.google.firebase:firebase-database:16.0.5'
 
