@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
@@ -12,6 +13,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -20,6 +22,8 @@ import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 
+import android.provider.Settings;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.view.View;
@@ -144,13 +148,6 @@ public class InicialActivity extends AppCompatActivity
         ids = new ArrayList<>();
         idcateg = new ArrayList<>();
         servicos = new ArrayList<>();
-        try{
-            notificacao();
-            System.out.println("ESTAMOS AQUI na chamada!!");
-        }catch(Exception e){
-            System.out.println("Erro na chamada: " + e);
-        }
-
 
         buscar();
         dialogBuscando();
@@ -497,35 +494,6 @@ public class InicialActivity extends AppCompatActivity
         localizao.stopListener();
     }
 
-
-    public void notificacao()
-    {
-
-        String tittle = "teste";
-        String subject = "Agendamento";
-        String body = "Você tem um agendamento de serviço";
-
-        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.drawable.salao_teste)
-                .setContentTitle(body)
-                .setContentText(subject);
-
-        Intent resultIntent = new Intent(this, InicialActivity.class);
-        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-        stackBuilder.addParentStack(InicialActivity.class);
-        stackBuilder.addNextIntent(resultIntent);
-        PendingIntent resultPendingIntent =
-                stackBuilder.getPendingIntent(
-                        1,
-                        PendingIntent.FLAG_UPDATE_CURRENT
-                );
-        mBuilder.setContentIntent(resultPendingIntent);
-        NotificationManager mNotificationManager =
-                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        int mId = 1;
-        mNotificationManager.notify(mId, mBuilder.build());
-
-    }
 
 
 }

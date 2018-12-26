@@ -3,6 +3,7 @@ package br.com.belapp.belapp.activities;
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
 
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
@@ -12,8 +13,10 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 
 
@@ -64,7 +67,7 @@ import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 public class ClienteLogadoActivity extends AppCompatActivity
 
         implements NavigationView.OnNavigationItemSelectedListener, GoogleApiClient.OnConnectionFailedListener {
-    private FirebaseAuth logado = FirebaseAuth.getInstance();
+   private FirebaseAuth logado = FirebaseAuth.getInstance();
     private GoogleApiClient mGoogleApiClient;
 
         
@@ -81,6 +84,10 @@ public class ClienteLogadoActivity extends AppCompatActivity
     private ArrayList<String> idcateg;
     private ArrayList<Servico> servicos;
     private String categoria;
+    private NotificationCompat.Builder mBuilder;
+    private NotificationManager mNotificationManager;
+    public static final String NOTIFICATION_CHANNEL_ID = "10001";
+
 
     private final static int ALL_PERMISSIONS_RESULT = 101;
 
@@ -151,7 +158,8 @@ public class ClienteLogadoActivity extends AppCompatActivity
 
         buscar();
         dialogBuscando();
-        notificacao();
+        Notificacao("Agendamento", "Você tem um serviço agendado");
+
 
         btnBarba.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -467,35 +475,40 @@ public class ClienteLogadoActivity extends AppCompatActivity
         localizao.stopListener();
     }
 
-
-
-    public void notificacao()
+    public void Notificacao(String title, String message)
     {
 
-        String tittle = "teste";
-        String subject = "Agendamento";
-        String body = "Você tem um agendamento de serviço";
+        Intent resultIntent = new Intent(ClienteLogadoActivity.this , AgendamentosActivity.class);
+        resultIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
-        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.drawable.salao_teste)
-                .setContentTitle(body)
-                .setContentText(subject);
+        PendingIntent resultPendingIntent = PendingIntent.getActivity(ClienteLogadoActivity.this,
+                0 /* Request code */, resultIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT);
 
-        Intent resultIntent = new Intent(this, InicialActivity.class);
-        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-        stackBuilder.addParentStack(InicialActivity.class);
-        stackBuilder.addNextIntent(resultIntent);
-        PendingIntent resultPendingIntent =
-                stackBuilder.getPendingIntent(
-                        1,
-                        PendingIntent.FLAG_UPDATE_CURRENT
-                );
-        mBuilder.setContentIntent(resultPendingIntent);
-        NotificationManager mNotificationManager =
-                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        int mId = 1;
-        mNotificationManager.notify(mId, mBuilder.build());
+        mBuilder = new NotificationCompat.Builder(ClienteLogadoActivity.this);
+        mBuilder.setSmallIcon(R.drawable.salao_teste);
+        mBuilder.setContentTitle(title)
+                .setContentText(message)
+                .setAutoCancel(false)
+                .setSound(Settings.System.DEFAULT_NOTIFICATION_URI)
+                .setContentIntent(resultPendingIntent);
 
+        mNotificationManager = (NotificationManager) ClienteLogadoActivity.this.getSystemService(Context.NOTIFICATION_SERVICE);
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O)
+        {
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+            NotificationChannel notificationChannel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, "NOTIFICATION_CHANNEL_NAME", importance);
+            notificationChannel.enableLights(true);
+            notificationChannel.setLightColor(Color.RED);
+            notificationChannel.enableVibration(true);
+            notificationChannel.setVibrationPattern(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
+            assert mNotificationManager != null;
+            mBuilder.setChannelId(NOTIFICATION_CHANNEL_ID);
+            mNotificationManager.createNotificationChannel(notificationChannel);
+        }
+        assert mNotificationManager != null;
+        mNotificationManager.notify(0 /* Request Code */, mBuilder.build());
     }
 
 }
