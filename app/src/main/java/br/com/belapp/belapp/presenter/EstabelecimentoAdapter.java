@@ -4,13 +4,14 @@ import android.app.Activity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import br.com.belapp.belapp.R;
 import br.com.belapp.belapp.model.Estabelecimento;
+import br.com.belapp.belapp.utils.ImageDownloaderTask;
 
 public class EstabelecimentoAdapter extends BaseAdapter {
 
@@ -46,11 +47,16 @@ public class EstabelecimentoAdapter extends BaseAdapter {
 
         TextView nome = (TextView)view.findViewById(R.id.tvNomeSalao);
         TextView descricao = (TextView)view.findViewById(R.id.tvEnderecoSalao);
-        //ImageView imagem = (ImageView)view.findViewById(R.id.lista_curso_personalizada_imagem);
+
+        ImageView imagem = (ImageView)view.findViewById(R.id.ivFotoSalao);
 
         nome.setText(novo.getmNome());
         descricao.setText(novo.getmDescricao());
         //imagem.setImageResource(R.drawable.java);
+
+        if(novo.getImg() != null){
+            new ImageDownloaderTask(imagem).execute(novo.getImg());
+        }
 
         return view;
     }
