@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,6 +44,10 @@ public class TelaBuscaActivity extends AppCompatActivity {
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
         setSupportActionBar(toolbar);
 
+        SeekBar sbPreco;
+        sbPreco = findViewById(R.id.sbPreco);
+        TextView tvPreco = findViewById(R.id.tvPreco);
+
         etEstabelecimento = findViewById(R.id.etEstabelecimento);
         etEndereco = findViewById(R.id.etEndereco);
         btnBuscar = findViewById(R.id.btnBuscar);
@@ -51,6 +56,26 @@ public class TelaBuscaActivity extends AppCompatActivity {
         ids = new ArrayList<>();
         idcateg = new ArrayList<>();
         //estabelecimentos = new ArrayList<>();
+
+        sbPreco.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            int p;
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                p = progress;
+                tvPreco.setText("R$ "+String.valueOf(seekBar.getProgress()));
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                tvPreco.setText("R$ "+String.valueOf(seekBar.getProgress()));
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                Toast.makeText(TelaBuscaActivity.this, String.valueOf(p), Toast.LENGTH_SHORT).show();
+                tvPreco.setText("R$ "+String.valueOf(seekBar.getProgress()));
+            }
+        });
 
         btnBuscar.setOnClickListener(new View.OnClickListener() {
             @Override
