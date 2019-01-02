@@ -38,11 +38,11 @@ public class SaloesActivity extends AppCompatActivity implements SalaoAdapter.It
 
     private ArrayList<Estabelecimento> estabelecimentos;
     private ArrayList<Estabelecimento> resultados;
-    ArrayList<String> ids;
-    ArrayList<String> idcateg, servicos, categServ;
-    ArrayList<String> precoServ, nomeServ;
-    String categoria, estab, endereco, servcat; //busca
-    int preco; //busca
+    private ArrayList<String> ids;
+    private ArrayList<String> idcateg, servicos, categServ;
+    private ArrayList<String> precoServ, nomeServ;
+    private String categoria, estab, endereco, servcat; //busca
+    private int preco; //busca
     double latitude;
     double longitude;
     private String userId;
