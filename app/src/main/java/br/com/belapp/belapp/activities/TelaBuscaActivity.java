@@ -32,7 +32,7 @@ public class TelaBuscaActivity extends AppCompatActivity {
     ArrayList<String> ids;
     ArrayList<String> idcateg;
     ArrayList<String> servicos, categServ;
-    ArrayList<String> precoServ;
+    ArrayList<String> precoServ, nomeServ;
 
     String servcat;
     int preco = 300;
@@ -66,6 +66,7 @@ public class TelaBuscaActivity extends AppCompatActivity {
         servicos = new ArrayList<>();
         categServ = new ArrayList<>();
         precoServ = new ArrayList<>();
+        nomeServ = new ArrayList<>();
 
         sbPreco.setProgress(300);
         //estabelecimentos = new ArrayList<>();
@@ -114,6 +115,7 @@ public class TelaBuscaActivity extends AppCompatActivity {
                     intent.putExtra("servicos", servicos);
                     intent.putExtra("categServ", categServ);
                     intent.putExtra("precoServ", precoServ);
+                    intent.putExtra("nomeServ", nomeServ);
                     startActivity(intent);
 
                 }
@@ -135,6 +137,7 @@ public class TelaBuscaActivity extends AppCompatActivity {
                 servicos.add(servico.getmEstabId()); //id estabelecimento
                 categServ.add(servico.getmCategoria()); //categoria do serviço
                 precoServ.add(String.valueOf(servico.getmPreco())); //preco do serviço
+                nomeServ.add(servico.getmNome());
 
                 mProgressDialog.dismiss();
             }

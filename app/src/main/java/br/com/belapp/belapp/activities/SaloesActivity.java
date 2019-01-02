@@ -40,7 +40,7 @@ public class SaloesActivity extends AppCompatActivity implements SalaoAdapter.It
     private ArrayList<Estabelecimento> resultados;
     ArrayList<String> ids;
     ArrayList<String> idcateg, servicos, categServ;
-    ArrayList<String> precoServ;
+    ArrayList<String> precoServ, nomeServ;
     String categoria, estab, endereco, servcat; //busca
     int preco; //busca
     double latitude;
@@ -77,11 +77,13 @@ public class SaloesActivity extends AppCompatActivity implements SalaoAdapter.It
         servicos = new ArrayList<>();
         categServ = new ArrayList<>();
         precoServ = new ArrayList<>();
+        nomeServ = new ArrayList<>();
         ids = getIntent().getStringArrayListExtra("ids");
         idcateg = getIntent().getStringArrayListExtra("idcateg");
         servicos = getIntent().getStringArrayListExtra("servicos");
         categServ = getIntent().getStringArrayListExtra("categServ");
         precoServ = getIntent().getStringArrayListExtra("precoServ");
+        nomeServ = getIntent().getStringArrayListExtra("nomeServ");
 
         latitude = getIntent().getDoubleExtra("latitude", -8);
         longitude = getIntent().getDoubleExtra("longitude", -36);
@@ -136,15 +138,12 @@ public class SaloesActivity extends AppCompatActivity implements SalaoAdapter.It
                         estabelecimento.getmBairro().toLowerCase().contains(endereco.toLowerCase())){
                     if(estab.isEmpty() || estabelecimento.getmNome().toLowerCase().contains(estab.toLowerCase())){
                         for (int i = 0; i < precoServ.size(); i++){
-                            if(preco >= Double.valueOf(precoServ.get(i)) && servicos.get(i).equals(estabelecimento.getmEid())){
+                            if((preco >= Double.valueOf(precoServ.get(i)) && servicos.get(i).equals(estabelecimento.getmEid())) &&
+                                    (servcat.isEmpty() || nomeServ.get(i).toLowerCase().contains(servcat) || categServ.get(i).toLowerCase().contains(servcat))){
                                 //Toast.makeText(SaloesActivity.this, precoServ.get(i), Toast.LENGTH_SHORT).show();
                                 resultados.add(estabelecimento);
                                 break;
                             }
-                            /*if(servcat.isEmpty() || (estabelecimento.getmEid().equals(servicos.get(i)) &&
-                                    servcat.equals(categServ.get(i)))){
-
-                            }*/
                         }
                     }
                 }
