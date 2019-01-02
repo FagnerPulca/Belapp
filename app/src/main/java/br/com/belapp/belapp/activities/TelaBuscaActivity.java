@@ -22,6 +22,7 @@ import java.util.ArrayList;
 
 import br.com.belapp.belapp.R;
 import br.com.belapp.belapp.model.Estabelecimento;
+import br.com.belapp.belapp.model.Servico;
 
 public class TelaBuscaActivity extends AppCompatActivity {
 
@@ -30,6 +31,12 @@ public class TelaBuscaActivity extends AppCompatActivity {
     Button btnBuscar;
     ArrayList<String> ids;
     ArrayList<String> idcateg;
+    ArrayList<String> servicos, categServ;
+    ArrayList<String> precoServ;
+
+    String servcat;
+    int preco = 300;
+
     //ArrayList<Estabelecimento> estabelecimentos;
     private ProgressDialog mProgressDialog;
 
@@ -47,6 +54,7 @@ public class TelaBuscaActivity extends AppCompatActivity {
         SeekBar sbPreco;
         sbPreco = findViewById(R.id.sbPreco);
         TextView tvPreco = findViewById(R.id.tvPreco);
+        EditText etServCat = findViewById(R.id.etServCat);
 
         etEstabelecimento = findViewById(R.id.etEstabelecimento);
         etEndereco = findViewById(R.id.etEndereco);
@@ -55,13 +63,18 @@ public class TelaBuscaActivity extends AppCompatActivity {
 
         ids = new ArrayList<>();
         idcateg = new ArrayList<>();
+        servicos = new ArrayList<>();
+        categServ = new ArrayList<>();
+        precoServ = new ArrayList<>();
+
+        sbPreco.setProgress(300);
         //estabelecimentos = new ArrayList<>();
+        buscarServCatPreco();
+        dialogBuscando();
 
         sbPreco.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            int p;
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                p = progress;
                 tvPreco.setText("R$ "+String.valueOf(seekBar.getProgress()));
             }
 
@@ -72,7 +85,6 @@ public class TelaBuscaActivity extends AppCompatActivity {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                Toast.makeText(TelaBuscaActivity.this, String.valueOf(p), Toast.LENGTH_SHORT).show();
                 tvPreco.setText("R$ "+String.valueOf(seekBar.getProgress()));
             }
         });
@@ -82,19 +94,26 @@ public class TelaBuscaActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String estabelecimento = etEstabelecimento.getText().toString().trim();
                 String endereco = etEndereco.getText().toString().trim();
+                servcat = etServCat.getText().toString().trim();
+                preco = sbPreco.getProgress();
 
                 double latitude = getIntent().getDoubleExtra("latitude", -8);
                 double longitude = getIntent().getDoubleExtra("longitude", -36);
 
-                if (!estabelecimento.isEmpty() || !endereco.isEmpty()){
+                if (!estabelecimento.isEmpty() || !endereco.isEmpty() || !servcat.isEmpty()){
                     Intent intent = new Intent(TelaBuscaActivity.this, SaloesActivity.class);
                     intent.putExtra("estabelecimento", estabelecimento);
                     intent.putExtra("endereco", endereco);
+                    intent.putExtra("servcat", servcat);
+                    intent.putExtra("preco", preco);
                     intent.putExtra("latitude", latitude);
                     intent.putExtra("longitude", longitude);
                     intent.putExtra("categoria", "");
                     intent.putExtra("ids", ids);
                     intent.putExtra("idcateg", idcateg);
+                    intent.putExtra("servicos", servicos);
+                    intent.putExtra("categServ", categServ);
+                    intent.putExtra("precoServ", precoServ);
                     startActivity(intent);
 
                 }
@@ -106,18 +125,17 @@ public class TelaBuscaActivity extends AppCompatActivity {
 
     }
 
-    private void buscarCidade(){
-        Query query = FirebaseDatabase.getInstance().getReference("estabelecimentos");
+    private void buscarServCatPreco(){
+        Query query = FirebaseDatabase.getInstance().getReference("servicos");
 
         query.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                Estabelecimento estabelecimento = dataSnapshot.getValue(Estabelecimento.class);
-                //estabelecimentos.add(estabelecimento);
+                Servico servico = dataSnapshot.getValue(Servico.class);
+                servicos.add(servico.getmEstabId()); //id estabelecimento
+                categServ.add(servico.getmCategoria()); //categoria do serviço
+                precoServ.add(String.valueOf(servico.getmPreco())); //preco do serviço
 
-                idcateg.add(estabelecimento.getmCidade());
-
-                //myAdapter.notifyDataSetChanged();
                 mProgressDialog.dismiss();
             }
 

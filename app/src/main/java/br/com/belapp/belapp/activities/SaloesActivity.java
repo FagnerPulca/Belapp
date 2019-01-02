@@ -39,10 +39,10 @@ public class SaloesActivity extends AppCompatActivity implements SalaoAdapter.It
     private ArrayList<Estabelecimento> estabelecimentos;
     private ArrayList<Estabelecimento> resultados;
     ArrayList<String> ids;
-    ArrayList<String> idcateg;
-    String categoria;
-    String estab;
-    String endereco;
+    ArrayList<String> idcateg, servicos, categServ;
+    ArrayList<String> precoServ;
+    String categoria, estab, endereco, servcat; //busca
+    int preco; //busca
     double latitude;
     double longitude;
     private String userId;
@@ -69,10 +69,19 @@ public class SaloesActivity extends AppCompatActivity implements SalaoAdapter.It
         categoria = getIntent().getStringExtra("categoria");
         estab = getIntent().getStringExtra("estabelecimento");
         endereco = getIntent().getStringExtra("endereco");
+        servcat = getIntent().getStringExtra("servcat");
+        preco = getIntent().getIntExtra("preco", 300);
+
         ids = new ArrayList<>();
         idcateg = new ArrayList<>();
+        servicos = new ArrayList<>();
+        categServ = new ArrayList<>();
+        precoServ = new ArrayList<>();
         ids = getIntent().getStringArrayListExtra("ids");
         idcateg = getIntent().getStringArrayListExtra("idcateg");
+        servicos = getIntent().getStringArrayListExtra("servicos");
+        categServ = getIntent().getStringArrayListExtra("categServ");
+        precoServ = getIntent().getStringArrayListExtra("precoServ");
 
         latitude = getIntent().getDoubleExtra("latitude", -8);
         longitude = getIntent().getDoubleExtra("longitude", -36);
@@ -91,8 +100,6 @@ public class SaloesActivity extends AppCompatActivity implements SalaoAdapter.It
         recyclerView.setAdapter(myAdapter);
         buscar();
         dialogBuscando();
-
-
     }
 
 
@@ -120,38 +127,25 @@ public class SaloesActivity extends AppCompatActivity implements SalaoAdapter.It
                 if (!ids.isEmpty() && !categoria.isEmpty()){
                     for (int i = 0; i < ids.size(); i++){
                         if (estabelecimento.getmEid().equals(ids.get(i)) && idcateg.get(i).equals(categoria)){
-
                                resultados.add(estabelecimento);
-
-
                             break;
                         }
                     }
-                } else if (!endereco.isEmpty() && estab.isEmpty()){
-                    if (estabelecimento.getmCidade().toLowerCase().contains(endereco.toLowerCase()) ||
-                            estabelecimento.getmRua().toLowerCase().contains(endereco.toLowerCase()) ||
-                            estabelecimento.getmBairro().toLowerCase().contains(endereco.toLowerCase())){
+                } else if(endereco.isEmpty() || estabelecimento.getmCidade().toLowerCase().contains(endereco.toLowerCase()) ||
+                        estabelecimento.getmRua().toLowerCase().contains(endereco.toLowerCase()) ||
+                        estabelecimento.getmBairro().toLowerCase().contains(endereco.toLowerCase())){
+                    if(estab.isEmpty() || estabelecimento.getmNome().toLowerCase().contains(estab.toLowerCase())){
+                        for (int i = 0; i < precoServ.size(); i++){
+                            if(preco >= Double.valueOf(precoServ.get(i)) && servicos.get(i).equals(estabelecimento.getmEid())){
+                                //Toast.makeText(SaloesActivity.this, precoServ.get(i), Toast.LENGTH_SHORT).show();
+                                resultados.add(estabelecimento);
+                                break;
+                            }
+                            /*if(servcat.isEmpty() || (estabelecimento.getmEid().equals(servicos.get(i)) &&
+                                    servcat.equals(categServ.get(i)))){
 
-                            resultados.add(estabelecimento);
-
-
-                    }
-                } else if (endereco.isEmpty() && !estab.isEmpty()){
-                    if (estabelecimento.getmNome().toLowerCase().contains(estab.toLowerCase())){
-
-                            resultados.add(estabelecimento);
-
-
-                    }
-                } else if (!endereco.isEmpty() && !estab.isEmpty()){
-                    if (estabelecimento.getmNome().toLowerCase().contains(estab.toLowerCase()) &&
-                            (estabelecimento.getmCidade().toLowerCase().contains(endereco.toLowerCase()) ||
-                                    estabelecimento.getmRua().toLowerCase().contains(endereco.toLowerCase()) ||
-                                    estabelecimento.getmBairro().toLowerCase().contains(endereco.toLowerCase()))){
-
-                                            resultados.add(estabelecimento);
-
-
+                            }*/
+                        }
                     }
                 }
 
@@ -196,49 +190,6 @@ public class SaloesActivity extends AppCompatActivity implements SalaoAdapter.It
         mProgressDialog.setProgress(0);
         mProgressDialog.show();
     }
-
-
-    /*private void selEstabelecimentos(String categoria, String servico, String cidade){
-
-        if(!categoria.isEmpty()) { //apenas escolheu uma categoria
-            for (int i = 0; i < ((Integer) ApplicationClass.estabelecimentos.size()); i++) {
-                for (int j = 0; j < ApplicationClass.estabelecimentos.get(i).getmServicos().size(); j++) {
-                    if (ApplicationClass.estabelecimentos.get(i).getmServicos().get(j).getCategoria().equals(categoria)) {
-                        estabelecimentos.add(ApplicationClass.estabelecimentos.get(i));
-                        break;
-                    }
-                }
-            }
-        } else if (!servico.isEmpty() && cidade.isEmpty()){ //foi pela tela de busca
-            for (int i = 0; i < ((Integer) ApplicationClass.estabelecimentos.size()); i++) {
-                for (int j = 0; j < ApplicationClass.estabelecimentos.get(i).getmServicos().size(); j++) {
-                    if (ApplicationClass.estabelecimentos.get(i).getmServicos().get(j).getNome().equals(servico)) {
-                        estabelecimentos.add(ApplicationClass.estabelecimentos.get(i));
-                        break;
-                    }
-                }
-            }
-        } else if (!cidade.isEmpty() && servico.isEmpty()){
-            for (int i = 0; i < ((Integer) ApplicationClass.estabelecimentos.size()); i++) {
-                for (int j = 0; j < ApplicationClass.estabelecimentos.get(i).getmServicos().size(); j++) {
-                    if (ApplicationClass.estabelecimentos.get(i).getmEndereco_ID().getmCidade().equals(cidade)) {
-                        estabelecimentos.add(ApplicationClass.estabelecimentos.get(i));
-                        break;
-                    }
-                }
-            }
-        } else {
-            for (int i = 0; i < ((Integer) ApplicationClass.estabelecimentos.size()); i++) {
-                for (int j = 0; j < ApplicationClass.estabelecimentos.get(i).getmServicos().size(); j++) {
-                    if (ApplicationClass.estabelecimentos.get(i).getmServicos().get(j).getNome().equals(servico) &&
-                            ApplicationClass.estabelecimentos.get(i).getmEndereco_ID().getmCidade().equals(cidade)) {
-                        estabelecimentos.add(ApplicationClass.estabelecimentos.get(i));
-                        break;
-                    }
-                }
-            }
-        }
-    }*/
 
     @Override
     public boolean onSupportNavigateUp() {
