@@ -2,10 +2,16 @@ package br.com.belapp.belapp.test;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.support.test.espresso.UiController;
+import android.support.test.espresso.ViewAction;
+import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.rule.ActivityTestRule;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SeekBar;
 
+import org.hamcrest.Matcher;
+import org.hamcrest.Matchers;
 import org.junit.Assert;
 import org.junit.Rule;
 
@@ -21,11 +27,13 @@ import cucumber.api.java.pt.Entao;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
+import static android.support.test.espresso.action.ViewActions.swipeRight;
 import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.RootMatchers.withDecorView;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.isRoot;
+import static android.support.test.espresso.matcher.ViewMatchers.withClassName;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static junit.framework.TestCase.assertNotNull;
@@ -51,6 +59,7 @@ public class BuscaActivitySteps extends DefaultTest {
 
     @Dado("^Eu estou na tela de busca$")
     public void euEstouNaTelaDeBusca(){
+        esperar(4000);
         assertNotNull(getActivity());
     }
 
@@ -76,6 +85,16 @@ public class BuscaActivitySteps extends DefaultTest {
     public void euColocoNenhum(){
         preencherCampoEditText(R.id.etEndereco, "");
         preencherCampoEditText(R.id.etEstabelecimento, "");
+    }
+
+    @Quando("^Eu defino um preço$")
+    public void definoUmPreco(){
+        preencherCampoEditText(R.id.etPreco, "19");
+    }
+
+    @Quando("^Eu digito um serviço$")
+    public void digitoUmServico(){
+        preencherCampoEditText(R.id.etServCat, "corte");
     }
 
     @E("^Eu clico em buscar$")

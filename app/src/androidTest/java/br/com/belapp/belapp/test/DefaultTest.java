@@ -170,6 +170,7 @@ public class DefaultTest {
     public void deslogar(){
         FirebaseAuth usuario = ConfiguracaoFireBase.getFirebaseAutenticacao();
         if(usuario.getUid() != null) usuario.signOut();
+    }
 
     public void selecionarItemReciclerView(int idRecicledView, int posicao){
         onView(withId(idRecicledView))

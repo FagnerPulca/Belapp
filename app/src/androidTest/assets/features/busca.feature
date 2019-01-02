@@ -28,3 +28,17 @@
     Dado Eu estou na tela de busca
     Quando Eu clico em buscar
     Entao Devo ver uma mensagem dizendo para digitar algum dado
+
+  @busca-feature
+  Cenario: Definir um preço máximo
+    Dado Eu estou na tela de busca
+    Quando Eu defino um preço
+    E Eu clico em buscar
+    Entao  Eu devo ver os salões retornados
+
+  @busca-feature
+  Cenario: Procurar um serviço
+    Dado Eu estou na tela de busca
+    Quando Eu digito um serviço
+    E Eu clico em buscar
+    Entao  Eu devo ver os salões retornados

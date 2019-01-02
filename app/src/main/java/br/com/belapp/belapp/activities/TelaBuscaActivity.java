@@ -9,7 +9,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,7 +20,6 @@ import com.google.firebase.database.Query;
 import java.util.ArrayList;
 
 import br.com.belapp.belapp.R;
-import br.com.belapp.belapp.model.Estabelecimento;
 import br.com.belapp.belapp.model.Servico;
 
 public class TelaBuscaActivity extends AppCompatActivity {
@@ -51,10 +49,8 @@ public class TelaBuscaActivity extends AppCompatActivity {
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
         setSupportActionBar(toolbar);
 
-        SeekBar sbPreco;
-        sbPreco = findViewById(R.id.sbPreco);
-        TextView tvPreco = findViewById(R.id.tvPreco);
         EditText etServCat = findViewById(R.id.etServCat);
+        EditText etPreco = findViewById(R.id.etPreco);
 
         etEstabelecimento = findViewById(R.id.etEstabelecimento);
         etEndereco = findViewById(R.id.etEndereco);
@@ -68,27 +64,9 @@ public class TelaBuscaActivity extends AppCompatActivity {
         precoServ = new ArrayList<>();
         nomeServ = new ArrayList<>();
 
-        sbPreco.setProgress(300);
-        //estabelecimentos = new ArrayList<>();
+
         buscarServCatPreco();
         dialogBuscando();
-
-        sbPreco.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                tvPreco.setText("R$ "+String.valueOf(seekBar.getProgress()));
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-                tvPreco.setText("R$ "+String.valueOf(seekBar.getProgress()));
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                tvPreco.setText("R$ "+String.valueOf(seekBar.getProgress()));
-            }
-        });
 
         btnBuscar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,12 +74,16 @@ public class TelaBuscaActivity extends AppCompatActivity {
                 String estabelecimento = etEstabelecimento.getText().toString().trim();
                 String endereco = etEndereco.getText().toString().trim();
                 servcat = etServCat.getText().toString().trim();
-                preco = sbPreco.getProgress();
+                if (!etPreco.getText().toString().equals("")){
+                    preco = Integer.parseInt(etPreco.getText().toString().trim());
+                } else{
+                    preco = 300;
+                }
 
                 double latitude = getIntent().getDoubleExtra("latitude", -8);
                 double longitude = getIntent().getDoubleExtra("longitude", -36);
 
-                if (!estabelecimento.isEmpty() || !endereco.isEmpty() || !servcat.isEmpty()){
+                if (!estabelecimento.isEmpty() || !endereco.isEmpty() || !servcat.isEmpty() || !etPreco.getText().toString().equals("")){
                     Intent intent = new Intent(TelaBuscaActivity.this, SaloesActivity.class);
                     intent.putExtra("estabelecimento", estabelecimento);
                     intent.putExtra("endereco", endereco);
