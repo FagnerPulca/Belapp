@@ -25,14 +25,12 @@ import br.com.belapp.belapp.model.Servico;
 public class TelaBuscaActivity extends AppCompatActivity {
 
     private EditText etEstabelecimento, etEndereco;
-    private TextView tvResul;
-    private Button btnBuscar;
     private ArrayList<String> mIds;
     private ArrayList<String> mIdcateg;
     private ArrayList<String> mServicos, mCategServ;
     private ArrayList<String> mPrecoServ, mNomeServ;
 
-    private String mServcat;
+
     private int mPreco = 300;
 
     //ArrayList<Estabelecimento> estabelecimentos;
@@ -54,8 +52,7 @@ public class TelaBuscaActivity extends AppCompatActivity {
 
         etEstabelecimento = findViewById(R.id.etEstabelecimento);
         etEndereco = findViewById(R.id.etEndereco);
-        btnBuscar = findViewById(R.id.btnBuscar);
-        tvResul = findViewById(R.id.tvResul);
+        Button btnBuscar = findViewById(R.id.btnBuscar);
 
         mIds = new ArrayList<>();
         mIdcateg = new ArrayList<>();
@@ -73,7 +70,7 @@ public class TelaBuscaActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String estabelecimento = etEstabelecimento.getText().toString().trim();
                 String endereco = etEndereco.getText().toString().trim();
-                mServcat = etServCat.getText().toString().trim();
+                String mServcat = etServCat.getText().toString().trim();
                 if (!etPreco.getText().toString().equals("")){
                     mPreco = Integer.parseInt(etPreco.getText().toString().trim());
                 } else{

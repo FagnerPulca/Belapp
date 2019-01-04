@@ -45,9 +45,7 @@ public class SaloesActivity extends AppCompatActivity implements SalaoAdapter.It
     private int mPreco; //busca
     private double mLatitude;
     private double mLongitude;
-    private String mUserId;
-    DatabaseReference mDatabaseReference;
-    private boolean mResult;
+    private DatabaseReference mDatabaseReference;
 
     private RecyclerView.Adapter myAdapter;
 
