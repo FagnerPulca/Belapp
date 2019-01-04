@@ -24,16 +24,16 @@ import br.com.belapp.belapp.model.Servico;
 
 public class TelaBuscaActivity extends AppCompatActivity {
 
-    EditText etEstabelecimento, etEndereco;
-    TextView tvResul;
-    Button btnBuscar;
-    ArrayList<String> ids;
-    ArrayList<String> idcateg;
-    ArrayList<String> servicos, categServ;
-    ArrayList<String> precoServ, nomeServ;
+    private EditText etEstabelecimento, etEndereco;
+    private TextView tvResul;
+    private Button btnBuscar;
+    private ArrayList<String> mIds;
+    private ArrayList<String> mIdcateg;
+    private ArrayList<String> mServicos, mCategServ;
+    private ArrayList<String> mPrecoServ, mNomeServ;
 
-    String servcat;
-    int preco = 300;
+    private String mServcat;
+    private int mPreco = 300;
 
     //ArrayList<Estabelecimento> estabelecimentos;
     private ProgressDialog mProgressDialog;
@@ -57,12 +57,12 @@ public class TelaBuscaActivity extends AppCompatActivity {
         btnBuscar = findViewById(R.id.btnBuscar);
         tvResul = findViewById(R.id.tvResul);
 
-        ids = new ArrayList<>();
-        idcateg = new ArrayList<>();
-        servicos = new ArrayList<>();
-        categServ = new ArrayList<>();
-        precoServ = new ArrayList<>();
-        nomeServ = new ArrayList<>();
+        mIds = new ArrayList<>();
+        mIdcateg = new ArrayList<>();
+        mServicos = new ArrayList<>();
+        mCategServ = new ArrayList<>();
+        mPrecoServ = new ArrayList<>();
+        mNomeServ = new ArrayList<>();
 
 
         buscarServCatPreco();
@@ -73,31 +73,31 @@ public class TelaBuscaActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String estabelecimento = etEstabelecimento.getText().toString().trim();
                 String endereco = etEndereco.getText().toString().trim();
-                servcat = etServCat.getText().toString().trim();
+                mServcat = etServCat.getText().toString().trim();
                 if (!etPreco.getText().toString().equals("")){
-                    preco = Integer.parseInt(etPreco.getText().toString().trim());
+                    mPreco = Integer.parseInt(etPreco.getText().toString().trim());
                 } else{
-                    preco = 300;
+                    mPreco = 300;
                 }
 
                 double latitude = getIntent().getDoubleExtra("latitude", -8);
                 double longitude = getIntent().getDoubleExtra("longitude", -36);
 
-                if (!estabelecimento.isEmpty() || !endereco.isEmpty() || !servcat.isEmpty() || !etPreco.getText().toString().equals("")){
+                if (!estabelecimento.isEmpty() || !endereco.isEmpty() || !mServcat.isEmpty() || !etPreco.getText().toString().equals("")){
                     Intent intent = new Intent(TelaBuscaActivity.this, SaloesActivity.class);
-                    intent.putExtra("estabelecimento", estabelecimento);
-                    intent.putExtra("endereco", endereco);
-                    intent.putExtra("servcat", servcat);
-                    intent.putExtra("preco", preco);
-                    intent.putExtra("latitude", latitude);
-                    intent.putExtra("longitude", longitude);
-                    intent.putExtra("categoria", "");
-                    intent.putExtra("ids", ids);
-                    intent.putExtra("idcateg", idcateg);
-                    intent.putExtra("servicos", servicos);
-                    intent.putExtra("categServ", categServ);
-                    intent.putExtra("precoServ", precoServ);
-                    intent.putExtra("nomeServ", nomeServ);
+                    intent.putExtra("mEstabelecimento", estabelecimento);
+                    intent.putExtra("mEndereco", endereco);
+                    intent.putExtra("mServcat", mServcat);
+                    intent.putExtra("mPreco", mPreco);
+                    intent.putExtra("mLatitude", latitude);
+                    intent.putExtra("mLongitude", longitude);
+                    intent.putExtra("mCategoria", "");
+                    intent.putExtra("mIds", mIds);
+                    intent.putExtra("mIdcateg", mIdcateg);
+                    intent.putExtra("mServicos", mServicos);
+                    intent.putExtra("mCategServ", mCategServ);
+                    intent.putExtra("mPrecoServ", mPrecoServ);
+                    intent.putExtra("mNomeServ", mNomeServ);
                     startActivity(intent);
 
                 }
@@ -116,10 +116,10 @@ public class TelaBuscaActivity extends AppCompatActivity {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 Servico servico = dataSnapshot.getValue(Servico.class);
-                servicos.add(servico.getmEstabId()); //id estabelecimento
-                categServ.add(servico.getmCategoria()); //categoria do serviço
-                precoServ.add(String.valueOf(servico.getmPreco())); //preco do serviço
-                nomeServ.add(servico.getmNome());
+                mServicos.add(servico.getmEstabId()); //id estabelecimento
+                mCategServ.add(servico.getmCategoria()); //categoria do serviço
+                mPrecoServ.add(String.valueOf(servico.getmPreco())); //mPreco do serviço
+                mNomeServ.add(servico.getmNome());
 
                 mProgressDialog.dismiss();
             }
