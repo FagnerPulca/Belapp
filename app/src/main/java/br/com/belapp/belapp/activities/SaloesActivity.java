@@ -45,7 +45,6 @@ public class SaloesActivity extends AppCompatActivity implements SalaoAdapter.It
     private int mPreco; //busca
     private double mLatitude;
     private double mLongitude;
-    private DatabaseReference mDatabaseReference;
 
     private RecyclerView.Adapter myAdapter;
 
@@ -91,7 +90,6 @@ public class SaloesActivity extends AppCompatActivity implements SalaoAdapter.It
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
-        mDatabaseReference = ConfiguracaoFireBase.getFirebase();
 
         mEstabelecimentos = new ArrayList<>();
         mResultados = new ArrayList<>();
