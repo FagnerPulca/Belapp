@@ -68,10 +68,10 @@
 
 
     <string name="title_activity_perfil">Meu Perfil</string>
-    <string name="title_activity_estabelecimentos">Estabelecimentos</string>,
-    <string name="title_activity_favoritos">Favoritos</string>,
+    <string name="title_activity_estabelecimentos">Estabelecimentos</string>
+    <string name="title_activity_favoritos">Favoritos</string>
     <string name="title_activity_Pesquisar">Pesquisar</string>
-
+    <string name="title_activity_promocoes">Promoções</string>
     <string name="title_activity_avaliacoes">Avaliações</string>
     <string name="title_activity_avaliar">Avaliar</string>
 

@@ -372,7 +372,9 @@ public class ClienteLogadoActivity extends AppCompatActivity
 
 
         } else if (id == R.id.nav_promocoes) {
-
+            Intent intent = new Intent(ClienteLogadoActivity.this, PromocoesActivity.class);
+            startActivity(intent);
+            Toast.makeText(ClienteLogadoActivity.this, "Promoçõess", Toast.LENGTH_SHORT).show();
         } else if (id == R.id.nav_sair) {
 
             logado.signOut();
