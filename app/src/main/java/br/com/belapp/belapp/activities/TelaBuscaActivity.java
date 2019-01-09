@@ -17,20 +17,25 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
+
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import br.com.belapp.belapp.R;
 import br.com.belapp.belapp.model.Servico;
+import br.com.belapp.belapp.utils.DateUtils;
 
-public class TelaBuscaActivity extends AppCompatActivity {
+public class TelaBuscaActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
 
-    private EditText etEstabelecimento, etEndereco;
+    private EditText etEstabelecimento, etEndereco, metDataBusca;
     private ArrayList<String> mIds;
     private ArrayList<String> mIdcateg;
     private ArrayList<String> mServicos, mCategServ;
     private ArrayList<String> mPrecoServ, mNomeServ;
 
-
+    private Calendar now;
+    private String mDataSelecionada = "";
     private int mPreco = 300;
 
     //ArrayList<Estabelecimento> estabelecimentos;
@@ -53,6 +58,7 @@ public class TelaBuscaActivity extends AppCompatActivity {
         etEstabelecimento = findViewById(R.id.etEstabelecimento);
         etEndereco = findViewById(R.id.etEndereco);
         Button btnBuscar = findViewById(R.id.btnBuscar);
+        metDataBusca = findViewById(R.id.etDataBusca);
 
         mIds = new ArrayList<>();
         mIdcateg = new ArrayList<>();
@@ -64,6 +70,38 @@ public class TelaBuscaActivity extends AppCompatActivity {
 
         buscarServCatPreco();
         dialogBuscando();
+
+        metDataBusca.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Abre a janela de diálogo para a escolha da data.
+                now = Calendar.getInstance();
+
+                DatePickerDialog dpd = DatePickerDialog.newInstance(
+                        TelaBuscaActivity.this,
+                        now.get(Calendar.YEAR),
+                        now.get(Calendar.MONTH),
+                        now.get(Calendar.DAY_OF_MONTH)
+                );
+
+                dpd.setThemeDark(false);
+                dpd.vibrate(true);
+                dpd.dismissOnPause(true);
+                dpd.setFirstDayOfWeek(Calendar.MONDAY);
+                dpd.setMinDate(now);
+                dpd.setAccentColor(Color.parseColor("#260CE8"));
+                dpd.show(getFragmentManager(), "Selecione a data");
+            }
+        });
+
+        metDataBusca.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                if(b){
+                    metDataBusca.callOnClick();
+                }
+            }
+        });
 
         btnBuscar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,7 +118,7 @@ public class TelaBuscaActivity extends AppCompatActivity {
                 double latitude = getIntent().getDoubleExtra("latitude", -8);
                 double longitude = getIntent().getDoubleExtra("longitude", -36);
 
-                if (!estabelecimento.isEmpty() || !endereco.isEmpty() || !mServcat.isEmpty() || !etPreco.getText().toString().equals("")){
+                if (!estabelecimento.isEmpty() || !endereco.isEmpty() || !mServcat.isEmpty() || !etPreco.getText().toString().equals("") || !mDataSelecionada.equals("")){
                     Intent intent = new Intent(TelaBuscaActivity.this, SaloesActivity.class);
                     intent.putExtra("mEstabelecimento", estabelecimento);
                     intent.putExtra("mEndereco", endereco);
@@ -95,6 +133,7 @@ public class TelaBuscaActivity extends AppCompatActivity {
                     intent.putExtra("mCategServ", mCategServ);
                     intent.putExtra("mPrecoServ", mPrecoServ);
                     intent.putExtra("mNomeServ", mNomeServ);
+                    intent.putExtra("mDataSelecionada",mDataSelecionada);
                     startActivity(intent);
 
                 }
@@ -157,5 +196,14 @@ public class TelaBuscaActivity extends AppCompatActivity {
         // TODO: Verificar se ha alteracoes antes de voltar
         onBackPressed();
         return true;
+    }
+
+    @Override
+    public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
+        now.set(Calendar.YEAR, year);
+        now.set(Calendar.MONTH, monthOfYear);
+        now.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+        mDataSelecionada = DateUtils.converterDataParaString(now);
+        metDataBusca.setText( mDataSelecionada);
     }
 }
