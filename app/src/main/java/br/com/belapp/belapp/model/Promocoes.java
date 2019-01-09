@@ -1,41 +1,36 @@
 package br.com.belapp.belapp.model;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.Exclude;
+
 public class Promocoes {
 
     //Aqui atributos e metodos da classe
-    private String idPromocao;
-    private String estado;
-    private String categoria;
+    private String idestabelecimento;
+    private String idecliente;
     private String titulo;
     private String descricao;
-    private String telefone;
     private String foto;
 
     public Promocoes() {
     }
 
-    public String getIdPromocao() {
-        return idPromocao;
+    @Exclude
+    public String getIdestabelecimento() {
+        return idestabelecimento;
     }
 
-    public void setIdPromocao(String idPromocao) {
-        this.idPromocao = idPromocao;
+    public void setIdestabelecimento(String idestabelecimento) {
+        this.idestabelecimento = idestabelecimento;
     }
 
-    public String getEstado() {
-        return estado;
+    @Exclude
+    public String getIdecliente() {
+        return idecliente;
     }
 
-    public void setEstado(String estado) {
-        this.estado = estado;
-    }
-
-    public String getCategoria() {
-        return categoria;
-    }
-
-    public void setCategoria(String categoria) {
-        this.categoria = categoria;
+    public void setIdecliente(String idecliente) {
+        this.idecliente = idecliente;
     }
 
     public String getTitulo() {
@@ -54,19 +49,17 @@ public class Promocoes {
         this.descricao = descricao;
     }
 
-    public String getTelefone() {
-        return telefone;
-    }
-
-    public void setTelefone(String telefone) {
-        this.telefone = telefone;
-    }
-
     public String getFoto() {
         return foto;
     }
 
     public void setFoto(String foto) {
         this.foto = foto;
+    }
+
+    public void salvar(){
+        DatabaseReference databaseReference = ConfiguracaoFireBase.getFirebase();
+        databaseReference.child("promocoes").child(getIdecliente()).child(getIdestabelecimento()).setValue(this);
+
     }
 }

@@ -74,7 +74,7 @@
         <activity android:name=".activities.AgendarServicoActivity" />
         <activity android:name=".activities.AgendamentosActivity" />
         <activity android:name=".activities.AgendamentoActivity" />
-        <activity android:name=".activities.PromocoesActivity"></activity>
+        <activity android:name=".activities.PromocoesActivity" />
     </application>
 
 </manifest>
