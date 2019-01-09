@@ -60,5 +60,14 @@ public class DateUtils {
         return horaEmMinutos+minutosDaHora;
     }
 
-
+    /**
+     * Converte uma data para String no formato 00/00/0000
+     * @param data do tipo Calendar
+     * @return String com a data no formato 00/00/0000
+     */
+    public static String converterDataParaString(Calendar data){
+        String formato = "dd/MM/yyyy";
+        SimpleDateFormat formatador = new SimpleDateFormat(formato, new Locale("pt","BR"));
+        return formatador.format(data.getTime());
+    }
 }
