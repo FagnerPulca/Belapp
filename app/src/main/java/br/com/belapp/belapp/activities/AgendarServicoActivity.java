@@ -316,4 +316,10 @@ public class AgendarServicoActivity extends AppCompatActivity implements DatePic
         }
     }
 
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
+
 }
