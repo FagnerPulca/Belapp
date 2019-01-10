@@ -34,6 +34,7 @@ import br.com.belapp.belapp.DAO.AgendamentoDAO;
 import br.com.belapp.belapp.R;
 import br.com.belapp.belapp.exceptions.ValidationException;
 import br.com.belapp.belapp.model.Agendamento;
+import br.com.belapp.belapp.model.HorarioAtendimento;
 import br.com.belapp.belapp.utils.DateUtils;
 import br.com.belapp.belapp.utils.StringUtils;
 
@@ -85,8 +86,11 @@ public class AgendarServicoActivity extends AppCompatActivity implements DatePic
                 dpd.setFirstDayOfWeek(Calendar.MONDAY);
                 dpd.setMinDate(now);
                 dpd.setAccentColor(Color.parseColor("#260CE8"));
+                //noinspection deprecation
                 dpd.show(getFragmentManager(), "Selecione a data");
             }
+
+
         });
 
         mAgendamento = (Agendamento) getIntent().getSerializableExtra("agendamento");
@@ -94,7 +98,8 @@ public class AgendarServicoActivity extends AppCompatActivity implements DatePic
         TextView tvEstabelecimento = findViewById(R.id.tvEstabelecimentoAgendar);
         TextView tvProfissional = findViewById(R.id.tvProfissionalAgendar);
         TextView tvPreco = findViewById(R.id.tvPrecoAgendar);
-        TextView tvHorario = findViewById(R.id.tvHorarioAgendar);
+        TextView tvDiasFuncionamento = findViewById(R.id.tvDiasFuncionamento);
+
 
         tvServico.setText(String.format(Locale.getDefault(), "Serviço: %s",
                 mAgendamento.getmServico().getmNome()));
@@ -105,36 +110,35 @@ public class AgendarServicoActivity extends AppCompatActivity implements DatePic
         tvEstabelecimento.setText(String.format(Locale.getDefault(), "Estabelecimento: %s",
                 mAgendamento.getmEstabelecimento().getmNome()));
 
+        tvDiasFuncionamento.setText(
+                String.format("%s: %s", getString(R.string.app_dias_funcionamento),
+                        mAgendamento.getmEstabelecimento().getDiasFuncionamento()));
+
 
         Button btnAgendar = findViewById(R.id.btnAgendar);
-        btnAgendar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                try {
-                    validar();
-                    mAgendamento.setmData(mEdtData.getText().toString());
-                    mAgendamento.setmHora(((String) mSpHorariosDisponiveis.getSelectedItem()));
-                    AgendamentoDAO dao = new AgendamentoDAO();
-                    dao.save(mAgendamento);
-                    Toast.makeText(AgendarServicoActivity.this,
-                            getString(R.string.sucess_agendamento_realizado), Toast.LENGTH_LONG).show();
-                    Intent intent = new Intent();
-                    intent.setClass(AgendarServicoActivity.this, ClienteLogadoActivity.class);
-                    startActivity(intent);
-                    finish();
-                } catch (ValidationException e) {
-                    Toast.makeText(AgendarServicoActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
-                }
+        btnAgendar.setOnClickListener(view -> {
+            try {
+                validar();
+                mAgendamento.setmData(mEdtData.getText().toString());
+                mAgendamento.setmHora(((String) mSpHorariosDisponiveis.getSelectedItem()));
+                AgendamentoDAO dao = new AgendamentoDAO();
+                dao.save(mAgendamento);
+                Toast.makeText(AgendarServicoActivity.this,
+                        getString(R.string.sucess_agendamento_realizado), Toast.LENGTH_LONG).show();
+                Intent intent = new Intent();
+                intent.setClass(AgendarServicoActivity.this, ClienteLogadoActivity.class);
+                startActivity(intent);
+                finish();
+            } catch (ValidationException e) {
+                Toast.makeText(AgendarServicoActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
             }
-
-
         });
 
         mSpHorariosDisponiveis = findViewById(R.id.spHorariosAgendar);
 
         mHorariosDisponiveis = new ArrayList<>();
         mHorariosDisponiveis.add(getString(R.string.app_selecionar));
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_item, mHorariosDisponiveis);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mSpHorariosDisponiveis.setAdapter(dataAdapter);
@@ -225,8 +229,15 @@ public class AgendarServicoActivity extends AppCompatActivity implements DatePic
     public void filtrarHorarios() {
         mHorariosDisponiveis.clear();
         mHorariosDisponiveis.add(getString(R.string.app_selecionar));
+        HorarioAtendimento horariosDiaSelecionado = new HorarioAtendimento();
+        for(HorarioAtendimento horarioAtendimento: mAgendamento.getmEstabelecimento()
+                .getmHorariosAtendimento()){
+            if(horarioAtendimento!= null && horarioAtendimento.getmDiaFuncionamento() == DateUtils.getDiaDaSemanaEmData(mEdtData.getText().toString())){
+                horariosDiaSelecionado = horarioAtendimento;
+            }
+        }
         // gera todos os horarios ate as 23 horas
-        for (int i = 0; i < 1380; i += mAgendamento.getmServico().getmDuracao()){
+        for (int i = horariosDiaSelecionado.getmAbertura(); i < horariosDiaSelecionado.getmFechamento(); i += mAgendamento.getmServico().getmDuracao()){
 
             mHorariosDisponiveis.add(DateUtils.getFormatoHora(i/60, i%60));
         }
@@ -267,7 +278,7 @@ public class AgendarServicoActivity extends AppCompatActivity implements DatePic
                 }
             }
         }
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_item, mHorariosDisponiveis);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mSpHorariosDisponiveis.setAdapter(dataAdapter);
@@ -286,6 +297,16 @@ public class AgendarServicoActivity extends AppCompatActivity implements DatePic
         if(TextUtils.isEmpty(mEdtData.getText().toString())){
             throw new ValidationException(getString(R.string.error_selecione_uma_data));
         }
+        boolean isAberto = false;
+        for(HorarioAtendimento horarioAtendimento: mAgendamento.getmEstabelecimento()
+                .getmHorariosAtendimento()){
+            if(horarioAtendimento!= null && horarioAtendimento.getmDiaFuncionamento() == DateUtils.getDiaDaSemanaEmData(mEdtData.getText().toString())){
+                isAberto = true;
+            }
+        }
+        if(!isAberto){
+            throw new ValidationException(getString(R.string.error_estabelecimento_fechado_na_data));
+        }
         if(mHorariosDisponiveis.size() == 1){
             throw new ValidationException(getString(R.string.error_nao_ha_horario_disponivel_para_data));
         }
@@ -294,4 +315,5 @@ public class AgendarServicoActivity extends AppCompatActivity implements DatePic
             throw new ValidationException(getString(R.string.error_selecione_um_horario));
         }
     }
+
 }

@@ -1,5 +1,7 @@
 package br.com.belapp.belapp.utils;
 
+import android.annotation.SuppressLint;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -11,6 +13,7 @@ public class DateUtils {
      * Metodo que obtem a data atual do smartphone.
      * @return data no formato dd/mm/YYYY.
      */
+    @SuppressLint("SimpleDateFormat")
     public static String getDataAtual(){
         return new SimpleDateFormat("dd/MM/yyyy").format(new Date());
     }
@@ -60,5 +63,31 @@ public class DateUtils {
         return horaEmMinutos+minutosDaHora;
     }
 
+    /**
+     * Este Método retorna o dia da semana referente a data informado no
+     * parâmetro
+     *
+     * 1º dia da semana retorna 1; Ultimo dias da semana retorna 7;
+
+     * @param data data no formato formato DD/MM/YYYY
+     * @return dia da semana referente a data informada
+     */
+    public static int getDiaDaSemanaEmData(String data) {
+        return converterDataEmCalendar(data).get(Calendar.DAY_OF_WEEK);
+    }
+
+    /**
+     * Este Método converte uma data no formato DD/MM/YYYY no formato de data
+     * calendar.
+     *
+     * @param data string data no formato DD/MM/YYYY
+     * @return data no formato Calendar
+     */
+    private static Calendar converterDataEmCalendar(String data) {
+        Calendar c = Calendar.getInstance();
+        String[] d = data.split("/");
+        c.set(Integer.parseInt(d[2]), Integer.parseInt(d[1]) - 1, Integer.parseInt(d[0]));
+        return c;
+    }
 
 }
