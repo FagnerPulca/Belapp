@@ -79,10 +79,14 @@ dependencies {
     androidTestImplementation 'info.cukes:cucumber-picocontainer:1.2.4'
     androidTestImplementation 'com.android.support.test.espresso:espresso-intents:3.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-contrib:3.0.2'
+
     implementation 'com.google.firebase:firebase-core:16.0.6'
     implementation 'com.google.firebase:firebase-database:16.0.5'
 
+
+
     implementation 'com.google.firebase:firebase-crash:9.0.2'
+
     implementation 'org.jetbrains:annotations-java5:15.0'
 
     implementation 'com.google.firebase:firebase-auth:15.0.0'
@@ -93,6 +97,8 @@ dependencies {
 
     implementation 'com.google.firebase:firebase-auth:16.0.5'
     implementation 'com.google.android.gms:play-services-auth:16.0.1'
+
+    implementation 'com.github.jd-alexander:LikeButton:0.2.3'
 
 
 }

@@ -63,7 +63,7 @@ public class AgendamentosActivity extends AppCompatActivity implements Agendamen
         mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         mProgressDialog.setIndeterminate(true);
         mProgressDialog.setProgress(0);
-        mProgressDialog.setCancelable(false);
+        mProgressDialog.setCancelable(true);
         mProgressDialog.show();
     }
 
