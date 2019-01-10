@@ -287,9 +287,10 @@ public class AgendarServicoActivity extends AppCompatActivity implements DatePic
             validar();
         } catch (ValidationException e) {
             Toast.makeText(AgendarServicoActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
-            if(mHorariosDisponiveis.size() == 1) {
-                mEdtData.callOnClick();
-            }
+//            if(mHorariosDisponiveis.size() == 1) {
+//                mEdtData.callOnClick();
+//
+//            }
         }
     }
 

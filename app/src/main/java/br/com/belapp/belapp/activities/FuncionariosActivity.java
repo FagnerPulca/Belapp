@@ -2,10 +2,12 @@ package br.com.belapp.belapp.activities;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.widget.Toast;
 
 import com.google.firebase.database.ChildEventListener;
@@ -39,6 +41,12 @@ public class FuncionariosActivity extends AppCompatActivity implements Funcionar
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_funcionarios);
+        // Configuraçao do toolbar
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle(R.string.title_activity_profissionais);
+        toolbar.setTitleTextColor(Color.WHITE);
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
+        setSupportActionBar(toolbar);
 
         recyclerView = findViewById(R.id.rvProfissionais);
         recyclerView.setHasFixedSize(true);
@@ -136,4 +144,10 @@ public class FuncionariosActivity extends AppCompatActivity implements Funcionar
             }
         }
     }*/
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
 }

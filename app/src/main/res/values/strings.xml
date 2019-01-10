@@ -69,6 +69,7 @@
     <string name="title_activity_estabelecimentos">Estabelecimentos</string>
     <string name="title_activity_Pesquisar">Pesquisar</string>
     <string name="title_activity_agendar_servico">Agendar Serviço</string>
+    <string name="title_activity_profissionais">Profissionais</string>
     <string name="title_activity_minha_agenda">Minha Agenda</string>
     <string name="title_activity_agendamento">Agendamento</string>
     <string name="app_nome">Nome</string>

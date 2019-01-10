@@ -3,9 +3,18 @@ package br.com.belapp.belapp.test;
 import android.app.Activity;
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.contrib.RecyclerViewActions;
+import android.support.test.espresso.core.internal.deps.guava.collect.Iterables;
+import android.support.test.runner.lifecycle.ActivityLifecycleMonitorRegistry;
+import android.support.test.runner.lifecycle.Stage;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.Collection;
+
+import br.com.belapp.belapp.R;
+
+import static android.support.test.InstrumentationRegistry.getInstrumentation;
 import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
@@ -17,7 +26,9 @@ import static android.support.test.espresso.matcher.RootMatchers.withDecorView;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.isRoot;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static android.support.test.espresso.matcher.ViewMatchers.withParent;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static android.support.test.runner.lifecycle.Stage.RESUMED;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.anything;
 import static org.hamcrest.Matchers.not;
@@ -109,27 +120,6 @@ public class DefaultTest {
 
                 if (checkedView.getContext() instanceof Activity) {
                     activity[0] = (Activity) checkedView.getContext();
-                    return;
-                }
-            }
-        });
-        return activity[0];
-    }
-
-    public Activity finalizarActivities() {
-        final Activity[] activity = new Activity[1];
-
-        onView(isRoot()).check((view, noViewFoundException) -> {
-
-            View checkedView = view;
-
-            while (checkedView instanceof ViewGroup && ((ViewGroup) checkedView).getChildCount() > 0) {
-
-                checkedView = ((ViewGroup) checkedView).getChildAt(0);
-
-                if (checkedView.getContext() instanceof Activity) {
-                    ((Activity) checkedView.getContext()).finish();
-
                 }
             }
         });
@@ -143,5 +133,10 @@ public class DefaultTest {
     public void selecionarItemSpinnerByPosition(int idSpiner, int posicao){
         onView(withId(idSpiner)).perform(click());
         onData(anything()).atPosition(1).perform(click());
+    }
+
+    public void testarToolbar(){
+        onView(withId(br.com.belapp.belapp.R.id.toolbar)).check(matches(isDisplayed()));
+        onView(withText(br.com.belapp.belapp.R.string.app_name)).check(matches(withParent(withId(R.id.toolbar))));
     }
 }
