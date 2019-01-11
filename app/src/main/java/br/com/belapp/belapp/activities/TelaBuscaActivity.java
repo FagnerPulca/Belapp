@@ -3,13 +3,13 @@ package br.com.belapp.belapp.activities;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.database.ChildEventListener;
@@ -21,8 +21,11 @@ import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Objects;
+
 
 import br.com.belapp.belapp.R;
+import br.com.belapp.belapp.model.Agendamento;
 import br.com.belapp.belapp.model.Servico;
 import br.com.belapp.belapp.utils.DateUtils;
 
@@ -33,7 +36,7 @@ public class TelaBuscaActivity extends AppCompatActivity implements DatePickerDi
     private ArrayList<String> mIdcateg;
     private ArrayList<String> mServicos, mCategServ;
     private ArrayList<String> mPrecoServ, mNomeServ;
-
+    private ArrayList<Agendamento> mAgendamentos;
     private Calendar now;
     private String mDataSelecionada = "";
     private int mPreco = 300;
@@ -66,7 +69,7 @@ public class TelaBuscaActivity extends AppCompatActivity implements DatePickerDi
         mCategServ = new ArrayList<>();
         mPrecoServ = new ArrayList<>();
         mNomeServ = new ArrayList<>();
-
+        mAgendamentos = new ArrayList<>();
 
         buscarServCatPreco();
         dialogBuscando();
@@ -134,6 +137,9 @@ public class TelaBuscaActivity extends AppCompatActivity implements DatePickerDi
                     intent.putExtra("mPrecoServ", mPrecoServ);
                     intent.putExtra("mNomeServ", mNomeServ);
                     intent.putExtra("mDataSelecionada",mDataSelecionada);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("mAgendamentos",mAgendamentos);
+                    intent.putExtras(bundle);
                     startActivity(intent);
 
                 }
@@ -205,5 +211,45 @@ public class TelaBuscaActivity extends AppCompatActivity implements DatePickerDi
         now.set(Calendar.DAY_OF_MONTH, dayOfMonth);
         mDataSelecionada = DateUtils.converterDataParaString(now);
         metDataBusca.setText( mDataSelecionada);
+        buscarPorData(mDataSelecionada);
+    }
+
+
+    private void buscarPorData(String data){
+        if(!mDataSelecionada.equals("")) {
+            //Limpar o ArrayList
+            mAgendamentos.clear();
+            //Código adaptado do AgendarServiços
+            Query consulta = FirebaseDatabase.getInstance().getReference("agendamentos");
+            consulta.addChildEventListener(new ChildEventListener() {
+                @Override
+                public void onChildAdded(@NonNull DataSnapshot dataSnapshot, String s) {
+                    Agendamento agendamento = dataSnapshot.getValue(Agendamento.class);
+                    if (Objects.requireNonNull(agendamento).getmData().equals(data)) {
+                        mAgendamentos.add(agendamento);
+                    }
+                }
+
+                @Override
+                public void onChildChanged(@NonNull DataSnapshot dataSnapshot, String s) {
+                    // empty
+                }
+
+                @Override
+                public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+                    // empty
+                }
+
+                @Override
+                public void onChildMoved(@NonNull DataSnapshot dataSnapshot, String s) {
+                    // empty
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    // empty
+                }
+            });
+        }
     }
 }
