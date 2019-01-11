@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
@@ -21,6 +23,7 @@ public class PromocaoAdapter extends RecyclerView.Adapter<PromocaoAdapter.ViewHo
     private ArrayList<Estabelecimento> lista;
     private ArrayList<Promocoes> lista2;
     ItemClicked activity;
+    private ImageView foto;
 
     public interface ItemClicked{
         void onItemClicked(int index);
@@ -56,7 +59,7 @@ public class PromocaoAdapter extends RecyclerView.Adapter<PromocaoAdapter.ViewHo
     @NonNull
     @Override
     public PromocaoAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_salao,viewGroup,false);
+        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_promocao,viewGroup,false);
         return new ViewHolder(v);
     }
 
@@ -65,13 +68,15 @@ public class PromocaoAdapter extends RecyclerView.Adapter<PromocaoAdapter.ViewHo
 
 
         if(lista.size() != 0){
+            String Urlfoto = lista2.get(i).getFoto();
+            Picasso.get().load(Urlfoto).into(viewHolder.ivFotoPromo);
             viewHolder.itemView.setTag(lista.get(i));
 
             viewHolder.tvNomeSalao.setText(lista.get(i).getmNome());
             viewHolder.tvTitulo.setText(lista2.get(i).getTitulo());
             viewHolder.tvDescricao.setText(lista2.get(i).getDescricao());
 
-            viewHolder.ivFotoPromo.setImageResource(R.drawable.salao_teste);
+            //viewHolder.ivFotoPromo.setImageResource(R.drawable.salao_teste);
         }
 
     }

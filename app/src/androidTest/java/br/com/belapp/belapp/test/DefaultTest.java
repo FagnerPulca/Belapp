@@ -8,6 +8,7 @@ import android.util.Log;
 
 import android.support.test.espresso.contrib.RecyclerViewActions;
 
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -103,6 +104,9 @@ public class DefaultTest {
                 .perform(click());
     }
 
+
+
+
 //    public  void isActivityAtual(String activityNome) {
 //        intended(hasComponent(activityNome));
 //    }
@@ -170,6 +174,7 @@ public class DefaultTest {
     public void deslogar(){
         FirebaseAuth usuario = ConfiguracaoFireBase.getFirebaseAutenticacao();
         if(usuario.getUid() != null) usuario.signOut();
+    }
 
     public void selecionarItemReciclerView(int idRecicledView, int posicao){
         onView(withId(idRecicledView))
