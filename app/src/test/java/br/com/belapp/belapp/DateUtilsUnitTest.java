@@ -1,5 +1,7 @@
 package br.com.belapp.belapp;
 
+import android.provider.ContactsContract;
+
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -65,6 +67,36 @@ public class DateUtilsUnitTest {
         boolean resultado3 = DateUtils.isDataFutura(dataAtual);
         assertFalse(resultado3);
 
+    }
+
+    @Test
+    public void verificarDiferencaEntreDatasEspecificas(){
+        String data1 = "10/01/2019";
+        String data2 = "12/01/2019";
+
+        // resultado esperado da operação data2 - data1
+        int resultadoEsperado1 = 2;
+        assertEquals(resultadoEsperado1, DateUtils.getDiferencaEntreDuasDatasEspecificas(data1, data2));
+
+        // resultado esperado da operação data1 - data2
+        int resultadoEsperado2 = -2;
+        assertEquals(resultadoEsperado2, DateUtils.getDiferencaEntreDuasDatasEspecificas(data2, data1));
+
+        // resultado esperado da operação data1 - data1
+        int resultadoEsperado3 = 0;
+        assertEquals(resultadoEsperado3, DateUtils.getDiferencaEntreDuasDatasEspecificas(data1, data1));
+    }
+
+    @Test
+    public void verificarChecarSeDataPertenceAoMes(){
+        String data = "01/01/2019";
+        // verifica o caso verdadeiro
+        int mes1 = 1;
+        assertTrue(DateUtils.checarSeDataPertenceAoMes(data, mes1));
+
+        // verifica o caso falso
+        int mes2 = 5;
+        assertFalse(DateUtils.checarSeDataPertenceAoMes(data, mes2));
     }
 
 }
