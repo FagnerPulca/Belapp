@@ -64,12 +64,24 @@
         <activity android:name=".activities.FuncionariosActivity" />
         <activity android:name=".activities.TelaBuscaActivity" />
 
+        <activity android:name=".activities.PagAvaliacaoActivity" />
+        <activity android:name=".activities.AvaliarActitivy"></activity>
+
+
+        <activity android:name=".activities.SaloesFavoritosActivity"></activity>
+
+
+        <activity android:name=".activities.InfoActivity"></activity>
+
+
         <service android:name=".servicos.MyServiceLocation" />
 
         <activity android:name=".activities.RecuperaSenhaActivity" />
         <activity android:name=".activities.AgendarServicoActivity" />
         <activity android:name=".activities.AgendamentosActivity" />
         <activity android:name=".activities.AgendamentoActivity"></activity>
+
+
     </application>
 
 </manifest>
