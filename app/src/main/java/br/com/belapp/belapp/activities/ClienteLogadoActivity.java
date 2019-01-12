@@ -152,11 +152,11 @@ public class ClienteLogadoActivity extends AppCompatActivity
             public void onClick(View v) {
                 categoria = "Barba";
                 Intent intent = new Intent(ClienteLogadoActivity.this, SaloesActivity.class);
-                intent.putExtra("categoria", "Barba");
-                intent.putExtra("latitude", localizao.getLatitude());
-                intent.putExtra("longitude", localizao.getLongitude());
-                intent.putExtra("ids", ids);
-                intent.putExtra("idcateg", idcateg);
+                intent.putExtra("mCategoria", "Barba");
+                intent.putExtra("mLatitude", localizao.getLatitude());
+                intent.putExtra("mLongitude", localizao.getLongitude());
+                intent.putExtra("mIds", ids);
+                intent.putExtra("mIdcateg", idcateg);
                 startActivity(intent);
                 Toast.makeText(ClienteLogadoActivity.this, "Barba", Toast.LENGTH_SHORT).show();
             }
@@ -166,11 +166,11 @@ public class ClienteLogadoActivity extends AppCompatActivity
             public void onClick(View v) {
                 categoria = "Cabelo";
                 Intent intent = new Intent(ClienteLogadoActivity.this, SaloesActivity.class);
-                intent.putExtra("categoria", "Cabelo");
-                intent.putExtra("latitude", localizao.getLatitude());
-                intent.putExtra("longitude", localizao.getLongitude());
-                intent.putExtra("ids", ids);
-                intent.putExtra("idcateg", idcateg);
+                intent.putExtra("mCategoria", "Cabelo");
+                intent.putExtra("mLatitude", localizao.getLatitude());
+                intent.putExtra("mLongitude", localizao.getLongitude());
+                intent.putExtra("mIds", ids);
+                intent.putExtra("mIdcateg", idcateg);
                 startActivity(intent);
                 Toast.makeText(ClienteLogadoActivity.this, "Cabelo", Toast.LENGTH_SHORT).show();
             }
@@ -180,11 +180,11 @@ public class ClienteLogadoActivity extends AppCompatActivity
             public void onClick(View v) {
                 categoria = "Depilação";
                 Intent intent = new Intent(ClienteLogadoActivity.this, SaloesActivity.class);
-                intent.putExtra("categoria", "Depilação");
-                intent.putExtra("latitude", localizao.getLatitude());
-                intent.putExtra("longitude", localizao.getLongitude());
-                intent.putExtra("ids", ids);
-                intent.putExtra("idcateg", idcateg);
+                intent.putExtra("mCategoria", "Depilação");
+                intent.putExtra("mLatitude", localizao.getLatitude());
+                intent.putExtra("mLongitude", localizao.getLongitude());
+                intent.putExtra("mIds", ids);
+                intent.putExtra("mIdcateg", idcateg);
                 startActivity(intent);
                 Toast.makeText(ClienteLogadoActivity.this, "Depilação", Toast.LENGTH_SHORT).show();
             }
@@ -194,11 +194,11 @@ public class ClienteLogadoActivity extends AppCompatActivity
             public void onClick(View v) {
                 categoria = "Olho";
                 Intent intent = new Intent(ClienteLogadoActivity.this, SaloesActivity.class);
-                intent.putExtra("categoria", "Olho");
-                intent.putExtra("latitude", localizao.getLatitude());
-                intent.putExtra("longitude", localizao.getLongitude());
-                intent.putExtra("ids", ids);
-                intent.putExtra("idcateg", idcateg);
+                intent.putExtra("mCategoria", "Olho");
+                intent.putExtra("mLatitude", localizao.getLatitude());
+                intent.putExtra("mLongitude", localizao.getLongitude());
+                intent.putExtra("mIds", ids);
+                intent.putExtra("mIdcateg", idcateg);
                 startActivity(intent);
                 Toast.makeText(ClienteLogadoActivity.this, "Olho", Toast.LENGTH_SHORT).show();
             }
@@ -208,11 +208,11 @@ public class ClienteLogadoActivity extends AppCompatActivity
             public void onClick(View v) {
                 categoria = "Sobrancelha";
                 Intent intent = new Intent(ClienteLogadoActivity.this, SaloesActivity.class);
-                intent.putExtra("categoria", "Sobrancelha");
-                intent.putExtra("latitude", localizao.getLatitude());
-                intent.putExtra("longitude", localizao.getLongitude());
-                intent.putExtra("ids", ids);
-                intent.putExtra("idcateg", idcateg);
+                intent.putExtra("mCategoria", "Sobrancelha");
+                intent.putExtra("mLatitude", localizao.getLatitude());
+                intent.putExtra("mLongitude", localizao.getLongitude());
+                intent.putExtra("mIds", ids);
+                intent.putExtra("mIdcateg", idcateg);
                 startActivity(intent);
                 Toast.makeText(ClienteLogadoActivity.this, "Sobrancelha", Toast.LENGTH_SHORT).show();
             }
@@ -222,11 +222,11 @@ public class ClienteLogadoActivity extends AppCompatActivity
             public void onClick(View v) {
                 categoria = "Unha";
                 Intent intent = new Intent(ClienteLogadoActivity.this, SaloesActivity.class);
-                intent.putExtra("categoria", "Unha");
-                intent.putExtra("latitude", localizao.getLatitude());
-                intent.putExtra("longitude", localizao.getLongitude());
-                intent.putExtra("ids", ids);
-                intent.putExtra("idcateg", idcateg);
+                intent.putExtra("mCategoria", "Unha");
+                intent.putExtra("mLatitude", localizao.getLatitude());
+                intent.putExtra("mLongitude", localizao.getLongitude());
+                intent.putExtra("mIds", ids);
+                intent.putExtra("mIdcateg", idcateg);
                 startActivity(intent);
                 Toast.makeText(ClienteLogadoActivity.this, "Unha", Toast.LENGTH_SHORT).show();
             }
@@ -361,6 +361,15 @@ public class ClienteLogadoActivity extends AppCompatActivity
             intent.setClass(ClienteLogadoActivity.this, AgendamentosActivity.class);
             startActivity(intent);
         } else if (id == R.id.nav_favoritos) {
+
+            Intent intent = new Intent(ClienteLogadoActivity.this, SaloesFavoritosActivity.class);
+            intent.putExtra("latitude", localizao.getLatitude());
+            intent.putExtra("longitude", localizao.getLongitude());
+            intent.putExtra("ids", ids);
+
+            startActivity(intent);
+            Toast.makeText(ClienteLogadoActivity.this, "Favoritos", Toast.LENGTH_SHORT).show();
+
 
         } else if (id == R.id.nav_promocoes) {
 

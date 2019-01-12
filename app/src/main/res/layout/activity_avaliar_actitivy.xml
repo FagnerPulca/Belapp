@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activities.AvaliarActitivy">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar_avaliar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/AppTheme.PopupOverlay" />
+    </android.support.design.widget.AppBarLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center_vertical|center_horizontal"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_nome_avaliar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Salão"
+            android:textSize="30sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:gravity="center_vertical|center_horizontal"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/iv_estrela1"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            app:srcCompat="@drawable/estrela_vazia" />
+
+        <ImageView
+            android:id="@+id/iv_estrela2"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            app:srcCompat="@drawable/estrela_vazia" />
+
+        <ImageView
+            android:id="@+id/iv_estrela3"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            app:srcCompat="@drawable/estrela_vazia" />
+
+        <ImageView
+            android:id="@+id/iv_estrela4"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            app:srcCompat="@drawable/estrela_vazia" />
+
+        <ImageView
+            android:id="@+id/iv_estrela5"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            app:srcCompat="@drawable/estrela_vazia" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical|center_horizontal">
+
+        <TextView
+            android:id="@+id/tv_nota_avaliar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/et_comentario_avaliar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_weight="1"
+            android:background="@color/browser_actions_bg_grey"
+            android:ems="10"
+            android:gravity="left"
+            android:hint="Comente aqui"
+            android:inputType="textCapSentences|textMultiLine"
+            android:minHeight="150dp"
+            android:paddingStart="5dp"
+            android:paddingEnd="5dp"
+            android:visibility="visible" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/bt_enviar_avaliar"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_margin="10dp"
+        android:background="@color/colorPrimary"
+        android:text="Enviar"
+        android:textColor="@android:color/background_light" />
+
+</LinearLayout>

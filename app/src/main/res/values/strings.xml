@@ -65,13 +65,24 @@
     <string name="fb_login_protocol_scheme">fb190569431853174</string>
 
 
+
+
+    <string name="title_activity_salao">Salão</string>
+
+
     <string name="title_activity_perfil">Meu Perfil</string>
-    <string name="title_activity_estabelecimentos">Estabelecimentos</string>
+    <string name="title_activity_estabelecimentos">Estabelecimentos</string>,
+    <string name="title_activity_favoritos">Favoritos</string>,
     <string name="title_activity_Pesquisar">Pesquisar</string>
+
+    <string name="title_activity_avaliacoes">Avaliações</string>
+    <string name="title_activity_avaliar">Avaliar</string>
+
     <string name="title_activity_agendar_servico">Agendar Serviço</string>
     <string name="title_activity_profissionais">Profissionais</string>
     <string name="title_activity_minha_agenda">Minha Agenda</string>
     <string name="title_activity_agendamento">Agendamento</string>
+
     <string name="app_nome">Nome</string>
     <string name="app_telefone">Telefone</string>
     <string name="app_senha">Senha</string>
@@ -86,6 +97,8 @@
 
     <string name="sucess_alteracao_realizada">Alteração realizada com sucesso!</string>
     <string name="sucess_agendamento_realizado">Agendamento realizado com sucesso!</string>
+    <string name="sucess_agendamento_cancelado">Agendamento cancelado com sucesso!</string>
+    <string name="info_agendamento_nao_cancelado">Agendamento não cancelado</string>
     <string name="title_activity_alterar_senha">Alterar Senha</string>
     <string name="app_senha_atual">Senha Atual</string>
     <string name="app_nova_senha">Nova Senha</string>
@@ -97,6 +110,9 @@
     <string name="resultados">Resultados</string>
     <string name="digite_algum_dado">Digite algum dado</string>
     <string name="servicos">Serviços</string>
+
+    <string name="tv_informacao_avaliacao">Não há avaliações</string>
+
     <string name="title_activity_reset">ResetActivity</string>
     <string name="falha_recuperar_senha_invalido">Falhou! Tente novamente.</string>
     <string name="recuperar_senha_iniciada">Recuperação iniciada. Email enviado.</string>
@@ -107,5 +123,11 @@
     <string name="app_selecionar_data">Selecionar Data:</string>
     <string name="app_selecionar_horario">Selecionar Horário:</string>
     <string name="app_selecionar">Selecionar</string>
+    <string name="app_confirmacao">Confirmação</string>
+    <string name="app_pergunta_confirmacao_cancelamento_agendamento">Confirma a intenção de cancelar o agendamento?</string>
+
+    <string name="adicionando_favorito">adicionado aos favoritos</string>
+    <string name="retirando_favoritoo">Retirado dos faforitos</string>
+
 
 </resources>

@@ -62,6 +62,7 @@ public class ServicoAdapter extends RecyclerView.Adapter<ServicoAdapter.ViewHold
         viewHolder.itemView.setTag(testes.get(i));
 
         viewHolder.tvServico.setText(testes.get(i).getmNome());
+
         viewHolder.tvPreco.setText(String.format(Locale.getDefault(),"R$ %s", df2.format(testes.get(i).getmPreco())));
         int horas = testes.get(i).getmDuracao()/60;
         int minutos = testes.get(i).getmDuracao()%60;
@@ -75,6 +76,7 @@ public class ServicoAdapter extends RecyclerView.Adapter<ServicoAdapter.ViewHold
         else{
             viewHolder.tvDuracao.setText(String.format(Locale.getDefault(), "Duração: %d hora(s) e %d min", horas, minutos));
         }
+
 
     }
 

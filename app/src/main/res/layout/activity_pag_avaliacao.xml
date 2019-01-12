@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".activities.PagSalaoActivity">
+    tools:context=".activities.PagAvaliacaoActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -13,18 +13,12 @@
         android:theme="@style/AppTheme.AppBarOverlay">
 
         <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
+            android:id="@+id/toolbar_avaliacao"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
             app:popupTheme="@style/AppTheme.PopupOverlay" />
     </android.support.design.widget.AppBarLayout>
-
-    <ImageView
-        android:id="@+id/ivFotoSalao"
-        android:layout_width="match_parent"
-        android:layout_height="150dp"
-        app:srcCompat="@drawable/salao_teste" />
 
     <TextView
         android:id="@+id/tvNomeSalao"
@@ -38,45 +32,76 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingEnd="5dp">
+        android:orientation="horizontal">
 
         <ImageButton
             android:id="@+id/ibServicos"
-            android:layout_width="10dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             app:srcCompat="@drawable/servicos_teste" />
 
-
         <ImageButton
             android:id="@+id/ibInformacoes"
-            android:layout_width="10dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            app:srcCompat="@drawable/ic_informacoes" />
+            app:srcCompat="@drawable/informacoes_teste" />
 
         <ImageButton
             android:id="@+id/ibAvaliacoes"
-            android:layout_width="10dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             app:srcCompat="@drawable/avaliacao_teste" />
 
-        <com.like.LikeButton
-            android:id="@+id/star_button"
-            android:layout_width="10dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            app:icon_size="25dp"
-            app:icon_type="heart" />
+    </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:background="@color/com_facebook_button_background_color_focused"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/tvInformacao"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
+            android:text="@string/tv_informacao_avaliacao"
+            android:textSize="24sp"
+            android:textStyle="italic" />
+
+        <ImageView
+            android:id="@+id/ivPagAvaliacao"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginEnd="10dp"
+            app:srcCompat="@android:drawable/screen_background_light_transparent" />
 
     </LinearLayout>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rvServicos"
+
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rvAvaliacoes"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </LinearLayout>
+
+
+
 
 </LinearLayout>
