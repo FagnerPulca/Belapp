@@ -1,6 +1,5 @@
 package br.com.belapp.belapp;
 
-import android.provider.ContactsContract;
 
 import org.junit.Test;
 
