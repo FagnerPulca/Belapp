@@ -232,7 +232,8 @@ public class AgendarServicoActivity extends AppCompatActivity implements DatePic
         HorarioAtendimento horariosDiaSelecionado = new HorarioAtendimento();
         for(HorarioAtendimento horarioAtendimento: mAgendamento.getmEstabelecimento()
                 .getmHorariosAtendimento()){
-            if(horarioAtendimento!= null && horarioAtendimento.getmDiaFuncionamento() == DateUtils.getDiaDaSemanaEmData(mEdtData.getText().toString())){
+            if(horarioAtendimento!= null
+                    && horarioAtendimento.getmDiaFuncionamento() == DateUtils.getDiaDaSemanaEmData(mEdtData.getText().toString())){
                 horariosDiaSelecionado = horarioAtendimento;
             }
         }
@@ -241,40 +242,32 @@ public class AgendarServicoActivity extends AppCompatActivity implements DatePic
 
             mHorariosDisponiveis.add(DateUtils.getFormatoHora(i/60, i%60));
         }
+        ArrayList<String> horariosOcupadosCliente = obterListaHorarios(mAgendamentosCliente,mEdtData.getText().toString());
+        ArrayList<String> horariosOcupadosProfissional = obterListaHorarios(mAgendamentosProfissional, mEdtData.getText().toString());
 
-        if (mAgendamentosCliente.size() > 0 && mAgendamentosProfissional.size() > 0) {
-            for (int i = 0; i < mAgendamentosCliente.size(); i++) {
-                for (int j = 0; j < mAgendamentosProfissional.size(); j++){
-                    // Verifica se ha agendamentos para a data selecionada
-                    if (mAgendamentosCliente.get(i).getmData().equalsIgnoreCase(mEdtData.getText().toString())
-                            && mAgendamentosProfissional.get(j).getmData().equalsIgnoreCase(mEdtData.getText().toString())){
-                        // verifica se ha horarios con
-                        if(mAgendamentosCliente.get(i).getmHora().equalsIgnoreCase(mAgendamentosProfissional.get(j).getmHora())
-                                && mHorariosDisponiveis.contains(mAgendamentosCliente.get(i).getmHora())){
-                                mHorariosDisponiveis.remove(mAgendamentosCliente.get(i).getmHora());
-                        }
-                    }
+        if(horariosOcupadosCliente.size() > 0 && horariosOcupadosProfissional.size() > 0){
+          for (String horario: horariosOcupadosProfissional){
+              if(horariosOcupadosCliente.contains(horario)){
+                  mHorariosDisponiveis.remove(horario);
+              }
+          }
+        }
+        // Caso o profissional possua agendamentos, mas o cliente nao
+        else if(mAgendamentosProfissional.size() > 0){
+
+            for (Agendamento agendamento: mAgendamentosProfissional){
+                if(agendamento.getmData().equalsIgnoreCase(mEdtData.getText().toString())
+                        && mHorariosDisponiveis.contains(agendamento.getmHora())){
+                    mHorariosDisponiveis.remove(agendamento.getmHora());
                 }
             }
         }
-        else{
-            // Caso o profissional possua agendamentos, mas o cliente nao
-            if(mAgendamentosProfissional.size() > 0){
-                for (Agendamento agendamento: mAgendamentosProfissional){
-                    if(agendamento.getmData().equalsIgnoreCase(mEdtData.getText().toString())
-                            && mHorariosDisponiveis.contains(agendamento.getmHora())){
-                        mHorariosDisponiveis.remove(agendamento.getmHora());
-                    }
-                }
-            }
-            // caso o cliente possua agendamentos, mas o profissional nao
-            else{
-
-                for (Agendamento agendamento: mAgendamentosCliente){
-                    if(agendamento.getmData().equalsIgnoreCase(mEdtData.getText().toString())
-                            && mHorariosDisponiveis.contains(agendamento.getmHora())){
-                            mHorariosDisponiveis.remove(agendamento.getmHora());
-                    }
+        // caso o cliente possua agendamentos, mas o profissional nao
+        else if(mAgendamentosCliente.size() > 0){
+            for (Agendamento agendamento: mAgendamentosCliente){
+                if(agendamento.getmData().equalsIgnoreCase(mEdtData.getText().toString())
+                        && mHorariosDisponiveis.contains(agendamento.getmHora())){
+                    mHorariosDisponiveis.remove(agendamento.getmHora());
                 }
             }
         }
@@ -321,6 +314,16 @@ public class AgendarServicoActivity extends AppCompatActivity implements DatePic
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
+    }
+
+    private ArrayList<String> obterListaHorarios(ArrayList<Agendamento> agendamentos, String data){
+        ArrayList<String> horarios = new ArrayList<>();
+        for (Agendamento a: agendamentos){
+            if(a.getmData().equals(data)){
+                horarios.add(a.getmHora());
+            }
+        }
+        return horarios;
     }
 
 }

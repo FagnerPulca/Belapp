@@ -4,9 +4,6 @@ import android.content.Intent;
 import android.support.test.rule.ActivityTestRule;
 
 import org.junit.Rule;
-
-import java.util.concurrent.atomic.AtomicBoolean;
-
 import br.com.belapp.belapp.R;
 import br.com.belapp.belapp.activities.InicialActivity;
 import cucumber.api.java.After;
