@@ -151,11 +151,6 @@ public class DefaultTest {
         onData(anything()).atPosition(1).perform(click());
     }
 
-    public void testarToolbar(){
-        onView(withId(br.com.belapp.belapp.R.id.toolbar)).check(matches(isDisplayed()));
-        onView(withText(br.com.belapp.belapp.R.string.app_name)).check(matches(withParent(withId(R.id.toolbar))));
-
-
     public void logarPorEmail(String email, String senha){
         FirebaseAuth autenticacao = ConfiguracaoFireBase.getFirebaseAutenticacao();
         if(autenticacao.getUid() == null) {
