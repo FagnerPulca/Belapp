@@ -8,7 +8,6 @@ import android.util.Log;
 
 import android.support.test.espresso.contrib.RecyclerViewActions;
 
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -19,10 +18,18 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthInvalidUserException;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+
+import java.util.ArrayList;
 
 import br.com.belapp.belapp.R;
 import br.com.belapp.belapp.activities.LoginActivity;
 import br.com.belapp.belapp.model.ConfiguracaoFireBase;
+import br.com.belapp.belapp.model.Servico;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
@@ -104,9 +111,6 @@ public class DefaultTest {
                 .perform(click());
     }
 
-
-
-
 //    public  void isActivityAtual(String activityNome) {
 //        intended(hasComponent(activityNome));
 //    }
@@ -181,4 +185,7 @@ public class DefaultTest {
                 .perform(RecyclerViewActions.actionOnItemAtPosition(posicao, click()));
 
     }
+
+
+
 }

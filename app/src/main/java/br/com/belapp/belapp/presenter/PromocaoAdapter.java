@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import br.com.belapp.belapp.R;
@@ -68,13 +67,13 @@ public class PromocaoAdapter extends RecyclerView.Adapter<PromocaoAdapter.ViewHo
 
 
         if(lista.size() != 0){
-            String Urlfoto = lista2.get(i).getFoto();
+            String Urlfoto = lista2.get(i).getmFoto();
             Picasso.get().load(Urlfoto).into(viewHolder.ivFotoPromo);
             viewHolder.itemView.setTag(lista.get(i));
 
             viewHolder.tvNomeSalao.setText(lista.get(i).getmNome());
-            viewHolder.tvTitulo.setText(lista2.get(i).getTitulo());
-            viewHolder.tvDescricao.setText(lista2.get(i).getDescricao());
+            viewHolder.tvTitulo.setText(lista2.get(i).getmTitulo());
+            viewHolder.tvDescricao.setText(lista2.get(i).getMDescricao());
 
             //viewHolder.ivFotoPromo.setImageResource(R.drawable.salao_teste);
         }

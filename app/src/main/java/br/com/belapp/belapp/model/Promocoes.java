@@ -6,60 +6,60 @@ import com.google.firebase.database.Exclude;
 public class Promocoes {
 
     //Aqui atributos e metodos da classe
-    private String idestabelecimento;
-    private String idecliente;
-    private String titulo;
-    private String descricao;
-    private String foto;
+    private String mIdestabelecimento;
+    private String mIdecliente;
+    private String mTitulo;
+    private String MDescricao;
+    private String mFoto;
 
     public Promocoes() {
     }
 
     @Exclude
     public String getIdestabelecimento() {
-        return idestabelecimento;
+        return mIdestabelecimento;
     }
 
     public void setIdestabelecimento(String idestabelecimento) {
-        this.idestabelecimento = idestabelecimento;
+        this.mIdestabelecimento = idestabelecimento;
     }
 
     @Exclude
-    public String getIdecliente() {
-        return idecliente;
+    public String getmIdecliente() {
+        return mIdecliente;
     }
 
-    public void setIdecliente(String idecliente) {
-        this.idecliente = idecliente;
+    public void setmIdecliente(String mIdecliente) {
+        this.mIdecliente = mIdecliente;
     }
 
-    public String getTitulo() {
-        return titulo;
+    public String getmTitulo() {
+        return mTitulo;
     }
 
-    public void setTitulo(String titulo) {
-        this.titulo = titulo;
+    public void setmTitulo(String mTitulo) {
+        this.mTitulo = mTitulo;
     }
 
-    public String getDescricao() {
-        return descricao;
+    public String getMDescricao() {
+        return MDescricao;
     }
 
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
+    public void setMDescricao(String MDescricao) {
+        this.MDescricao = MDescricao;
     }
 
-    public String getFoto() {
-        return foto;
+    public String getmFoto() {
+        return mFoto;
     }
 
-    public void setFoto(String foto) {
-        this.foto = foto;
+    public void setmFoto(String mFoto) {
+        this.mFoto = mFoto;
     }
 
     public void salvar(){
         DatabaseReference databaseReference = ConfiguracaoFireBase.getFirebase();
-        databaseReference.child("promocoes").child(getIdecliente()).child(getIdestabelecimento()).setValue(this);
+        databaseReference.child("promocoes").child(getmIdecliente()).child(getIdestabelecimento()).setValue(this);
 
     }
 }

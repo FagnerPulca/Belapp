@@ -46,8 +46,7 @@ public class PromocoesActivity extends AppCompatActivity implements PromocaoAdap
     private double latitude;
     private double longitude;
     private DatabaseReference databaseReference;
-    private String curtida = "1";
-    String datausuario="";
+
 
     private RecyclerView.Adapter myAdapter;
 
@@ -65,10 +64,6 @@ public class PromocoesActivity extends AppCompatActivity implements PromocaoAdap
         toolbar.setTitleTextColor(Color.WHITE);
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
         setSupportActionBar(toolbar);
-
-        ids = new ArrayList<>();
-
-        ids = getIntent().getStringArrayListExtra("ids");
 
 
         latitude = getIntent().getDoubleExtra("latitude", -8);
@@ -123,15 +118,16 @@ public class PromocoesActivity extends AppCompatActivity implements PromocaoAdap
                         estabelecimento.getmLatitude(), estabelecimento.getmLongitude()));
                 estabelecimentos.add(estabelecimento);
 
-                if (!ids.isEmpty()) {
-                    for (int i = 0; i < ids.size(); i++) {
+
+
+
 
                         verificaPromocao(estabelecimento.getmEid(), estabelecimento);
-                        break;
 
 
-                    }
-                }
+
+
+
 
                 mProgressDialog.dismiss();
             }
