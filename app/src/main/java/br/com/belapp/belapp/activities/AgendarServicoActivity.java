@@ -27,8 +27,6 @@ import com.google.firebase.database.Query;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -75,7 +73,6 @@ public class AgendarServicoActivity extends AppCompatActivity implements DatePic
             public void onClick(View v) {
                 // Abre a janela de diálogo para a escolha da data.
                 Calendar now = Calendar.getInstance();
-                Calendar[] days = {, };
                 DatePickerDialog dpd = DatePickerDialog.newInstance(
                         AgendarServicoActivity.this,
                         now.get(Calendar.YEAR),

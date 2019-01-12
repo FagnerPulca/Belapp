@@ -5,14 +5,10 @@ import android.support.annotation.NonNull;
 import android.support.test.espresso.Espresso;
 
 import android.support.test.espresso.contrib.RecyclerViewActions;
-import android.support.test.espresso.core.internal.deps.guava.collect.Iterables;
-import android.support.test.runner.lifecycle.ActivityLifecycleMonitorRegistry;
-import android.support.test.runner.lifecycle.Stage;
-import android.util.Log;
 
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
+
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -21,15 +17,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 
-import br.com.belapp.belapp.R;
-import br.com.belapp.belapp.activities.LoginActivity;
 import br.com.belapp.belapp.model.ConfiguracaoFireBase;
 
-import java.util.Collection;
 
-import br.com.belapp.belapp.R;
-
-import static android.support.test.InstrumentationRegistry.getInstrumentation;
 import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
@@ -41,9 +31,7 @@ import static android.support.test.espresso.matcher.RootMatchers.withDecorView;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.isRoot;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.matcher.ViewMatchers.withParent;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
-import static android.support.test.runner.lifecycle.Stage.RESUMED;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.anything;
 import static org.hamcrest.Matchers.not;
