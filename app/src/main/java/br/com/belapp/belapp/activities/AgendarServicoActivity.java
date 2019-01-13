@@ -72,7 +72,6 @@ public class AgendarServicoActivity extends AppCompatActivity implements DatePic
             public void onClick(View v) {
                 // Abre a janela de diálogo para a escolha da data.
                 Calendar now = Calendar.getInstance();
-                Calendar[] days = {, };
                 DatePickerDialog dpd = DatePickerDialog.newInstance(
                         AgendarServicoActivity.this,
                         now.get(Calendar.YEAR),
@@ -317,5 +316,5 @@ public class AgendarServicoActivity extends AppCompatActivity implements DatePic
         }
         return horariosDiaSelecionado;
     }
-
 }
+

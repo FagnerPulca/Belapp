@@ -126,12 +126,11 @@
     <string name="app_selecionar">Selecionar</string>
     <string name="app_filtros">Filtros</string>
 
+
     <string name="app_confirmacao">Confirmação</string>
     <string name="app_pergunta_confirmacao_cancelamento_agendamento">Confirma a intenção de cancelar o agendamento?</string>
 
     <string name="adicionando_favorito">adicionado aos favoritos</string>
     <string name="retirando_favoritoo">Retirado dos faforitos</string>
-
-
 
 </resources>
