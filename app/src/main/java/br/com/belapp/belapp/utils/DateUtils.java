@@ -75,7 +75,7 @@ public class DateUtils {
         return formatador.format(data.getTime());
     }
 
-     * Este Método retorna o dia da semana referente a data informado no
+     /* Este Método retorna o dia da semana referente a data informado no
      * parâmetro
      *
      * 1º dia da semana retorna 1; Ultimo dias da semana retorna 7;
