@@ -36,16 +36,15 @@ import static br.com.belapp.belapp.database.utils.FirebaseUtils.getUsuarioAtual;
 
 public class PromocoesActivity extends AppCompatActivity implements PromocaoAdapter.ItemClicked  {
 
-    private ArrayList<Estabelecimento> estabelecimentos;
-    private ArrayList<Estabelecimento> resultados;
-    private ArrayList<Promocoes> resultatoP;
-    private ArrayList<String> ids;
-    private String estab;
-    private String idUser;
-    private String endereco;
-    private double latitude;
-    private double longitude;
-    private DatabaseReference databaseReference;
+    private ArrayList<Estabelecimento> mEstabelecimentos;
+    private ArrayList<Estabelecimento> mResultados;
+    private ArrayList<Promocoes> mResultatoP;
+    private String mEstab;
+    private String mIdUser;
+    private String mEndereco;
+    private double mLatitude;
+    private double mLongitude;
+    private DatabaseReference mDatabaseReference;
 
 
     private RecyclerView.Adapter myAdapter;
@@ -66,8 +65,8 @@ public class PromocoesActivity extends AppCompatActivity implements PromocaoAdap
         setSupportActionBar(toolbar);
 
 
-        latitude = getIntent().getDoubleExtra("latitude", -8);
-        longitude = getIntent().getDoubleExtra("longitude", -36);
+        mLatitude = getIntent().getDoubleExtra("latitude", -8);
+        mLongitude = getIntent().getDoubleExtra("longitude", -36);
 
         RecyclerView recyclerView = findViewById(R.id.rvPromocoes);
         recyclerView.setHasFixedSize(true);
@@ -76,11 +75,11 @@ public class PromocoesActivity extends AppCompatActivity implements PromocaoAdap
         recyclerView.setLayoutManager(layoutManager);
         databaseReference = ConfiguracaoFireBase.getFirebase();
 
-        estabelecimentos = new ArrayList<>();
-        resultados = new ArrayList<>();
-        resultatoP = new ArrayList<>();
+        mEstabelecimentos = new ArrayList<>();
+        mResultados = new ArrayList<>();
+        mResultatoP = new ArrayList<>();
 
-        myAdapter = new PromocaoAdapter(this, resultados,resultatoP);
+        myAdapter = new PromocaoAdapter(this,  mResultados, mResultadoP);
         recyclerView.setAdapter(myAdapter);
         buscar();
         dialogBuscando();
@@ -99,35 +98,25 @@ public class PromocoesActivity extends AppCompatActivity implements PromocaoAdap
     @Override
     public void onItemClicked(int index) {
         Intent intent = new Intent(PromocoesActivity.this, PagSalaoActivity.class);
-        intent.putExtra("salao", resultados.get(index).getmEid());
-        intent.putExtra("nome", resultados.get(index).getmNome());
+        intent.putExtra("salao", mResultados.get(index).getmEid());
+        intent.putExtra("nome", mResultados.get(index).getmNome());
         Bundle bundle = new Bundle();
-        bundle.putSerializable("estabelecimento", resultados.get(index));
+        bundle.putSerializable("estabelecimento", mResultados.get(index));
         intent.putExtras(bundle);
         startActivity(intent);
-        Toast.makeText(PromocoesActivity.this, resultados.get(index).getmNome(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(PromocoesActivity.this, mResultados.get(index).getmNome(), Toast.LENGTH_SHORT).show();
     }
 
     private void buscar() {
-        Query query = FirebaseDatabase.getInstance().getReference("estabelecimentos");
+        Query query = FirebaseDatabase.getInstance().getReference("e ");   
         query.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 Estabelecimento estabelecimento = dataSnapshot.getValue(Estabelecimento.class);
-                estabelecimento.setmDistancia(ApplicationClass.calculaDistancia(latitude, longitude,
+                estabelecimento.setmDistancia(ApplicationClass.calculaDistancia(mLatitude, mLongitude,
                         estabelecimento.getmLatitude(), estabelecimento.getmLongitude()));
-                estabelecimentos.add(estabelecimento);
-
-
-
-
-
-                        verificaPromocao(estabelecimento.getmEid(), estabelecimento);
-
-
-
-
-
+                        mEstabelecimentos.add(estabelecimento);
+                        verificaPromocao(mEstabelecimentos.getmEid(), estabelecimento);
 
                 mProgressDialog.dismiss();
             }
@@ -167,15 +156,15 @@ public class PromocoesActivity extends AppCompatActivity implements PromocaoAdap
 
 
         databaseReference.child("promocoes")
-                .child(idUser)
+                .child(mIdUser)
                 .child(idSalao)
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         Promocoes p = dataSnapshot.getValue(Promocoes.class);
                         if (dataSnapshot.getValue() != null) {
-                                resultatoP.add(p);
-                                resultados.add(e);
+                                mResultatoP.add(p);
+                                mResultados.add(e);
                                 myAdapter.notifyDataSetChanged();
 
 
