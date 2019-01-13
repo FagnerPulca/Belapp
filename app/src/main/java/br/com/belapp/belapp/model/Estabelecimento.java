@@ -23,6 +23,7 @@ public class Estabelecimento implements Serializable {
     private String mCidade;
     private String mComplemento;
     private String mCep;
+
     private List<HorarioAtendimento> mHorariosAtendimento;
 
     private String mTelefone;

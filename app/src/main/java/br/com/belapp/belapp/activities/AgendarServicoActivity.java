@@ -1,12 +1,10 @@
 package br.com.belapp.belapp.activities;
 
-import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
-
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
@@ -23,6 +21,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -317,5 +316,5 @@ public class AgendarServicoActivity extends AppCompatActivity implements DatePic
         }
         return horariosDiaSelecionado;
     }
-
 }
+

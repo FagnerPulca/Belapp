@@ -90,4 +90,81 @@ public class DateUtils {
         return c;
     }
 
+    /**
+     * @param data no formato DD/MM/YYYY a ser verificada
+     * @return true se é data futura
+     */
+    public static boolean isDataFutura(String data){
+        return converterDataEmCalendar(data).after(converterDataEmCalendar(getDataAtual()));
+    }
+
+    /**
+     * @param data no formato DD/MM/YYYY a ser verificada
+     * @return true se é data presente
+     */
+    public static boolean isDataPresente(String data){
+        return getDiferencaEntreDuasDatasEspecificas(getDataAtual(), data) == 0;
+    }
+
+    /**
+     * @param dias a serem somados na data
+     * @param data base no formado DD/MM/YYYY
+     * @return Data atualizada data + dias no formado DD/MM/YYYY
+     */
+    public static String getSomaDiasComDataEspecifica(int dias, String data) {
+            Calendar c = Calendar.getInstance();
+            @SuppressLint("SimpleDateFormat") SimpleDateFormat sd = new SimpleDateFormat("dd/MM/yyyy");
+            String[] componentesData = data.split("/");
+            c.set(Integer.parseInt(componentesData[2]), Integer.parseInt(componentesData[1]) - 1, Integer.parseInt(componentesData[0]) + dias);
+            return sd.format(c.getTime());
+    }
+
+    /**
+     * @param dias a serem subtraídos da data base
+     * @param data base no formado DD/MM/YYYY
+     * @return Data atualizada data - dias no formado DD/MM/YYYY
+     */
+    public static String getSubtracaoDiasComDataEspecifica(int dias, String data) {
+
+        Calendar c = Calendar.getInstance();
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat sd = new SimpleDateFormat("dd/MM/yyyy");
+        String[] componentesData = data.split("/");
+        c.set(Integer.parseInt(componentesData[2]), Integer.parseInt(componentesData[1]) - 1, Integer.parseInt(componentesData[0]) - dias);
+        return sd.format(c.getTime());
+
+    }
+
+
+    public static int getDiferencaEntreDuasDatasEspecificas(String data1, String data2) {
+        Calendar c1 = Calendar.getInstance();
+        Calendar c2 = Calendar.getInstance();
+        String[] componenetesData1 = data1.split("/");
+        String[] componenetesData2 = data2.split("/");
+        c1.set(
+                Integer.parseInt(componenetesData1[2]),
+                Integer.parseInt(componenetesData1[1]) - 1,
+                Integer.parseInt(componenetesData1[0]));
+        c2.set(
+                Integer.parseInt(componenetesData2[2]),
+                Integer.parseInt(componenetesData2[1]) - 1,
+                Integer.parseInt(componenetesData2[0]));
+
+        double milles = c2.getTimeInMillis() - c1.getTimeInMillis();
+        double seconds = milles / 1000;
+        double minutes = seconds / 60;
+        double hours = minutes / 60;
+        double days = hours / 24;
+
+        return new Double(Math.floor(days)).intValue();
+    }
+
+    /**
+     * @param data no formato dd/mm/yyyy
+     * @param mes código do mês
+     * @return true se a data pertence ao mês
+     */
+    public static boolean checarSeDataPertenceAoMes(String data, int mes){
+        return (Integer.parseInt(data.split("/")[1]) == mes);
+    }
+
 }
