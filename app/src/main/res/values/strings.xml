@@ -28,6 +28,7 @@
     <string name="error_selecione_um_horario">Selecione um horário para o agendamento</string>
     <string name="error_nao_ha_horario_disponivel_para_data">Não há horários disponíveis para a data selecionada</string>
     <string name="error_estabelecimento_fechado_na_data">O estabelecimento estará fechado na data selecionada</string>
+    <string name="error_nao_ha_resultados">Não há resultados para os filtros selecionados.</string>
 
 
     <string name="permission_rationale">"Contacts permissions are needed for providing email
@@ -123,6 +124,9 @@
     <string name="app_selecionar_data">Selecionar Data:</string>
     <string name="app_selecionar_horario">Selecionar Horário:</string>
     <string name="app_selecionar">Selecionar</string>
+    <string name="app_filtros">Filtros</string>
+
+
     <string name="app_confirmacao">Confirmação</string>
     <string name="app_pergunta_confirmacao_cancelamento_agendamento">Confirma a intenção de cancelar o agendamento?</string>
 
@@ -131,6 +135,5 @@
     <string name="app_reagendar">Reagendar</string>
     <string name="app_alterar_servico">Alterar Serviço</string>
     <string name="app_desistir">Desistir</string>
-
 
 </resources>

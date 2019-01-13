@@ -77,49 +77,47 @@ public class AgendamentoActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
-        if(!DateUtils.isDataPresente(agendamento.getmData())
-                && !DateUtils.isDataFutura(agendamento.getmData())){
+        if(DateUtils.isDataPresente(agendamento.getmData())
+                || DateUtils.isDataFutura(agendamento.getmData())){
+
+            tvStatus.setText(StatusAgendamentoEnum.AGENDADO.getStatus());
+            tvStatus.setTextColor(Color.GREEN -5000);
+        }
+        else{
             tvStatus.setText(StatusAgendamentoEnum.CONCLUIDO.getStatus());
             tvStatus.setTextColor(Color.BLUE);
             btnCancelar.setVisibility(View.GONE);
             btnReagendar.setVisibility(View.GONE);
         }
-        else{
-            tvStatus.setText(StatusAgendamentoEnum.AGENDADO.getStatus());
-            tvStatus.setTextColor(Color.GREEN -5000);
-        }
     }
 
     public void confirmarCancelamento() {
-        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                switch (which) {
-                    case DialogInterface.BUTTON_POSITIVE:
-                        // Botão sim foi clicado
-                        Agendamento agendamento = (Agendamento) getIntent().getSerializableExtra("agendamento");
-                        AgendamentoDAO dao = new AgendamentoDAO();
-                        DatabaseReference.CompletionListener completionListener = new DatabaseReference.CompletionListener() {
-                            @Override
-                            public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
-                                Toast.makeText(AgendamentoActivity.this,
-                                        getText(R.string.sucess_agendamento_cancelado), Toast.LENGTH_LONG).show();
-                            }
+        DialogInterface.OnClickListener dialogClickListener = (dialog, which) -> {
+            switch (which) {
+                case DialogInterface.BUTTON_POSITIVE:
+                    // Botão sim foi clicado
+                    Agendamento agendamento = (Agendamento) getIntent().getSerializableExtra("agendamento");
+                    AgendamentoDAO dao = new AgendamentoDAO();
+                    DatabaseReference.CompletionListener completionListener = new DatabaseReference.CompletionListener() {
+                        @Override
+                        public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
+                            Toast.makeText(AgendamentoActivity.this,
+                                    getText(R.string.sucess_agendamento_cancelado), Toast.LENGTH_LONG).show();
+                        }
 
-                        };
-                        dao.remove(agendamento, completionListener);
-                        onBackPressed();
+                    };
+                    dao.remove(agendamento, completionListener);
+                    onBackPressed();
 
-                        break;
+                    break;
 
-                    case DialogInterface.BUTTON_NEGATIVE:
-                        // Botão não foi clicado
-                        Toast.makeText(AgendamentoActivity.this,
-                                getText(R.string.info_agendamento_nao_cancelado), Toast.LENGTH_LONG).show();
-                        break;
-                    default:
-                        break;
-                }
+                case DialogInterface.BUTTON_NEGATIVE:
+                    // Botão não foi clicado
+                    Toast.makeText(AgendamentoActivity.this,
+                            getText(R.string.info_agendamento_nao_cancelado), Toast.LENGTH_LONG).show();
+                    break;
+                default:
+                    break;
             }
         };
 
