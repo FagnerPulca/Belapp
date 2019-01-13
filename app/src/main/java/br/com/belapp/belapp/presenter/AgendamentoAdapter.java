@@ -33,25 +33,51 @@ public class AgendamentoAdapter extends RecyclerView.Adapter<AgendamentoAdapter.
 
     public class ViewHolder extends RecyclerView.ViewHolder{
 
-        TextView tvDataAgendamento;
-        TextView tvHoraAgendamento;
-        TextView tvEstabelecimentoAgendamento;
-        TextView tvProfissionalAgendamento;
-        TextView tvServicoAgendamento;
-        TextView tvStatusAgendamento;
+        private TextView mTvDataAgendamento;
+        private TextView mTvHoraAgendamento;
+        private TextView mTvEstabelecimentoAgendamento;
+        private TextView mTvProfissionalAgendamento;
+        private TextView mTvServicoAgendamento;
+        private TextView mTvStatusAgendamento;
 
         private ViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            tvDataAgendamento = itemView.findViewById(R.id.tvDataAgendada);
-            tvHoraAgendamento = itemView.findViewById(R.id.tvHoraAgendamento);
-            tvEstabelecimentoAgendamento = itemView.findViewById(R.id.tvEstabelecimentoAgendado);
-            tvProfissionalAgendamento = itemView.findViewById(R.id.tvProfissionalAgendado);
-            tvServicoAgendamento = itemView.findViewById(R.id.tvServicoAgendado);
-            tvStatusAgendamento = itemView.findViewById(R.id.tvStatusAgendamento);
+            mTvDataAgendamento = itemView.findViewById(R.id.tvDataAgendada);
+            mTvHoraAgendamento = itemView.findViewById(R.id.tvHoraAgendamento);
+            mTvEstabelecimentoAgendamento = itemView.findViewById(R.id.tvEstabelecimentoAgendado);
+            mTvProfissionalAgendamento = itemView.findViewById(R.id.tvProfissionalAgendado);
+            mTvServicoAgendamento = itemView.findViewById(R.id.tvServicoAgendado);
+            mTvStatusAgendamento = itemView.findViewById(R.id.tvStatusAgendamento);
 
-            itemView.setOnClickListener(v -> activity.onItemClicked(agendamentos.indexOf(v.getTag())));
+            itemView.setOnClickListener(v ->
+                    activity.onItemClicked(agendamentos.indexOf((Agendamento) v.getTag())));
         }
+
+        private TextView getmTvServicoAgendamento() {
+            return mTvServicoAgendamento;
+        }
+
+        private TextView getmTvProfissionalAgendamento() {
+            return mTvProfissionalAgendamento;
+        }
+
+        private TextView getmTvHoraAgendamento() {
+            return mTvHoraAgendamento;
+        }
+
+        private TextView getmTvEstabelecimentoAgendamento() {
+            return mTvEstabelecimentoAgendamento;
+        }
+
+        private TextView getmTvDataAgendamento() {
+            return mTvDataAgendamento;
+        }
+
+        private TextView getmTvStatusAgendamento() {
+            return mTvStatusAgendamento;
+        }
+
     }
 
 
@@ -66,24 +92,32 @@ public class AgendamentoAdapter extends RecyclerView.Adapter<AgendamentoAdapter.
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
         Agendamento agendamento = agendamentos.get(i);
-
-        viewHolder.itemView.setTag(agendamentos.get(i));
-        viewHolder.tvDataAgendamento.setText(String.format(Locale.getDefault(), "Data: %s",
+        if (agendamento.getmId() != null) {
+            viewHolder.itemView.setTag(agendamentos.get(i));
+            viewHolder.getmTvDataAgendamento().setText(String.format(Locale.getDefault(), "Data: %s",
                     agendamento.getmData()));
-        viewHolder.tvHoraAgendamento.setText(String.format(Locale.getDefault(), "Horario: %s",
+            viewHolder.getmTvHoraAgendamento().setText(String.format(Locale.getDefault(), "Horario: %s",
                     agendamento.getmHora()));
-        viewHolder.tvEstabelecimentoAgendamento.setText(agendamento.getmEstabelecimento().getmNome());
-        viewHolder.tvServicoAgendamento.setText(agendamento.getmServico().getmNome());
-        viewHolder.tvProfissionalAgendamento.setText(
+            viewHolder.getmTvEstabelecimentoAgendamento().setText(agendamento.getmEstabelecimento().getmNome());
+            viewHolder.getmTvServicoAgendamento().setText(agendamento.getmServico().getmNome());
+            viewHolder.getmTvProfissionalAgendamento().setText(
                     String.format(Locale.getDefault(), "Profissional: %s", agendamento.getmProfissional().getNome()));
-        if (!DateUtils.isDataFutura(agendamento.getmData()) && !DateUtils.isDataPresente(agendamento.getmData())) {
-                viewHolder.tvStatusAgendamento.setText(String.format("Status: %s", "Concluído"));
-                viewHolder.tvStatusAgendamento.setTextColor(Color.RED);
-        } else {
-            viewHolder.tvStatusAgendamento.setText(String.format("Status: %s", "Agendado"));
-            viewHolder.tvStatusAgendamento.setTextColor(Color.BLUE);
+            if (!DateUtils.isDataFutura(agendamento.getmData()) && !DateUtils.isDataPresente(agendamento.getmData())) {
+                viewHolder.getmTvStatusAgendamento().setText(String.format("Status: %s", "Concluído"));
+                viewHolder.getmTvStatusAgendamento().setTextColor(Color.RED);
+            } else if (DateUtils.isDataFutura(agendamento.getmData()) || DateUtils.isDataPresente(agendamento.getmData())) {
+                viewHolder.getmTvStatusAgendamento().setText(String.format("Status: %s", "Agendado"));
+                viewHolder.getmTvStatusAgendamento().setTextColor(Color.BLUE);
+            }
         }
-
+        else{
+            viewHolder.getmTvStatusAgendamento().setVisibility(View.GONE);
+            viewHolder.getmTvProfissionalAgendamento().setVisibility(View.GONE);
+            viewHolder.getmTvEstabelecimentoAgendamento().setVisibility(View.GONE);
+            viewHolder.getmTvHoraAgendamento().setVisibility(View.GONE);
+            viewHolder.getmTvDataAgendamento().setVisibility(View.GONE);
+            viewHolder.getmTvServicoAgendamento().setText(agendamento.getmServico().getmNome());
+        }
 
     }
 

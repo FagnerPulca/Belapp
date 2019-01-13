@@ -3,10 +3,11 @@ package br.com.belapp.belapp;
 
 import org.junit.Test;
 
-import static org.junit.Assert.*;
-
-
 import br.com.belapp.belapp.utils.DateUtils;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class DateUtilsUnitTest {
 
@@ -98,4 +99,16 @@ public class DateUtilsUnitTest {
         assertFalse(DateUtils.checarSeDataPertenceAoMes(data, mes2));
     }
 
+
+    @Test
+    public void verificarIsDataPresente(){
+        String data = "11/09/2001";
+        String dataAtual = DateUtils.getDataAtual();
+        boolean resposta1 = DateUtils.isDataPresente(data);
+        boolean resposta2 =DateUtils.isDataPresente(dataAtual);
+        assertFalse(resposta1);
+
+        assertTrue(resposta2);
+
+    }
 }

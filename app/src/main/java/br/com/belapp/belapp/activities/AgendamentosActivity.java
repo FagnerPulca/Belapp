@@ -138,6 +138,10 @@ public class AgendamentosActivity extends AppCompatActivity implements Agendamen
             agendamento.setmServico(servico);
             auxList.add(agendamento);
         }
+        else{
+            mAgendamentos = auxList;
+        }
+
         mMyAdapter = new AgendamentoAdapter(AgendamentosActivity.this, auxList);
         mRecyclerView.setAdapter(mMyAdapter);
         mMyAdapter.notifyDataSetChanged();

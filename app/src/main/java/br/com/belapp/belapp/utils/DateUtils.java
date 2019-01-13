@@ -103,7 +103,7 @@ public class DateUtils {
      * @return true se é data presente
      */
     public static boolean isDataPresente(String data){
-        return converterDataEmCalendar(data).equals(converterDataEmCalendar(getDataAtual()));
+        return getDiferencaEntreDuasDatasEspecificas(getDataAtual(), data) == 0;
     }
 
     /**

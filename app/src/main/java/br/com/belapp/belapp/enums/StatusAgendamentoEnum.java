@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public enum StatusAgendamentoEnum {
 
     AGENDADO("Serviços Agendados", 1),
-    CANCELADO("Serviços Concluídos", 2),
+    CONCLUIDO("Serviços Concluídos", 2),
     TODOS("Todos", 0);
 
     private int codigo;
