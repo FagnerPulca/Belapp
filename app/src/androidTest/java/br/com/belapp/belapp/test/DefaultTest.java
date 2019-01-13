@@ -13,8 +13,16 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthInvalidUserException;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+
+import java.util.ArrayList;
 
 import br.com.belapp.belapp.model.ConfiguracaoFireBase;
+import br.com.belapp.belapp.model.Servico;
 
 import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
@@ -174,4 +182,13 @@ public class DefaultTest {
         FirebaseAuth usuario = ConfiguracaoFireBase.getFirebaseAutenticacao();
         if(usuario.getUid() != null) usuario.signOut();
     }
+
+    public void selecionarItemReciclerView(int idRecicledView, int posicao){
+        onView(withId(idRecicledView))
+                .perform(RecyclerViewActions.actionOnItemAtPosition(posicao, click()));
+
+    }
+
+
+
 }
