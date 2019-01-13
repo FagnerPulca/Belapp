@@ -93,7 +93,7 @@ public class AgendamentoAdapter extends RecyclerView.Adapter<AgendamentoAdapter.
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
         Agendamento agendamento = agendamentos.get(i);
-        if (agendamento.getmId() != null) {
+        if (agendamento.getmId() != null && !agendamento.getmId().equals("")) {
             viewHolder.itemView.setTag(agendamentos.get(i));
             viewHolder.getmTvDataAgendamento().setText(String.format(Locale.getDefault(), "Data: %s",
                     agendamento.getmData()));

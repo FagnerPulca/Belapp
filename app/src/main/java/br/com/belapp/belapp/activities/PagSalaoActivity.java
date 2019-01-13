@@ -11,7 +11,6 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -66,10 +65,8 @@ public class PagSalaoActivity extends AppCompatActivity implements ServicoAdapte
         mUserId = getUsuarioAtual().getUid();
 
 
-        ImageButton ibServicos = findViewById(R.id.ibServicos);
         ImageButton ibInformacoes = findViewById(R.id.ibInformacoes);
         ImageButton ibAvaliacoes = findViewById(R.id.ibAvaliacoes);
-        ImageView ivFotoSalao = findViewById(R.id.ivFotoSalao);
         TextView tvNomeSalao = findViewById(R.id.tvNomeSalao);
         mLikeButton = findViewById(R.id.star_button);
 

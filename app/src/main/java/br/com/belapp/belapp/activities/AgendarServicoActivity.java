@@ -38,7 +38,7 @@ import br.com.belapp.belapp.utils.StringUtils;
 
 public class AgendarServicoActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener{
 
-    private static final String TAG = "belapp.activities";
+//    private static final String TAG = "belapp.activities";
     private EditText mEdtData;
     private Agendamento mAgendamento;
     private ArrayList<Agendamento> mAgendamentosCliente;
@@ -58,37 +58,7 @@ public class AgendarServicoActivity extends AppCompatActivity implements DatePic
         toolbar.setTitleTextColor(Color.WHITE);
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
         setSupportActionBar(toolbar);
-        mEdtData = findViewById(R.id.edtData);
-
-        // Atribui a ação de escolha de data.
-        mEdtData.setOnClickListener(new View.OnClickListener() {
-            /**
-             * Chamado quando  a view é clicada.
-             *
-             * @param v The view that was clicked.
-             */
-            @Override
-            public void onClick(View v) {
-                // Abre a janela de diálogo para a escolha da data.
-                Calendar now = Calendar.getInstance();
-                DatePickerDialog dpd = DatePickerDialog.newInstance(
-                        AgendarServicoActivity.this,
-                        now.get(Calendar.YEAR),
-                        now.get(Calendar.MONTH),
-                        now.get(Calendar.DAY_OF_MONTH)
-                );
-                dpd.setThemeDark(false);
-                dpd.vibrate(true);
-                dpd.dismissOnPause(true);
-                dpd.setFirstDayOfWeek(Calendar.MONDAY);
-                dpd.setMinDate(now);
-                dpd.setAccentColor(Color.parseColor("#260CE8"));
-                //noinspection deprecation
-                dpd.show(getFragmentManager(), "Selecione a data");
-            }
-
-
-        });
+        configurarDatePicker();
 
         mAgendamento = (Agendamento) getIntent().getSerializableExtra("agendamento");
         TextView tvServico = findViewById(R.id.tvServicoAgendar);
@@ -125,8 +95,7 @@ public class AgendarServicoActivity extends AppCompatActivity implements DatePic
         btnAgendar.setOnClickListener(view -> {
             try {
                 validar();
-                mAgendamento.setmData(mEdtData.getText().toString());
-                mAgendamento.setmHora(((String) mSpHorariosDisponiveis.getSelectedItem()));
+                adicionarDataEHoraNoAgendamento();
                 AgendamentoDAO dao = new AgendamentoDAO();
                 if(mAgendamento.getmId() != null){
                     dao.update(mAgendamento);
@@ -145,14 +114,7 @@ public class AgendarServicoActivity extends AppCompatActivity implements DatePic
             }
         });
 
-        mSpHorariosDisponiveis = findViewById(R.id.spHorariosAgendar);
-
-        mHorariosDisponiveis = new ArrayList<>();
-        mHorariosDisponiveis.add(getString(R.string.app_selecionar));
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_spinner_item, new ArrayList<>(mHorariosDisponiveis));
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mSpHorariosDisponiveis.setAdapter(dataAdapter);
+        configurarSpinnerHorarios();
 
         buscarAgendamentosCliente();
         bucarAgendamentosProfissional();
@@ -165,6 +127,56 @@ public class AgendarServicoActivity extends AppCompatActivity implements DatePic
         else{
             btnAlterarServico.setVisibility(View.GONE);
         }
+    }
+
+    private void configurarSpinnerHorarios() {
+        mSpHorariosDisponiveis = findViewById(R.id.spHorariosAgendar);
+
+        mHorariosDisponiveis = new ArrayList<>();
+        mHorariosDisponiveis.add(getString(R.string.app_selecionar));
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_spinner_item, new ArrayList<>(mHorariosDisponiveis));
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mSpHorariosDisponiveis.setAdapter(dataAdapter);
+    }
+
+    private void adicionarDataEHoraNoAgendamento() {
+        mAgendamento.setmData(mEdtData.getText().toString());
+        mAgendamento.setmHora(((String) mSpHorariosDisponiveis.getSelectedItem()));
+    }
+
+    private void configurarDatePicker() {
+        mEdtData = findViewById(R.id.edtData);
+
+        // Atribui a ação de escolha de data.
+        mEdtData.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Chamado quando  a view é clicada.
+             *
+             * @param v The view that was clicked.
+             */
+            @Override
+            public void onClick(View v) {
+                // Abre a janela de diálogo para a escolha da data.
+                Calendar now = Calendar.getInstance();
+                DatePickerDialog dpd = DatePickerDialog.newInstance(
+                        AgendarServicoActivity.this,
+                        now.get(Calendar.YEAR),
+                        now.get(Calendar.MONTH),
+                        now.get(Calendar.DAY_OF_MONTH)
+                );
+                dpd.setThemeDark(false);
+                dpd.vibrate(true);
+                dpd.dismissOnPause(true);
+                dpd.setFirstDayOfWeek(Calendar.MONDAY);
+                dpd.setMinDate(now);
+                dpd.setAccentColor(Color.parseColor("#260CE8"));
+                //noinspection deprecation
+                dpd.show(getFragmentManager(), "Selecione a data");
+            }
+
+
+        });
     }
 
     private void bucarAgendamentosProfissional() {
@@ -370,7 +382,7 @@ public class AgendarServicoActivity extends AppCompatActivity implements DatePic
             if(horarioAtendimento != null) {
                 dias.add(horarioAtendimento.getmDiaFuncionamento());
             }
-        };
+        }
         return dias;
     }
 
