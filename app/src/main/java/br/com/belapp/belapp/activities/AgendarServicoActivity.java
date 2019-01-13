@@ -139,7 +139,7 @@ public class AgendarServicoActivity extends AppCompatActivity implements DatePic
                 Intent intent = new Intent();
                 intent.setClass(AgendarServicoActivity.this, ClienteLogadoActivity.class);
                 startActivity(intent);
-                finish();
+//                finish();
             } catch (ValidationException e) {
                 Toast.makeText(AgendarServicoActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
             }
@@ -240,13 +240,17 @@ public class AgendarServicoActivity extends AppCompatActivity implements DatePic
     @Override
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
         mEdtData.setText(String.format(Locale.getDefault(), "%d/%d/%d", dayOfMonth, (monthOfYear+1), year));
-        if(mAgendamento.getmData() != null && !mEdtData.getText().toString().equals(mAgendamento.getmData())){
-            mDataNaoMudou = false;
-        }
         filtrarHorarios();
     }
 
+    private void checarMudancaData() {
+        if(mAgendamento.getmData() != null && !mEdtData.getText().toString().equals(mAgendamento.getmData())){
+            mDataNaoMudou = false;
+        }
+    }
+
     public void filtrarHorarios() {
+        checarMudancaData();
         mHorariosDisponiveis.clear();
         mHorariosDisponiveis.add(getString(R.string.app_selecionar));
 
@@ -346,4 +350,31 @@ public class AgendarServicoActivity extends AppCompatActivity implements DatePic
         return horariosDiaSelecionado;
     }
 
+    /**
+     * Métodos para auxilixar nos testes envoltendo data nesta activity
+     *
+     */
+
+    public void setData(String data){
+        runOnUiThread(() -> {
+            mEdtData.setText(data);
+            filtrarHorarios();
+
+        });
+
+    }
+
+    public Collection<Integer> getDiasFuncionamento(){
+        Collection<Integer> dias = new ArrayList<>();
+        for(HorarioAtendimento horarioAtendimento: mAgendamento.getmEstabelecimento().getmHorariosAtendimento()){
+            if(horarioAtendimento != null) {
+                dias.add(horarioAtendimento.getmDiaFuncionamento());
+            }
+        };
+        return dias;
+    }
+
+    public String getDataAgendamento(){
+        return mAgendamento.getmData();
+    }
 }

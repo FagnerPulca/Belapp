@@ -86,13 +86,22 @@ public class PagSalaoActivity extends AppCompatActivity implements ServicoAdapte
         mRecyclerView.setLayoutManager(mLayoutManager);
         if(getIntent().hasExtra("estabelecimento") ){
             mEstabelecimento = (Estabelecimento) getIntent().getSerializableExtra("estabelecimento");
+            mSalao = mEstabelecimento.getmEid();
+            tvNomeSalao.setText(mEstabelecimento.getmNome());
         }
         if(getIntent().hasExtra("agendamento")){
             mAgendamento = (Agendamento) getIntent().getSerializableExtra("agendamento");
             mEstabelecimento = mAgendamento.getmEstabelecimento();
+            mSalao = mEstabelecimento.getmEid();
+            tvNomeSalao.setText(mEstabelecimento.getmNome());
         }
-        mSalao = mEstabelecimento.getmEid();
-        tvNomeSalao.setText(mEstabelecimento.getmNome());
+        if(getIntent().hasExtra("salao")){
+            mSalao = getIntent().getStringExtra("salao");
+        }
+        if(getIntent().hasExtra("nome")){
+            tvNomeSalao.setText(getIntent().getStringExtra("nome"));
+        }
+
         mServicos = new ArrayList<>();
 
         mMyAdapter = new ServicoAdapter(this, mServicos);
@@ -186,7 +195,7 @@ public class PagSalaoActivity extends AppCompatActivity implements ServicoAdapte
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 Servico servico = dataSnapshot.getValue(Servico.class);
-                if (servico.getmEstabId().equals(mEstabelecimento.getmEid())){
+                if (servico.getmEstabId().equals(mSalao)){
                     mServicos.add(servico);
                 }
                 mMyAdapter.notifyDataSetChanged();

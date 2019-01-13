@@ -35,6 +35,7 @@ public class CancelamentoAgendamentoSteps  extends DefaultTest {
 
     @After("@cancelar-agendamento-feature")
     public void tearDown() {
+        getAtualActivity().finishAffinity();
         activityTestRule.finishActivity();
     }
 
@@ -49,17 +50,17 @@ public class CancelamentoAgendamentoSteps  extends DefaultTest {
         selecionarItemReciclerView(R.id.rvAgendamentos, 0);
     }
 
-    @E("^eu aperto em cancelar$")
+    @E("^eu aperto em desistir")
     public void apertoCancelar() {
         apertarBotao(R.id.btnCancelarAgendamento);
     }
 
-    @E("^eu confirmo o cancelamento$")
+    @E("^eu confirmo a ação$")
     public void confirmoCancelamento() {
         onView(withText((String) getActivity().getText(R.string.app_sim))).perform(click());
     }
 
-    @E("^eu não confirmo oagendamento$")
+    @E("^eu não confirmo a ação$")
     public void naoConfirmoCancelamento() {
         onView(withText((String) getActivity().getText(R.string.app_nao))).perform(click());
     }
