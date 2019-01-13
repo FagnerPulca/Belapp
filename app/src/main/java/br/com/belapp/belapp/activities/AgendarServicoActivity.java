@@ -26,7 +26,7 @@ import com.google.firebase.database.Query;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
+import java.util.Collection;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -34,6 +34,7 @@ import br.com.belapp.belapp.DAO.AgendamentoDAO;
 import br.com.belapp.belapp.R;
 import br.com.belapp.belapp.exceptions.ValidationException;
 import br.com.belapp.belapp.model.Agendamento;
+import br.com.belapp.belapp.model.HorarioAtendimento;
 import br.com.belapp.belapp.utils.DateUtils;
 import br.com.belapp.belapp.utils.StringUtils;
 
@@ -46,7 +47,7 @@ public class AgendarServicoActivity extends AppCompatActivity implements DatePic
     private ArrayList<Agendamento> mAgendamentosProfissional;
 
     private Spinner mSpHorariosDisponiveis;
-    private List<String> mHorariosDisponiveis;
+    private Collection<String> mHorariosDisponiveis;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,7 +73,6 @@ public class AgendarServicoActivity extends AppCompatActivity implements DatePic
             public void onClick(View v) {
                 // Abre a janela de diálogo para a escolha da data.
                 Calendar now = Calendar.getInstance();
-                Calendar[] days = {, };
                 DatePickerDialog dpd = DatePickerDialog.newInstance(
                         AgendarServicoActivity.this,
                         now.get(Calendar.YEAR),
@@ -85,8 +85,11 @@ public class AgendarServicoActivity extends AppCompatActivity implements DatePic
                 dpd.setFirstDayOfWeek(Calendar.MONDAY);
                 dpd.setMinDate(now);
                 dpd.setAccentColor(Color.parseColor("#260CE8"));
+                //noinspection deprecation
                 dpd.show(getFragmentManager(), "Selecione a data");
             }
+
+
         });
 
         mAgendamento = (Agendamento) getIntent().getSerializableExtra("agendamento");
@@ -94,7 +97,8 @@ public class AgendarServicoActivity extends AppCompatActivity implements DatePic
         TextView tvEstabelecimento = findViewById(R.id.tvEstabelecimentoAgendar);
         TextView tvProfissional = findViewById(R.id.tvProfissionalAgendar);
         TextView tvPreco = findViewById(R.id.tvPrecoAgendar);
-        TextView tvHorario = findViewById(R.id.tvHorarioAgendar);
+        TextView tvDiasFuncionamento = findViewById(R.id.tvDiasFuncionamento);
+
 
         tvServico.setText(String.format(Locale.getDefault(), "Serviço: %s",
                 mAgendamento.getmServico().getmNome()));
@@ -105,37 +109,36 @@ public class AgendarServicoActivity extends AppCompatActivity implements DatePic
         tvEstabelecimento.setText(String.format(Locale.getDefault(), "Estabelecimento: %s",
                 mAgendamento.getmEstabelecimento().getmNome()));
 
+        tvDiasFuncionamento.setText(
+                String.format("%s: %s", getString(R.string.app_dias_funcionamento),
+                        mAgendamento.getmEstabelecimento().getDiasFuncionamento()));
+
 
         Button btnAgendar = findViewById(R.id.btnAgendar);
-        btnAgendar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                try {
-                    validar();
-                    mAgendamento.setmData(mEdtData.getText().toString());
-                    mAgendamento.setmHora(((String) mSpHorariosDisponiveis.getSelectedItem()));
-                    AgendamentoDAO dao = new AgendamentoDAO();
-                    dao.save(mAgendamento);
-                    Toast.makeText(AgendarServicoActivity.this,
-                            getString(R.string.sucess_agendamento_realizado), Toast.LENGTH_LONG).show();
-                    Intent intent = new Intent();
-                    intent.setClass(AgendarServicoActivity.this, ClienteLogadoActivity.class);
-                    startActivity(intent);
-                    finish();
-                } catch (ValidationException e) {
-                    Toast.makeText(AgendarServicoActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
-                }
+        btnAgendar.setOnClickListener(view -> {
+            try {
+                validar();
+                mAgendamento.setmData(mEdtData.getText().toString());
+                mAgendamento.setmHora(((String) mSpHorariosDisponiveis.getSelectedItem()));
+                AgendamentoDAO dao = new AgendamentoDAO();
+                dao.save(mAgendamento);
+                Toast.makeText(AgendarServicoActivity.this,
+                        getString(R.string.sucess_agendamento_realizado), Toast.LENGTH_LONG).show();
+                Intent intent = new Intent();
+                intent.setClass(AgendarServicoActivity.this, ClienteLogadoActivity.class);
+                startActivity(intent);
+                finish();
+            } catch (ValidationException e) {
+                Toast.makeText(AgendarServicoActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
             }
-
-
         });
 
         mSpHorariosDisponiveis = findViewById(R.id.spHorariosAgendar);
 
         mHorariosDisponiveis = new ArrayList<>();
         mHorariosDisponiveis.add(getString(R.string.app_selecionar));
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_spinner_item, mHorariosDisponiveis);
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_spinner_item, new ArrayList<>(mHorariosDisponiveis));
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mSpHorariosDisponiveis.setAdapter(dataAdapter);
 
@@ -222,53 +225,31 @@ public class AgendarServicoActivity extends AppCompatActivity implements DatePic
         filtrarHorarios();
     }
 
-    private void filtrarHorarios() {
+    public void filtrarHorarios() {
         mHorariosDisponiveis.clear();
         mHorariosDisponiveis.add(getString(R.string.app_selecionar));
-        // gera todos os horarios ate as 23 horas
-        for (int i = 0; i < 1380; i += mAgendamento.getmServico().getmDuracao()){
+
+        // Obtém o horário de abertura e fechamento do estabelecimento para o dia selecionado
+        // para o atendimento
+        HorarioAtendimento horariosDiaSelecionado = obterHorarioFuncionamentoEstabelecimento();
+
+        // gera os horários possíveis, considerando o horário de abertura e fechamento do estabelecimento
+        // e a duração do procedimento
+        for (int i = horariosDiaSelecionado.getmAbertura(); i < horariosDiaSelecionado.getmFechamento(); i += mAgendamento.getmServico().getmDuracao()){
 
             mHorariosDisponiveis.add(DateUtils.getFormatoHora(i/60, i%60));
         }
+        // agrupa os horários indisponíveis na agenda do cliente e do profissional
+        Collection<String> horariosOcupadosCliente = obterListaHorarios(mAgendamentosCliente,mEdtData.getText().toString());
+        Collection<String> horariosOcupadosProfissional = obterListaHorarios(mAgendamentosProfissional, mEdtData.getText().toString());
 
-        if (mAgendamentosCliente.size() > 0 && mAgendamentosProfissional.size() > 0) {
-            for (int i = 0; i < mAgendamentosCliente.size(); i++) {
-                for (int j = 0; j < mAgendamentosProfissional.size(); j++){
-                    // Verifica se ha agendamentos para a data selecionada
-                    if (mAgendamentosCliente.get(i).getmData().equalsIgnoreCase(mEdtData.getText().toString())
-                            && mAgendamentosProfissional.get(j).getmData().equalsIgnoreCase(mEdtData.getText().toString())){
-                        // verifica se ha horarios con
-                        if(mAgendamentosCliente.get(i).getmHora().equalsIgnoreCase(mAgendamentosProfissional.get(j).getmHora())
-                                && mHorariosDisponiveis.contains(mAgendamentosCliente.get(i).getmHora())){
-                                mHorariosDisponiveis.remove(mAgendamentosCliente.get(i).getmHora());
-                        }
-                    }
-                }
-            }
-        }
-        else{
-            // Caso o profissional possua agendamentos, mas o cliente nao
-            if(mAgendamentosProfissional.size() > 0){
-                for (Agendamento agendamento: mAgendamentosProfissional){
-                    if(agendamento.getmData().equalsIgnoreCase(mEdtData.getText().toString())
-                            && mHorariosDisponiveis.contains(agendamento.getmHora())){
-                        mHorariosDisponiveis.remove(agendamento.getmHora());
-                    }
-                }
-            }
-            // caso o cliente possua agendamentos, mas o profissional nao
-            else{
+        // verifica os horários em comum entre cliente e profissional
 
-                for (Agendamento agendamento: mAgendamentosCliente){
-                    if(agendamento.getmData().equalsIgnoreCase(mEdtData.getText().toString())
-                            && mHorariosDisponiveis.contains(agendamento.getmHora())){
-                            mHorariosDisponiveis.remove(agendamento.getmHora());
-                    }
-                }
-            }
-        }
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_spinner_item, mHorariosDisponiveis);
+        mHorariosDisponiveis.removeAll(horariosOcupadosCliente);
+        mHorariosDisponiveis.removeAll(horariosOcupadosProfissional);
+
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_spinner_item, new ArrayList<>(mHorariosDisponiveis));
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mSpHorariosDisponiveis.setAdapter(dataAdapter);
         // Valida se ha datas disponiveis
@@ -276,15 +257,26 @@ public class AgendarServicoActivity extends AppCompatActivity implements DatePic
             validar();
         } catch (ValidationException e) {
             Toast.makeText(AgendarServicoActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
-            if(mHorariosDisponiveis.size() == 1) {
-                mEdtData.callOnClick();
-            }
+//            if(mHorariosDisponiveis.size() == 1) {
+//                mEdtData.callOnClick();
+//
+//            }
         }
     }
 
     private void validar() throws ValidationException {
         if(TextUtils.isEmpty(mEdtData.getText().toString())){
             throw new ValidationException(getString(R.string.error_selecione_uma_data));
+        }
+        boolean isAberto = false;
+        for(HorarioAtendimento horarioAtendimento: mAgendamento.getmEstabelecimento()
+                .getmHorariosAtendimento()){
+            if(horarioAtendimento!= null && horarioAtendimento.getmDiaFuncionamento() == DateUtils.getDiaDaSemanaEmData(mEdtData.getText().toString())){
+                isAberto = true;
+            }
+        }
+        if(!isAberto){
+            throw new ValidationException(getString(R.string.error_estabelecimento_fechado_na_data));
         }
         if(mHorariosDisponiveis.size() == 1){
             throw new ValidationException(getString(R.string.error_nao_ha_horario_disponivel_para_data));
@@ -294,4 +286,36 @@ public class AgendarServicoActivity extends AppCompatActivity implements DatePic
             throw new ValidationException(getString(R.string.error_selecione_um_horario));
         }
     }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
+
+    private ArrayList<String> obterListaHorarios(ArrayList<Agendamento> agendamentos, String data){
+        ArrayList<String> horarios = new ArrayList<>();
+        for (Agendamento a: agendamentos){
+            if(a.getmData().equals(data)){
+                horarios.add(a.getmHora());
+            }
+        }
+        return horarios;
+    }
+
+    /**
+     * Filtra o horário do estabelecimento para o dia selecionado para o atendimento.
+     */
+    private HorarioAtendimento obterHorarioFuncionamentoEstabelecimento(){
+        HorarioAtendimento horariosDiaSelecionado = new HorarioAtendimento();
+        for(HorarioAtendimento horarioAtendimento: mAgendamento.getmEstabelecimento()
+                .getmHorariosAtendimento()){
+            if(horarioAtendimento!= null
+                    && horarioAtendimento.getmDiaFuncionamento() == DateUtils.getDiaDaSemanaEmData(mEdtData.getText().toString())){
+                horariosDiaSelecionado = horarioAtendimento;
+            }
+        }
+        return horariosDiaSelecionado;
+    }
+
 }
