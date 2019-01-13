@@ -378,7 +378,7 @@ public class ClienteLogadoActivity extends AppCompatActivity
             intent.putExtra("longitude", localizao.getLongitude());
             intent.putExtra("ids", ids);
             startActivity(intent);
-            Toast.makeText(ClienteLogadoActivity.this, "Promoçõess", Toast.LENGTH_SHORT).show();
+            Toast.makeText(ClienteLogadoActivity.this,R.string.title_activity_promocoes, Toast.LENGTH_SHORT).show();
         } else if (id == R.id.nav_sair) {
 
             logado.signOut();
