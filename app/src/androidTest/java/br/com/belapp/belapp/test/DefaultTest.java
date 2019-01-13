@@ -133,11 +133,6 @@ public class DefaultTest {
         return activity[0];
     }
 
-    public void selecionarItemReciclerView(int idRecicledView, int posicao){
-        onView(withId(idRecicledView))
-                .perform(RecyclerViewActions.actionOnItemAtPosition(posicao, click()));
-    }
-
     public void selecionarItemSpinnerByPosition(int idSpiner, int posicao){
         onView(withId(idSpiner)).perform(click());
         onData(anything()).atPosition(1).perform(click());
