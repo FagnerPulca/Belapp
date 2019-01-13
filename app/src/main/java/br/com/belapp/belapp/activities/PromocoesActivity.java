@@ -5,11 +5,10 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.Toolbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.google.firebase.database.ChildEventListener;
@@ -27,25 +26,25 @@ import java.util.Comparator;
 import br.com.belapp.belapp.R;
 import br.com.belapp.belapp.model.ConfiguracaoFireBase;
 import br.com.belapp.belapp.model.Estabelecimento;
+import br.com.belapp.belapp.model.Promocoes;
 import br.com.belapp.belapp.presenter.ApplicationClass;
-import br.com.belapp.belapp.presenter.SalaoAdapter;
+import br.com.belapp.belapp.presenter.PromocaoAdapter;
+
 
 import static br.com.belapp.belapp.database.utils.FirebaseUtils.getUsuarioAtual;
 
-public class SaloesFavoritosActivity extends AppCompatActivity implements SalaoAdapter.ItemClicked {
+public class PromocoesActivity extends AppCompatActivity implements PromocaoAdapter.ItemClicked  {
 
     private ArrayList<Estabelecimento> estabelecimentos;
     private ArrayList<Estabelecimento> resultados;
-    private ArrayList<String> ids;
-    private String estab;
-    private String idUser;
-    private String endereco;
+    private ArrayList<Promocoes> resultatoP;
+
+
+    private String midUser;
+    private String mendereco;
     private double latitude;
     private double longitude;
     private DatabaseReference databaseReference;
-    private String curtida = "1";
-    String datausuario="";
-
 
 
     private RecyclerView.Adapter myAdapter;
@@ -55,26 +54,23 @@ public class SaloesFavoritosActivity extends AppCompatActivity implements SalaoA
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_saloes_favoritos);
+        setContentView(R.layout.activity_promocoes);
 
-        idUser = getUsuarioAtual().getUid();
+        midUser = getUsuarioAtual().getUid();
 
         Toolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitle(R.string.title_activity_favoritos);
+        toolbar.setTitle(R.string.title_activity_promocoes);
         toolbar.setTitleTextColor(Color.WHITE);
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
         setSupportActionBar(toolbar);
 
 
-        ids = new ArrayList<>();
-
-        ids = getIntent().getStringArrayListExtra("ids");
 
 
         latitude = getIntent().getDoubleExtra("latitude", -8);
         longitude = getIntent().getDoubleExtra("longitude", -36);
 
-        RecyclerView recyclerView = findViewById(R.id.rvSaloesFavoritos);
+        RecyclerView recyclerView = findViewById(R.id.rvPromocoes);
         recyclerView.setHasFixedSize(true);
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
@@ -83,9 +79,9 @@ public class SaloesFavoritosActivity extends AppCompatActivity implements SalaoA
 
         estabelecimentos = new ArrayList<>();
         resultados = new ArrayList<>();
+        resultatoP = new ArrayList<>();
 
-
-        myAdapter = new SalaoAdapter(this, resultados);
+        myAdapter = new PromocaoAdapter(this, resultados,resultatoP);
         recyclerView.setAdapter(myAdapter);
         buscar();
         dialogBuscando();
@@ -96,19 +92,21 @@ public class SaloesFavoritosActivity extends AppCompatActivity implements SalaoA
                 return Double.compare(o1.getmDistancia(), o2.getmDistancia());
             }
         });
-    }
 
+
+
+    }
 
     @Override
     public void onItemClicked(int index) {
-        Intent intent = new Intent(SaloesFavoritosActivity.this, PagSalaoActivity.class);
+        Intent intent = new Intent(PromocoesActivity.this, PagSalaoActivity.class);
         intent.putExtra("salao", resultados.get(index).getmEid());
         intent.putExtra("nome", resultados.get(index).getmNome());
         Bundle bundle = new Bundle();
         bundle.putSerializable("estabelecimento", resultados.get(index));
         intent.putExtras(bundle);
         startActivity(intent);
-        Toast.makeText(SaloesFavoritosActivity.this, resultados.get(index).getmNome(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(PromocoesActivity.this, resultados.get(index).getmNome(), Toast.LENGTH_SHORT).show();
     }
 
     private void buscar() {
@@ -121,15 +119,10 @@ public class SaloesFavoritosActivity extends AppCompatActivity implements SalaoA
                         estabelecimento.getmLatitude(), estabelecimento.getmLongitude()));
                 estabelecimentos.add(estabelecimento);
 
-                if (!ids.isEmpty()) {
-                    for (int i = 0; i < ids.size(); i++) {
-
-                        verificaCurtida(estabelecimento.getmEid(), estabelecimento);
-                        break;
 
 
-                    }
-                }
+                verificaPromocao(estabelecimento.getmEid(), estabelecimento);
+
 
                 mProgressDialog.dismiss();
             }
@@ -157,7 +150,7 @@ public class SaloesFavoritosActivity extends AppCompatActivity implements SalaoA
     }
 
     void dialogBuscando() {
-        mProgressDialog = new ProgressDialog(SaloesFavoritosActivity.this);
+        mProgressDialog = new ProgressDialog(PromocoesActivity.this);
         mProgressDialog.setMessage("Buscando...");
         mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         mProgressDialog.setIndeterminate(true);
@@ -165,23 +158,22 @@ public class SaloesFavoritosActivity extends AppCompatActivity implements SalaoA
         mProgressDialog.show();
     }
 
-    public void verificaCurtida(String idSalao, Estabelecimento e) {
+    public void verificaPromocao(String idSalao, Estabelecimento e) {
 
-        databaseReference.child("favoritos")
-                .child(idUser)
+
+        databaseReference.child("promocoes")
+                .child(midUser)
                 .child(idSalao)
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        Promocoes p = dataSnapshot.getValue(Promocoes.class);
                         if (dataSnapshot.getValue() != null) {
-                            String id = dataSnapshot.child("curtida").getValue().toString();
+                            resultatoP.add(p);
+                            resultados.add(e);
+                            myAdapter.notifyDataSetChanged();
 
-                            if (id.equals(curtida)  ) {
 
-                                resultados.add(e);
-                                myAdapter.notifyDataSetChanged();
-
-                            }
 
                         }
                     }
@@ -216,5 +208,3 @@ public class SaloesFavoritosActivity extends AppCompatActivity implements SalaoA
         }
     }
 }
-
-
