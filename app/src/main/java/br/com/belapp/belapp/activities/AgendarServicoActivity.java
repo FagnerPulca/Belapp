@@ -1,12 +1,10 @@
 package br.com.belapp.belapp.activities;
 
-import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
-
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
@@ -23,10 +21,11 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
+import java.util.Collection;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -47,7 +46,7 @@ public class AgendarServicoActivity extends AppCompatActivity implements DatePic
     private ArrayList<Agendamento> mAgendamentosProfissional;
 
     private Spinner mSpHorariosDisponiveis;
-    private List<String> mHorariosDisponiveis;
+    private Collection<String> mHorariosDisponiveis;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -139,7 +138,7 @@ public class AgendarServicoActivity extends AppCompatActivity implements DatePic
         mHorariosDisponiveis = new ArrayList<>();
         mHorariosDisponiveis.add(getString(R.string.app_selecionar));
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_spinner_item, mHorariosDisponiveis);
+                android.R.layout.simple_spinner_item, new ArrayList<>(mHorariosDisponiveis));
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mSpHorariosDisponiveis.setAdapter(dataAdapter);
 
@@ -229,57 +228,28 @@ public class AgendarServicoActivity extends AppCompatActivity implements DatePic
     public void filtrarHorarios() {
         mHorariosDisponiveis.clear();
         mHorariosDisponiveis.add(getString(R.string.app_selecionar));
-        HorarioAtendimento horariosDiaSelecionado = new HorarioAtendimento();
-        for(HorarioAtendimento horarioAtendimento: mAgendamento.getmEstabelecimento()
-                .getmHorariosAtendimento()){
-            if(horarioAtendimento!= null && horarioAtendimento.getmDiaFuncionamento() == DateUtils.getDiaDaSemanaEmData(mEdtData.getText().toString())){
-                horariosDiaSelecionado = horarioAtendimento;
-            }
-        }
-        // gera todos os horarios ate as 23 horas
+
+        // Obtém o horário de abertura e fechamento do estabelecimento para o dia selecionado
+        // para o atendimento
+        HorarioAtendimento horariosDiaSelecionado = obterHorarioFuncionamentoEstabelecimento();
+
+        // gera os horários possíveis, considerando o horário de abertura e fechamento do estabelecimento
+        // e a duração do procedimento
         for (int i = horariosDiaSelecionado.getmAbertura(); i < horariosDiaSelecionado.getmFechamento(); i += mAgendamento.getmServico().getmDuracao()){
 
             mHorariosDisponiveis.add(DateUtils.getFormatoHora(i/60, i%60));
         }
+        // agrupa os horários indisponíveis na agenda do cliente e do profissional
+        Collection<String> horariosOcupadosCliente = obterListaHorarios(mAgendamentosCliente,mEdtData.getText().toString());
+        Collection<String> horariosOcupadosProfissional = obterListaHorarios(mAgendamentosProfissional, mEdtData.getText().toString());
 
-        if (mAgendamentosCliente.size() > 0 && mAgendamentosProfissional.size() > 0) {
-            for (int i = 0; i < mAgendamentosCliente.size(); i++) {
-                for (int j = 0; j < mAgendamentosProfissional.size(); j++){
-                    // Verifica se ha agendamentos para a data selecionada
-                    if (mAgendamentosCliente.get(i).getmData().equalsIgnoreCase(mEdtData.getText().toString())
-                            && mAgendamentosProfissional.get(j).getmData().equalsIgnoreCase(mEdtData.getText().toString())){
-                        // verifica se ha horarios con
-                        if(mAgendamentosCliente.get(i).getmHora().equalsIgnoreCase(mAgendamentosProfissional.get(j).getmHora())
-                                && mHorariosDisponiveis.contains(mAgendamentosCliente.get(i).getmHora())){
-                                mHorariosDisponiveis.remove(mAgendamentosCliente.get(i).getmHora());
-                        }
-                    }
-                }
-            }
-        }
-        else{
-            // Caso o profissional possua agendamentos, mas o cliente nao
-            if(mAgendamentosProfissional.size() > 0){
-                for (Agendamento agendamento: mAgendamentosProfissional){
-                    if(agendamento.getmData().equalsIgnoreCase(mEdtData.getText().toString())
-                            && mHorariosDisponiveis.contains(agendamento.getmHora())){
-                        mHorariosDisponiveis.remove(agendamento.getmHora());
-                    }
-                }
-            }
-            // caso o cliente possua agendamentos, mas o profissional nao
-            else{
+        // verifica os horários em comum entre cliente e profissional
 
-                for (Agendamento agendamento: mAgendamentosCliente){
-                    if(agendamento.getmData().equalsIgnoreCase(mEdtData.getText().toString())
-                            && mHorariosDisponiveis.contains(agendamento.getmHora())){
-                            mHorariosDisponiveis.remove(agendamento.getmHora());
-                    }
-                }
-            }
-        }
+        mHorariosDisponiveis.removeAll(horariosOcupadosCliente);
+        mHorariosDisponiveis.removeAll(horariosOcupadosProfissional);
+
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_spinner_item, mHorariosDisponiveis);
+                android.R.layout.simple_spinner_item, new ArrayList<>(mHorariosDisponiveis));
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mSpHorariosDisponiveis.setAdapter(dataAdapter);
         // Valida se ha datas disponiveis
@@ -321,6 +291,31 @@ public class AgendarServicoActivity extends AppCompatActivity implements DatePic
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
+    }
+
+    private ArrayList<String> obterListaHorarios(ArrayList<Agendamento> agendamentos, String data){
+        ArrayList<String> horarios = new ArrayList<>();
+        for (Agendamento a: agendamentos){
+            if(a.getmData().equals(data)){
+                horarios.add(a.getmHora());
+            }
+        }
+        return horarios;
+    }
+
+    /**
+     * Filtra o horário do estabelecimento para o dia selecionado para o atendimento.
+     */
+    private HorarioAtendimento obterHorarioFuncionamentoEstabelecimento(){
+        HorarioAtendimento horariosDiaSelecionado = new HorarioAtendimento();
+        for(HorarioAtendimento horarioAtendimento: mAgendamento.getmEstabelecimento()
+                .getmHorariosAtendimento()){
+            if(horarioAtendimento!= null
+                    && horarioAtendimento.getmDiaFuncionamento() == DateUtils.getDiaDaSemanaEmData(mEdtData.getText().toString())){
+                horariosDiaSelecionado = horarioAtendimento;
+            }
+        }
+        return horariosDiaSelecionado;
     }
 
 }

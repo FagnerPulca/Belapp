@@ -1,12 +1,8 @@
 package br.com.belapp.belapp.test;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.support.test.rule.ActivityTestRule;
-import android.view.View;
-import android.view.ViewGroup;
 
-import org.junit.Assert;
 import org.junit.Rule;
 
 import br.com.belapp.belapp.R;
@@ -19,18 +15,9 @@ import cucumber.api.java.it.Quando;
 import cucumber.api.java.pt.Entao;
 
 import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
-import static android.support.test.espresso.action.ViewActions.typeText;
-import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.matcher.RootMatchers.withDecorView;
-import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static android.support.test.espresso.matcher.ViewMatchers.isRoot;
-import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static junit.framework.TestCase.assertNotNull;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.Matchers.not;
+
 
 public class BuscaActivitySteps extends DefaultTest {
 

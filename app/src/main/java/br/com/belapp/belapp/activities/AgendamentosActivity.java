@@ -1,16 +1,11 @@
 package br.com.belapp.belapp.activities;
 
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.Build;
-import android.provider.ContactsContract;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -18,7 +13,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -30,7 +24,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import br.com.belapp.belapp.DAO.AgendamentoDAO;
 import br.com.belapp.belapp.R;
 import br.com.belapp.belapp.enums.MesesEnum;
 import br.com.belapp.belapp.enums.StatusAgendamentoEnum;
@@ -41,7 +34,6 @@ import br.com.belapp.belapp.utils.DateUtils;
 
 public class AgendamentosActivity extends AppCompatActivity implements AgendamentoAdapter.ItemClicked{
     private RecyclerView mRecyclerView;
-    private RecyclerView.LayoutManager mLayoutManager;
     private RecyclerView.Adapter mMyAdapter;
     private ArrayList<Agendamento> mAgendamentos;
     private ProgressDialog mProgressDialog;
@@ -75,7 +67,7 @@ public class AgendamentosActivity extends AppCompatActivity implements Agendamen
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-
+                // empty
             }
         });
 
@@ -100,7 +92,7 @@ public class AgendamentosActivity extends AppCompatActivity implements Agendamen
         mRecyclerView = findViewById(R.id.rvAgendamentos);
         mRecyclerView.setHasFixedSize(true);
 
-        mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         mAgendamentos = new ArrayList<>();
@@ -256,19 +248,10 @@ public class AgendamentosActivity extends AppCompatActivity implements Agendamen
     }
 
     private void ordenarResultados(){
-        Collections.sort(mAgendamentos, new AgendamentoDataComparator() );
+        Collections.sort(mAgendamentos, (o1, o2) -> DateUtils
+                .getDiferencaEntreDuasDatasEspecificas(
+                        o2.getmData(),
+                        o1.getmData()));
 
-    }
-
-    private class AgendamentoDataComparator implements java.util.Comparator{
-
-        @Override
-        public int compare(Object o1, Object o2) {
-
-            return DateUtils
-                    .getDiferencaEntreDuasDatasEspecificas(
-                            ((Agendamento) o2).getmData(),
-                            ((Agendamento) o1).getmData());
-        }
     }
 }
