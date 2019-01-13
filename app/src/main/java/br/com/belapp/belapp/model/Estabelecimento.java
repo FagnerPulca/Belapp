@@ -3,6 +3,10 @@ package br.com.belapp.belapp.model;
 
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+import br.com.belapp.belapp.enums.DiasSemanaEnum;
 
 public class Estabelecimento implements Serializable {
 
@@ -19,12 +23,16 @@ public class Estabelecimento implements Serializable {
     private String mCidade;
     private String mComplemento;
     private String mCep;
+
+    private List<HorarioAtendimento> mHorariosAtendimento;
+
     private String mTelefone;
     private String mHorarios;
     private String mLinkFacebook;
     private String mLinkInstagram;
     private String mLinkSite;
     private String mLinkEmail;
+
 
     public Estabelecimento(){
 
@@ -34,8 +42,8 @@ public class Estabelecimento implements Serializable {
         this.mEid = mEid;
         this.mNome = mNome;
         this.mDescricao = mDescricao;
-        //this.mIdEndereco = mIdEndereco;
         this.mDistancia = mDistancia;
+        this.mHorariosAtendimento = new ArrayList<>();
     }
 
     public String getmEid() {
@@ -142,9 +150,29 @@ public class Estabelecimento implements Serializable {
         this.mCep = mCep;
     }
 
+    public List<HorarioAtendimento> getmHorariosAtendimento() {
+        return mHorariosAtendimento;
+    }
+
+    public void setmHorariosAtendimento(List<HorarioAtendimento> mHorariosAtendimento) {
+        this.mHorariosAtendimento = mHorariosAtendimento;
+    }
+
+    public String getDiasFuncionamento(){
+        String dias = "";
+        for(HorarioAtendimento horarioAtendimento: getmHorariosAtendimento()){
+            if(horarioAtendimento != null){
+                dias = dias.concat(String.format(" %s,", DiasSemanaEnum.getDia(horarioAtendimento.getmDiaFuncionamento()).substring(0, 3)));
+            }
+        }
+
+        dias = dias.substring(0, dias.length() -1);
+        return dias;
+    }
+
     @Override
     public boolean equals(Object obj) {
-        return (obj instanceof Estabelecimento && this.mEid == ((Estabelecimento) obj).mEid);
+        return (obj instanceof Estabelecimento && this.mEid.equals(((Estabelecimento) obj).mEid));
     }
 
     public String getmTelefone() {

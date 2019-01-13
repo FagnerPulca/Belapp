@@ -1,9 +1,12 @@
 package br.com.belapp.belapp.enums;
 
+import java.util.ArrayList;
+
 public enum StatusAgendamentoEnum {
 
-    AGENDADO("Agendado", 1),
-    CANCELADO("Cancelado", 2);
+    AGENDADO("Serviços Agendados", 1),
+    CONCLUIDO("Serviços Concluídos", 2),
+    TODOS("Todos", 0);
 
     private int codigo;
     private String status;
@@ -37,5 +40,13 @@ public enum StatusAgendamentoEnum {
             }
         }
         return 0;
+    }
+
+    public static ArrayList<String> getListaStatus(){
+        ArrayList<String> lista = new ArrayList<>();
+        for(StatusAgendamentoEnum e: values()){
+            lista.add(e.getStatus());
+        }
+        return lista;
     }
 }

@@ -3,14 +3,9 @@ package br.com.belapp.belapp.test;
 import android.app.Activity;
 import android.support.annotation.NonNull;
 import android.support.test.espresso.Espresso;
-
-import android.util.Log;
-
 import android.support.test.espresso.contrib.RecyclerViewActions;
-
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -26,11 +21,10 @@ import com.google.firebase.database.Query;
 
 import java.util.ArrayList;
 
-import br.com.belapp.belapp.R;
-import br.com.belapp.belapp.activities.LoginActivity;
 import br.com.belapp.belapp.model.ConfiguracaoFireBase;
 import br.com.belapp.belapp.model.Servico;
 
+import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
@@ -43,6 +37,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.isRoot;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.Matchers.anything;
 import static org.hamcrest.Matchers.not;
 
 public class DefaultTest {
@@ -132,13 +127,21 @@ public class DefaultTest {
 
                 if (checkedView.getContext() instanceof Activity) {
                     activity[0] = (Activity) checkedView.getContext();
-                    return;
                 }
             }
         });
         return activity[0];
     }
 
+    public void selecionarItemReciclerView(int idRecicledView, int posicao){
+        onView(withId(idRecicledView))
+                .perform(RecyclerViewActions.actionOnItemAtPosition(posicao, click()));
+    }
+
+    public void selecionarItemSpinnerByPosition(int idSpiner, int posicao){
+        onView(withId(idSpiner)).perform(click());
+        onData(anything()).atPosition(1).perform(click());
+    }
 
     public void logarPorEmail(String email, String senha){
         FirebaseAuth autenticacao = ConfiguracaoFireBase.getFirebaseAutenticacao();
