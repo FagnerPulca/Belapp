@@ -19,37 +19,37 @@ import br.com.belapp.belapp.model.Promocoes;
 
 public class PromocaoAdapter extends RecyclerView.Adapter<PromocaoAdapter.ViewHolder> {
 
-    private ArrayList<Estabelecimento> lista;
-    private ArrayList<Promocoes> lista2;
+    private ArrayList<Estabelecimento> mlista;
+    private ArrayList<Promocoes> mlista2;
     ItemClicked activity;
-    private ImageView foto;
+
 
     public interface ItemClicked{
         void onItemClicked(int index);
     }
 
     public PromocaoAdapter(Context context, ArrayList<Estabelecimento> list,ArrayList<Promocoes> list2){
-        lista = list;
-        lista2 =list2;
+        mlista = list;
+        mlista2 =list2;
         activity = (ItemClicked) context;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
-        ImageView ivFotoPromo;
-        TextView tvNomeSalao, tvTitulo, tvDescricao;
+        ImageView ivFotoP ;
+        TextView tvNomeSalaoP, tvTituloP, tvDescP;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            ivFotoPromo = itemView.findViewById(R.id.ivFotoSalao);
-            tvNomeSalao = itemView.findViewById(R.id.tvNomeSalao);
-            tvTitulo = itemView.findViewById(R.id.tvEnderecoSalao);
-            tvDescricao = itemView.findViewById(R.id.tvDistancia);
+            ivFotoP = itemView.findViewById(R.id.ivFotoP);
+            tvNomeSalaoP = itemView.findViewById(R.id.tvNomeSalaoP);
+            tvTituloP = itemView.findViewById(R.id.tvTituloP);
+            tvDescP= itemView.findViewById(R.id.tvDescP);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    activity.onItemClicked(lista.indexOf((Estabelecimento) v.getTag()));
+                    activity.onItemClicked(mlista.indexOf((Estabelecimento) v.getTag()));
                 }
             });
         }
@@ -66,14 +66,14 @@ public class PromocaoAdapter extends RecyclerView.Adapter<PromocaoAdapter.ViewHo
     public void onBindViewHolder(@NonNull PromocaoAdapter.ViewHolder viewHolder, int i) {
 
 
-        if(lista.size() != 0){
-            String Urlfoto = lista2.get(i).getmFoto();
-            Picasso.get().load(Urlfoto).into(viewHolder.ivFotoPromo);
-            viewHolder.itemView.setTag(lista.get(i));
+        if(mlista.size() != 0){
+            String Urlfoto = mlista2.get(i).getFoto();
+            Picasso.get().load(Urlfoto).into(viewHolder.ivFotoP );
+            viewHolder.itemView.setTag(mlista.get(i));
 
-            viewHolder.tvNomeSalao.setText(lista.get(i).getmNome());
-            viewHolder.tvTitulo.setText(lista2.get(i).getmTitulo());
-            viewHolder.tvDescricao.setText(lista2.get(i).getMDescricao());
+            viewHolder.tvNomeSalaoP.setText(mlista.get(i).getmNome());
+            viewHolder.tvTituloP.setText(mlista2.get(i).getTitulo());
+            viewHolder.tvDescP.setText(mlista2.get(i).getDescricao());
 
             //viewHolder.ivFotoPromo.setImageResource(R.drawable.salao_teste);
         }
@@ -82,6 +82,6 @@ public class PromocaoAdapter extends RecyclerView.Adapter<PromocaoAdapter.ViewHo
 
     @Override
     public int getItemCount() {
-        return lista.size();
+        return mlista.size();
     }
 }

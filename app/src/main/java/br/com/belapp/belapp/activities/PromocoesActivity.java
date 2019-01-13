@@ -9,7 +9,6 @@ import android.support.v7.widget.Toolbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.widget.Toast;
 
 import com.google.firebase.database.ChildEventListener;
@@ -36,15 +35,16 @@ import static br.com.belapp.belapp.database.utils.FirebaseUtils.getUsuarioAtual;
 
 public class PromocoesActivity extends AppCompatActivity implements PromocaoAdapter.ItemClicked  {
 
-    private ArrayList<Estabelecimento> mEstabelecimentos;
-    private ArrayList<Estabelecimento> mResultados;
-    private ArrayList<Promocoes> mResultatoP;
-    private String mEstab;
-    private String mIdUser;
-    private String mEndereco;
-    private double mLatitude;
-    private double mLongitude;
-    private DatabaseReference mDatabaseReference;
+    private ArrayList<Estabelecimento> estabelecimentos;
+    private ArrayList<Estabelecimento> resultados;
+    private ArrayList<Promocoes> resultatoP;
+
+
+    private String midUser;
+    private String mendereco;
+    private double latitude;
+    private double longitude;
+    private DatabaseReference databaseReference;
 
 
     private RecyclerView.Adapter myAdapter;
@@ -56,8 +56,8 @@ public class PromocoesActivity extends AppCompatActivity implements PromocaoAdap
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_promocoes);
 
-        idUser = getUsuarioAtual().getUid();
-        
+        midUser = getUsuarioAtual().getUid();
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.title_activity_promocoes);
         toolbar.setTitleTextColor(Color.WHITE);
@@ -65,8 +65,10 @@ public class PromocoesActivity extends AppCompatActivity implements PromocaoAdap
         setSupportActionBar(toolbar);
 
 
-        mLatitude = getIntent().getDoubleExtra("latitude", -8);
-        mLongitude = getIntent().getDoubleExtra("longitude", -36);
+
+
+        latitude = getIntent().getDoubleExtra("latitude", -8);
+        longitude = getIntent().getDoubleExtra("longitude", -36);
 
         RecyclerView recyclerView = findViewById(R.id.rvPromocoes);
         recyclerView.setHasFixedSize(true);
@@ -75,11 +77,11 @@ public class PromocoesActivity extends AppCompatActivity implements PromocaoAdap
         recyclerView.setLayoutManager(layoutManager);
         databaseReference = ConfiguracaoFireBase.getFirebase();
 
-        mEstabelecimentos = new ArrayList<>();
-        mResultados = new ArrayList<>();
-        mResultatoP = new ArrayList<>();
+        estabelecimentos = new ArrayList<>();
+        resultados = new ArrayList<>();
+        resultatoP = new ArrayList<>();
 
-        myAdapter = new PromocaoAdapter(this,  mResultados, mResultadoP);
+        myAdapter = new PromocaoAdapter(this, resultados,resultatoP);
         recyclerView.setAdapter(myAdapter);
         buscar();
         dialogBuscando();
@@ -90,33 +92,37 @@ public class PromocoesActivity extends AppCompatActivity implements PromocaoAdap
                 return Double.compare(o1.getmDistancia(), o2.getmDistancia());
             }
         });
-        
-        
+
+
 
     }
 
     @Override
     public void onItemClicked(int index) {
         Intent intent = new Intent(PromocoesActivity.this, PagSalaoActivity.class);
-        intent.putExtra("salao", mResultados.get(index).getmEid());
-        intent.putExtra("nome", mResultados.get(index).getmNome());
+        intent.putExtra("salao", resultados.get(index).getmEid());
+        intent.putExtra("nome", resultados.get(index).getmNome());
         Bundle bundle = new Bundle();
-        bundle.putSerializable("estabelecimento", mResultados.get(index));
+        bundle.putSerializable("estabelecimento", resultados.get(index));
         intent.putExtras(bundle);
         startActivity(intent);
-        Toast.makeText(PromocoesActivity.this, mResultados.get(index).getmNome(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(PromocoesActivity.this, resultados.get(index).getmNome(), Toast.LENGTH_SHORT).show();
     }
 
     private void buscar() {
-        Query query = FirebaseDatabase.getInstance().getReference("e ");   
+        Query query = FirebaseDatabase.getInstance().getReference("estabelecimentos");
         query.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 Estabelecimento estabelecimento = dataSnapshot.getValue(Estabelecimento.class);
-                estabelecimento.setmDistancia(ApplicationClass.calculaDistancia(mLatitude, mLongitude,
+                estabelecimento.setmDistancia(ApplicationClass.calculaDistancia(latitude, longitude,
                         estabelecimento.getmLatitude(), estabelecimento.getmLongitude()));
-                        mEstabelecimentos.add(estabelecimento);
-                        verificaPromocao(mEstabelecimentos.getmEid(), estabelecimento);
+                estabelecimentos.add(estabelecimento);
+
+
+
+                verificaPromocao(estabelecimento.getmEid(), estabelecimento);
+
 
                 mProgressDialog.dismiss();
             }
@@ -156,16 +162,16 @@ public class PromocoesActivity extends AppCompatActivity implements PromocaoAdap
 
 
         databaseReference.child("promocoes")
-                .child(mIdUser)
+                .child(midUser)
                 .child(idSalao)
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         Promocoes p = dataSnapshot.getValue(Promocoes.class);
                         if (dataSnapshot.getValue() != null) {
-                                mResultatoP.add(p);
-                                mResultados.add(e);
-                                myAdapter.notifyDataSetChanged();
+                            resultatoP.add(p);
+                            resultados.add(e);
+                            myAdapter.notifyDataSetChanged();
 
 
 

@@ -167,10 +167,6 @@ public class SaloesFavoritosActivity extends AppCompatActivity implements SalaoA
 
     public void verificaCurtida(String idSalao, Estabelecimento e) {
 
-
-
-
-
         databaseReference.child("favoritos")
                 .child(idUser)
                 .child(idSalao)
