@@ -14,7 +14,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 
-import br.com.belapp.belapp.R;
 import br.com.belapp.belapp.model.ConfiguracaoFireBase;
 
 import static android.support.test.espresso.Espresso.onData;
@@ -28,7 +27,6 @@ import static android.support.test.espresso.matcher.RootMatchers.withDecorView;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.isRoot;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.matcher.ViewMatchers.withParent;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.anything;
@@ -137,12 +135,6 @@ public class DefaultTest {
         onData(anything()).atPosition(1).perform(click());
     }
 
-    public void testarToolbar(){
-        onView(withId(br.com.belapp.belapp.R.id.toolbar)).check(matches(isDisplayed()));
-        onView(withText(br.com.belapp.belapp.R.string.app_name)).check(matches(withParent(withId(R.id.toolbar))));
-    }
-
-
     public void logarPorEmail(String email, String senha){
         FirebaseAuth autenticacao = ConfiguracaoFireBase.getFirebaseAutenticacao();
         if(autenticacao.getUid() == null) {
@@ -182,7 +174,4 @@ public class DefaultTest {
         FirebaseAuth usuario = ConfiguracaoFireBase.getFirebaseAutenticacao();
         if(usuario.getUid() != null) usuario.signOut();
     }
-
-
-
 }
