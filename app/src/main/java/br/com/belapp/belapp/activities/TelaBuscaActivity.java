@@ -20,15 +20,19 @@ import com.google.firebase.database.Query;
 import java.util.ArrayList;
 
 import br.com.belapp.belapp.R;
-import br.com.belapp.belapp.model.Estabelecimento;
+import br.com.belapp.belapp.model.Servico;
 
 public class TelaBuscaActivity extends AppCompatActivity {
 
-    EditText etEstabelecimento, etEndereco;
-    TextView tvResul;
-    Button btnBuscar;
-    ArrayList<String> ids;
-    ArrayList<String> idcateg;
+    private EditText etEstabelecimento, etEndereco;
+    private ArrayList<String> mIds;
+    private ArrayList<String> mIdcateg;
+    private ArrayList<String> mServicos, mCategServ;
+    private ArrayList<String> mPrecoServ, mNomeServ;
+
+
+    private int mPreco = 300;
+
     //ArrayList<Estabelecimento> estabelecimentos;
     private ProgressDialog mProgressDialog;
 
@@ -43,33 +47,54 @@ public class TelaBuscaActivity extends AppCompatActivity {
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
         setSupportActionBar(toolbar);
 
+        EditText etServCat = findViewById(R.id.etServCat);
+        EditText etPreco = findViewById(R.id.etPreco);
+
         etEstabelecimento = findViewById(R.id.etEstabelecimento);
         etEndereco = findViewById(R.id.etEndereco);
-        btnBuscar = findViewById(R.id.btnBuscar);
-        tvResul = findViewById(R.id.tvResul);
+        Button btnBuscar = findViewById(R.id.btnBuscar);
 
-        ids = new ArrayList<>();
-        idcateg = new ArrayList<>();
-        //estabelecimentos = new ArrayList<>();
+        mIds = new ArrayList<>();
+        mIdcateg = new ArrayList<>();
+        mServicos = new ArrayList<>();
+        mCategServ = new ArrayList<>();
+        mPrecoServ = new ArrayList<>();
+        mNomeServ = new ArrayList<>();
+
+
+        buscarServCatPreco();
+        dialogBuscando();
 
         btnBuscar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String estabelecimento = etEstabelecimento.getText().toString().trim();
                 String endereco = etEndereco.getText().toString().trim();
+                String mServcat = etServCat.getText().toString().trim();
+                if (!etPreco.getText().toString().equals("")){
+                    mPreco = Integer.parseInt(etPreco.getText().toString().trim());
+                } else{
+                    mPreco = 300;
+                }
 
                 double latitude = getIntent().getDoubleExtra("latitude", -8);
                 double longitude = getIntent().getDoubleExtra("longitude", -36);
 
-                if (!estabelecimento.isEmpty() || !endereco.isEmpty()){
+                if (!estabelecimento.isEmpty() || !endereco.isEmpty() || !mServcat.isEmpty() || !etPreco.getText().toString().equals("")){
                     Intent intent = new Intent(TelaBuscaActivity.this, SaloesActivity.class);
-                    intent.putExtra("estabelecimento", estabelecimento);
-                    intent.putExtra("endereco", endereco);
-                    intent.putExtra("latitude", latitude);
-                    intent.putExtra("longitude", longitude);
-                    intent.putExtra("categoria", "");
-                    intent.putExtra("ids", ids);
-                    intent.putExtra("idcateg", idcateg);
+                    intent.putExtra("mEstabelecimento", estabelecimento);
+                    intent.putExtra("mEndereco", endereco);
+                    intent.putExtra("mServcat", mServcat);
+                    intent.putExtra("mPreco", mPreco);
+                    intent.putExtra("mLatitude", latitude);
+                    intent.putExtra("mLongitude", longitude);
+                    intent.putExtra("mCategoria", "");
+                    intent.putExtra("mIds", mIds);
+                    intent.putExtra("mIdcateg", mIdcateg);
+                    intent.putExtra("mServicos", mServicos);
+                    intent.putExtra("mCategServ", mCategServ);
+                    intent.putExtra("mPrecoServ", mPrecoServ);
+                    intent.putExtra("mNomeServ", mNomeServ);
                     startActivity(intent);
 
                 }
@@ -81,18 +106,18 @@ public class TelaBuscaActivity extends AppCompatActivity {
 
     }
 
-    private void buscarCidade(){
-        Query query = FirebaseDatabase.getInstance().getReference("estabelecimentos");
+    private void buscarServCatPreco(){
+        Query query = FirebaseDatabase.getInstance().getReference("servicos");
 
         query.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                Estabelecimento estabelecimento = dataSnapshot.getValue(Estabelecimento.class);
-                //estabelecimentos.add(estabelecimento);
+                Servico servico = dataSnapshot.getValue(Servico.class);
+                mServicos.add(servico.getmEstabId()); //id estabelecimento
+                mCategServ.add(servico.getmCategoria()); //categoria do serviço
+                mPrecoServ.add(String.valueOf(servico.getmPreco())); //mPreco do serviço
+                mNomeServ.add(servico.getmNome());
 
-                idcateg.add(estabelecimento.getmCidade());
-
-                //myAdapter.notifyDataSetChanged();
                 mProgressDialog.dismiss();
             }
 

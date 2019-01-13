@@ -38,6 +38,7 @@ public class BuscaActivitySteps extends DefaultTest {
 
     @Dado("^Eu estou na tela de busca$")
     public void euEstouNaTelaDeBusca(){
+        esperar(4000);
         assertNotNull(getActivity());
     }
 
@@ -63,6 +64,16 @@ public class BuscaActivitySteps extends DefaultTest {
     public void euColocoNenhum(){
         preencherCampoEditText(R.id.etEndereco, "");
         preencherCampoEditText(R.id.etEstabelecimento, "");
+    }
+
+    @Quando("^Eu defino um preço$")
+    public void definoUmPreco(){
+        preencherCampoEditText(R.id.etPreco, "19");
+    }
+
+    @Quando("^Eu digito um serviço$")
+    public void digitoUmServico(){
+        preencherCampoEditText(R.id.etServCat, "corte");
     }
 
     @E("^Eu clico em buscar$")

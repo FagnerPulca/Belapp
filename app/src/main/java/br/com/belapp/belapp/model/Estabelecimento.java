@@ -23,7 +23,16 @@ public class Estabelecimento implements Serializable {
     private String mCidade;
     private String mComplemento;
     private String mCep;
+
     private List<HorarioAtendimento> mHorariosAtendimento;
+
+    private String mTelefone;
+    private String mHorarios;
+    private String mLinkFacebook;
+    private String mLinkInstagram;
+    private String mLinkSite;
+    private String mLinkEmail;
+
 
     public Estabelecimento(){
 
@@ -165,6 +174,55 @@ public class Estabelecimento implements Serializable {
     public boolean equals(Object obj) {
         return (obj instanceof Estabelecimento && this.mEid.equals(((Estabelecimento) obj).mEid));
     }
+
+    public String getmTelefone() {
+        return mTelefone;
+    }
+
+    public void setmTelefone(String mTelefone) {
+        this.mTelefone = mTelefone;
+    }
+
+    public String getmHorarios() {
+        return mHorarios;
+    }
+
+    public void setmHorarios(String mHorarios) {
+        this.mHorarios = mHorarios;
+    }
+
+    public String getmLinkFacebook() {
+        return mLinkFacebook;
+    }
+
+    public void setmLinkFacebook(String mLinkFacebook) {
+        this.mLinkFacebook = mLinkFacebook;
+    }
+
+    public String getmLinkInstagram() {
+        return mLinkInstagram;
+    }
+
+    public void setmLinkInstagram(String mLinkInstagram) {
+        this.mLinkInstagram = mLinkInstagram;
+    }
+
+    public String getmLinkSite() {
+        return mLinkSite;
+    }
+
+    public void setmLinkSite(String mLinkEmail) {
+        this.mLinkSite = mLinkEmail;
+    }
+
+    public String getmLinkEmail() {
+        return mLinkEmail;
+    }
+
+    public void setmLinkEmail(String mLinkEmail) {
+        this.mLinkEmail = mLinkEmail;
+    }
+
     //Aqui atributos e metodos da classe
     /*String mEId;
     String mNome;
