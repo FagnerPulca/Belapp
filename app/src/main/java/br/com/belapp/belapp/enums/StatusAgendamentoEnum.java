@@ -2,8 +2,9 @@ package br.com.belapp.belapp.enums;
 
 public enum StatusAgendamentoEnum {
 
-    AGENDADO("Agendado", 1),
-    CANCELADO("Cancelado", 2);
+    AGENDADO("Serviço(s) Agendado(s)", 1),
+    CONCLUIDO("Serviço(s) Concluído(s)", 2),
+    TODOS("Todos", 0);
 
     private int codigo;
     private String status;

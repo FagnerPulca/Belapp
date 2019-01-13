@@ -2,27 +2,18 @@ package br.com.belapp.belapp.activities;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.widget.Toast;
-
 import android.graphics.Color;
-import android.support.annotation.NonNull;
-import android.support.v4.app.FragmentManager;
-
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-
 import android.view.View;
-
-
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
@@ -38,6 +29,7 @@ import com.like.OnLikeListener;
 import java.util.ArrayList;
 
 import br.com.belapp.belapp.R;
+import br.com.belapp.belapp.model.Agendamento;
 import br.com.belapp.belapp.model.ConfiguracaoFireBase;
 import br.com.belapp.belapp.model.Estabelecimento;
 import br.com.belapp.belapp.model.Favorito;
@@ -48,25 +40,21 @@ import static br.com.belapp.belapp.database.utils.FirebaseUtils.getUsuarioAtual;
 
 public class PagSalaoActivity extends AppCompatActivity implements ServicoAdapter.ItemClicked {
 
-    ImageButton ibServicos, ibInformacoes, ibAvaliacoes;
-    ImageView ivFotoSalao;
-    TextView tvNomeSalao;
-    RecyclerView recyclerView;
-    RecyclerView.LayoutManager layoutManager;
-    RecyclerView.Adapter myAdapter;
-    ArrayList<Servico> servicos;
+    private RecyclerView.Adapter mMyAdapter;
+    private ArrayList<Servico> mServicos;
     private ProgressDialog mProgressDialog;
 
     private Estabelecimento mEstabelecimento;
+    private Agendamento mAgendamento;
 
-    String salao;
-    String nome;
-    private String userId;
-    private LikeButton likeButton;
-    private DatabaseReference databaseReference;
-    private String curtida = "1";
+    private String mSalao;
+    private String mNome;
+    private String mUserId;
+    private LikeButton mLikeButton;
+    private DatabaseReference mDatabaseReference;
+    private String mCurtida = "1";
     private static final String TAG = "PagSalao";
-    private FirebaseAuth logado = FirebaseAuth.getInstance();
+    private FirebaseAuth mLogado = FirebaseAuth.getInstance();
 
 
     @Override
@@ -75,15 +63,15 @@ public class PagSalaoActivity extends AppCompatActivity implements ServicoAdapte
         setContentView(R.layout.activity_pag_salao);
 
         isLogado();
-        userId = getUsuarioAtual().getUid();
+        mUserId = getUsuarioAtual().getUid();
 
 
-        ibServicos = findViewById(R.id.ibServicos);
-        ibInformacoes = findViewById(R.id.ibInformacoes);
-        ibAvaliacoes = findViewById(R.id.ibAvaliacoes);
-        ivFotoSalao = findViewById(R.id.ivFotoSalao);
-        tvNomeSalao = findViewById(R.id.tvNomeSalao);
-        likeButton = findViewById(R.id.star_button);
+        ImageButton ibServicos = findViewById(R.id.ibServicos);
+        ImageButton ibInformacoes = findViewById(R.id.ibInformacoes);
+        ImageButton ibAvaliacoes = findViewById(R.id.ibAvaliacoes);
+        ImageView ivFotoSalao = findViewById(R.id.ivFotoSalao);
+        TextView tvNomeSalao = findViewById(R.id.tvNomeSalao);
+        mLikeButton = findViewById(R.id.star_button);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.title_activity_salao);
@@ -91,21 +79,26 @@ public class PagSalaoActivity extends AppCompatActivity implements ServicoAdapte
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
         setSupportActionBar(toolbar);
 
-        recyclerView = findViewById(R.id.rvServicos);
-        recyclerView.setHasFixedSize(true);
+        RecyclerView mRecyclerView = findViewById(R.id.rvServicos);
+        mRecyclerView.setHasFixedSize(true);
 
-        layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        recyclerView.setLayoutManager(layoutManager);
-
-        mEstabelecimento = (Estabelecimento) getIntent().getSerializableExtra("estabelecimento");
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        if(getIntent().hasExtra("estabelecimento") ){
+            mEstabelecimento = (Estabelecimento) getIntent().getSerializableExtra("estabelecimento");
+        }
+        if(getIntent().hasExtra("agendamento")){
+            mAgendamento = (Agendamento) getIntent().getSerializableExtra("agendamento");
+            mEstabelecimento = mAgendamento.getmEstabelecimento();
+        }
+        mSalao = mEstabelecimento.getmEid();
         tvNomeSalao.setText(mEstabelecimento.getmNome());
-        salao = getIntent().getStringExtra("salao");
-        servicos = new ArrayList<>();
+        mServicos = new ArrayList<>();
 
-        myAdapter = new ServicoAdapter(this, servicos);
-        recyclerView.setAdapter(myAdapter);
+        mMyAdapter = new ServicoAdapter(this, mServicos);
+        mRecyclerView.setAdapter(mMyAdapter);
 
-        databaseReference = ConfiguracaoFireBase.getFirebase();
+        mDatabaseReference = ConfiguracaoFireBase.getFirebase();
 
         verificaCurtida();
         buscar();
@@ -116,23 +109,23 @@ public class PagSalaoActivity extends AppCompatActivity implements ServicoAdapte
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(PagSalaoActivity.this, PagAvaliacaoActivity.class);
-                intent.putExtra("salao", salao);
-                intent.putExtra("nome", nome);
+                intent.putExtra("salao", mSalao);
+                intent.putExtra("nome", mNome);
                 startActivity(intent);
             }
         });
 
 
-        likeButton.setOnLikeListener(new OnLikeListener() {
+        mLikeButton.setOnLikeListener(new OnLikeListener() {
             @Override
             public void liked(LikeButton likeButton) {
-                curti();
+                curtir();
                 Toast.makeText(PagSalaoActivity.this, getString(R.string.adicionando_favorito), Toast.LENGTH_LONG).show();
             }
 
             @Override
             public void unLiked(LikeButton likeButton) {
-                descurti();
+                descurtir();
                 Toast.makeText(PagSalaoActivity.this, getString(R.string.retirando_favoritoo), Toast.LENGTH_LONG).show();
             }
         });
@@ -143,7 +136,7 @@ public class PagSalaoActivity extends AppCompatActivity implements ServicoAdapte
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(PagSalaoActivity.this, InfoActivity.class);
-                intent.putExtra("salao", salao); //id do salão é passado para puxar informações do mesmo
+                intent.putExtra("salao", mSalao); //id do salão é passado para puxar informações do mesmo
                 Toast.makeText(PagSalaoActivity.this, "Informações", Toast.LENGTH_SHORT).show();
 
                 startActivity(intent);
@@ -161,11 +154,29 @@ public class PagSalaoActivity extends AppCompatActivity implements ServicoAdapte
         Intent intent = new Intent(PagSalaoActivity.this, FuncionariosActivity.class);
 
         Bundle bundle = new Bundle();
-        bundle.putSerializable("servico", servicos.get(index));
+        bundle.putSerializable("servico", mServicos.get(index));
         bundle.putSerializable("estabelecimento", mEstabelecimento);
+        checarMudancaServico(mServicos.get(index));
+        if(mAgendamento != null){
+            bundle.putSerializable("agendamento", mAgendamento);
+        }
         intent.putExtras(bundle);
         startActivity(intent);
         //Toast.makeText(this, "Salao: "+servicos.get(index).getNome(),Toast.LENGTH_SHORT).show();
+    }
+
+    /**
+     * Verifica se houve mudança no serviço selecionado, e perde as informações do objeto agendamento
+     * @param servico selecionado no recycleview
+     */
+    private void checarMudancaServico(Servico servico) {
+        // se o serviço mudou, as outras informações não são necessarias mais
+        if(mAgendamento != null && !mAgendamento.getmServico().equals(servico)){
+            mAgendamento.setmServico(servico);
+            mAgendamento.setmData(null);
+            mAgendamento.setmHora(null);
+            mAgendamento.setmProfissional(null);
+        }
     }
 
     private void buscar(){
@@ -176,9 +187,9 @@ public class PagSalaoActivity extends AppCompatActivity implements ServicoAdapte
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 Servico servico = dataSnapshot.getValue(Servico.class);
                 if (servico.getmEstabId().equals(mEstabelecimento.getmEid())){
-                    servicos.add(servico);
+                    mServicos.add(servico);
                 }
-                myAdapter.notifyDataSetChanged();
+                mMyAdapter.notifyDataSetChanged();
                 mProgressDialog.dismiss();
             }
 
@@ -223,42 +234,42 @@ public class PagSalaoActivity extends AppCompatActivity implements ServicoAdapte
         return true;
     }
 
-    public void curti(){
+    public void curtir(){
 
         Favorito favorito = new Favorito();
         favorito.setCurtida(1);
-        favorito.setIdEstabelecimento(salao);
-        favorito.setIdCliente(userId);
+        favorito.setIdEstabelecimento(mSalao);
+        favorito.setIdCliente(mUserId);
         favorito.salvar();
 
     }
 
-    public void descurti(){
+    public void descurtir(){
         Favorito favorito = new Favorito();
         favorito.setCurtida(1);
-        favorito.setIdEstabelecimento(salao);
-        favorito.setIdCliente(userId);
+        favorito.setIdEstabelecimento(mSalao);
+        favorito.setIdCliente(mUserId);
         favorito.remove();
 
     }
 
     public void verificaCurtida(){
 
-        databaseReference.child("favoritos").child(userId).addValueEventListener(new ValueEventListener() {
+        mDatabaseReference.child("favoritos").child(mUserId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.getValue() != null){
-                    databaseReference.child("favoritos")
-                            .child(userId)
-                            .child(salao)
+                    mDatabaseReference.child("favoritos")
+                            .child(mUserId)
+                            .child(mSalao)
                             .addValueEventListener(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                     if (dataSnapshot.getValue() != null) {
                                         String idSalao = dataSnapshot.child("curtida").getValue().toString();
                                         //Log.d(TAG, "borabora:" + idSalao);
-                                        if (idSalao.equals(curtida)) {
-                                            likeButton.setLiked(true);
+                                        if (idSalao.equals(mCurtida)) {
+                                            mLikeButton.setLiked(true);
                                         }
                                     }
                                 }
@@ -276,15 +287,10 @@ public class PagSalaoActivity extends AppCompatActivity implements ServicoAdapte
 
             }
         });
-
-
-
-
-
-            }
+    }
 
     public void isLogado() {
-        if (logado.getCurrentUser() == null) {
+        if (mLogado.getCurrentUser() == null) {
             Intent intentAbritCadastro = new Intent(PagSalaoActivity.this , CadastroBasicoActivity.class);
             startActivity(intentAbritCadastro);
 

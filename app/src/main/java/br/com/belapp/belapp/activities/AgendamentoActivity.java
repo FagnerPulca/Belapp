@@ -1,12 +1,13 @@
 package br.com.belapp.belapp.activities;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
@@ -20,7 +21,9 @@ import java.util.Locale;
 
 import br.com.belapp.belapp.DAO.AgendamentoDAO;
 import br.com.belapp.belapp.R;
+import br.com.belapp.belapp.enums.StatusAgendamentoEnum;
 import br.com.belapp.belapp.model.Agendamento;
+import br.com.belapp.belapp.utils.DateUtils;
 
 public class AgendamentoActivity extends AppCompatActivity {
 
@@ -43,6 +46,7 @@ public class AgendamentoActivity extends AppCompatActivity {
         TextView tvLocal = findViewById(R.id.tvLocalEndereco);
         TextView tvServico = findViewById(R.id.tvServicoAgendado);
         TextView tvProfissional = findViewById(R.id.tvProfissional);
+        TextView tvStatus = findViewById(R.id.tvStatus);
 
         tvData.setText(String.format(Locale.getDefault(), "Data: %s", agendamento.getmData()));
         tvEstabelecimento.setText(agendamento.getmEstabelecimento().getmNome());
@@ -61,13 +65,29 @@ public class AgendamentoActivity extends AppCompatActivity {
                         getString(R.string.app_nao):
                         getString(R.string.app_sim))));
         Button btnCancelar = findViewById(R.id.btnCancelarAgendamento);
-        btnCancelar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                confirmarCancelamento();
-            }
+
+        btnCancelar.setOnClickListener(view -> confirmarCancelamento());
+
+        Button btnReagendar = findViewById(R.id.btnEditarAgendamento);
+        btnReagendar.setOnClickListener(v -> {
+            Intent intent = new Intent(getApplicationContext(), AgendarServicoActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("agendamento", agendamento);
+            intent.putExtras(bundle);
+            startActivity(intent);
         });
 
+        if(!DateUtils.isDataPresente(agendamento.getmData())
+                && !DateUtils.isDataFutura(agendamento.getmData())){
+            tvStatus.setText(StatusAgendamentoEnum.CONCLUIDO.getStatus());
+            tvStatus.setTextColor(Color.BLUE);
+            btnCancelar.setVisibility(View.GONE);
+            btnReagendar.setVisibility(View.GONE);
+        }
+        else{
+            tvStatus.setText(StatusAgendamentoEnum.AGENDADO.getStatus());
+            tvStatus.setTextColor(Color.GREEN -5000);
+        }
     }
 
     public void confirmarCancelamento() {

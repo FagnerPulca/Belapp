@@ -1,15 +1,12 @@
 package br.com.belapp.belapp.activities;
 
-import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
-
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -23,6 +20,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
+import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -45,7 +43,7 @@ public class AgendarServicoActivity extends AppCompatActivity implements DatePic
     private Agendamento mAgendamento;
     private ArrayList<Agendamento> mAgendamentosCliente;
     private ArrayList<Agendamento> mAgendamentosProfissional;
-
+    private boolean mDataNaoMudou;
     private Spinner mSpHorariosDisponiveis;
     private Collection<String> mHorariosDisponiveis;
     @Override
@@ -114,6 +112,15 @@ public class AgendarServicoActivity extends AppCompatActivity implements DatePic
                         mAgendamento.getmEstabelecimento().getDiasFuncionamento()));
 
 
+        Button btnAlterarServico = findViewById(R.id.btnAlterarServico);
+        btnAlterarServico.setOnClickListener(view -> {
+            Intent intent = new Intent(AgendarServicoActivity.this, PagSalaoActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("agendamento", mAgendamento);
+            intent.putExtras(bundle);
+            startActivity(intent);
+        });
+
         Button btnAgendar = findViewById(R.id.btnAgendar);
         btnAgendar.setOnClickListener(view -> {
             try {
@@ -121,7 +128,12 @@ public class AgendarServicoActivity extends AppCompatActivity implements DatePic
                 mAgendamento.setmData(mEdtData.getText().toString());
                 mAgendamento.setmHora(((String) mSpHorariosDisponiveis.getSelectedItem()));
                 AgendamentoDAO dao = new AgendamentoDAO();
-                dao.save(mAgendamento);
+                if(mAgendamento.getmId() != null){
+                    dao.update(mAgendamento);
+                }
+                else{
+                    dao.save(mAgendamento);
+                }
                 Toast.makeText(AgendarServicoActivity.this,
                         getString(R.string.sucess_agendamento_realizado), Toast.LENGTH_LONG).show();
                 Intent intent = new Intent();
@@ -144,7 +156,15 @@ public class AgendarServicoActivity extends AppCompatActivity implements DatePic
 
         buscarAgendamentosCliente();
         bucarAgendamentosProfissional();
-        Log.d(TAG, "");
+        mDataNaoMudou = true;
+        if(mAgendamento.getmData() != null){
+            mEdtData.setText(mAgendamento.getmData());
+            filtrarHorarios();
+            btnAlterarServico.setVisibility(View.VISIBLE);
+        }
+        else{
+            btnAlterarServico.setVisibility(View.GONE);
+        }
     }
 
     private void bucarAgendamentosProfissional() {
@@ -157,8 +177,7 @@ public class AgendarServicoActivity extends AppCompatActivity implements DatePic
                 if (Objects.requireNonNull(agendamento).getmProfissional().equals(mAgendamento.getmProfissional())){
                     mAgendamentosProfissional.add(agendamento);
                 }
-//                myAdapter.notifyDataSetChanged();
-//                mProgressDialog.dismiss();
+
             }
 
             @Override
@@ -193,8 +212,7 @@ public class AgendarServicoActivity extends AppCompatActivity implements DatePic
                 if (Objects.requireNonNull(agendamento).getmCliente().equals(mAgendamento.getmCliente())){
                     mAgendamentosCliente.add(agendamento);
                 }
-//                myAdapter.notifyDataSetChanged();
-//                mProgressDialog.dismiss();
+
             }
 
             @Override
@@ -222,6 +240,9 @@ public class AgendarServicoActivity extends AppCompatActivity implements DatePic
     @Override
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
         mEdtData.setText(String.format(Locale.getDefault(), "%d/%d/%d", dayOfMonth, (monthOfYear+1), year));
+        if(mAgendamento.getmData() != null && !mEdtData.getText().toString().equals(mAgendamento.getmData())){
+            mDataNaoMudou = false;
+        }
         filtrarHorarios();
     }
 
@@ -247,11 +268,18 @@ public class AgendarServicoActivity extends AppCompatActivity implements DatePic
 
         mHorariosDisponiveis.removeAll(horariosOcupadosCliente);
         mHorariosDisponiveis.removeAll(horariosOcupadosProfissional);
+        ArrayList<String> arrayHorarios = new ArrayList<>(mHorariosDisponiveis);
+        // se for um reagendamento, o horário agendado anteriormente também estará disponível
+        if(mAgendamento.getmData() != null && mDataNaoMudou){
+            arrayHorarios.remove(mAgendamento.getmHora());
+            arrayHorarios.set(0, mAgendamento.getmHora());
+        }
 
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_spinner_item, new ArrayList<>(mHorariosDisponiveis));
+                android.R.layout.simple_spinner_item, arrayHorarios);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mSpHorariosDisponiveis.setAdapter(dataAdapter);
+
         // Valida se ha datas disponiveis
         try {
             validar();

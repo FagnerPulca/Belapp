@@ -25,4 +25,9 @@ public class AgendamentoDAO {
         DatabaseReference mDatabase = getDatabaseReference();
         mDatabase.child(agendamento.getmId()).removeValue(completionListener);
     }
+
+    public void update(Agendamento agendamento){
+        DatabaseReference databaseReference = getDatabaseReference();
+        databaseReference.child(agendamento.getmId()).setValue(agendamento);
+    }
 }

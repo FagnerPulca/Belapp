@@ -46,11 +46,10 @@ public class AgendamentoAdapter extends RecyclerView.Adapter<AgendamentoAdapter.
             tvProfissionalAgendamento = itemView.findViewById(R.id.tvProfissionalAgendado);
             tvServicoAgendamento = itemView.findViewById(R.id.tvServicoAgendado);
 
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    activity.onItemClicked(agendamentos.indexOf((Agendamento) v.getTag()));
-                }
+            itemView.setOnClickListener(view -> {
+                Agendamento agendamento = (Agendamento) view.getTag();
+                int index = agendamentos.indexOf(agendamento);
+                activity.onItemClicked(index);
             });
         }
     }

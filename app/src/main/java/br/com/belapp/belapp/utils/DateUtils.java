@@ -90,4 +90,20 @@ public class DateUtils {
         return c;
     }
 
+    /**
+     * @param data no formato DD/MM/YYYY a ser verificada
+     * @return true se é data futura
+     */
+    public static boolean isDataFutura(String data){
+        return converterDataEmCalendar(data).after(converterDataEmCalendar(getDataAtual()));
+    }
+
+    /**
+     * @param data no formato DD/MM/YYYY a ser verificada
+     * @return true se é data presente
+     */
+    public static boolean isDataPresente(String data){
+        return converterDataEmCalendar(data).equals(converterDataEmCalendar(getDataAtual()));
+    }
+
 }

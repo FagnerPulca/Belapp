@@ -3,8 +3,8 @@ package br.com.belapp.belapp.activities;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -22,9 +22,7 @@ import br.com.belapp.belapp.model.Agendamento;
 import br.com.belapp.belapp.presenter.AgendamentoAdapter;
 
 public class AgendamentosActivity extends AppCompatActivity implements AgendamentoAdapter.ItemClicked{
-    private RecyclerView mRecyclerView;
-    private RecyclerView.LayoutManager mLayoutManager;
-    private RecyclerView.Adapter myAdapter;
+    private RecyclerView.Adapter mMyAdapter;
     private ArrayList<Agendamento> mAgendamentos;
     private ProgressDialog mProgressDialog;
 
@@ -40,16 +38,16 @@ public class AgendamentosActivity extends AppCompatActivity implements Agendamen
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
         setSupportActionBar(toolbar);
 
-        mRecyclerView = findViewById(R.id.rvAgendamentos);
-        mRecyclerView.setHasFixedSize(true);
+        RecyclerView recyclerView = findViewById(R.id.rvAgendamentos);
+        recyclerView.setHasFixedSize(true);
 
-        mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        mRecyclerView.setLayoutManager(mLayoutManager);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        recyclerView.setLayoutManager(layoutManager);
 
         mAgendamentos = new ArrayList<Agendamento>();
 
-        myAdapter = new AgendamentoAdapter(AgendamentosActivity.this, mAgendamentos);
-        mRecyclerView.setAdapter(myAdapter);
+        mMyAdapter = new AgendamentoAdapter(AgendamentosActivity.this, mAgendamentos);
+        recyclerView.setAdapter(mMyAdapter);
 
         buscar();
         dialogBuscando();
@@ -75,7 +73,7 @@ public class AgendamentosActivity extends AppCompatActivity implements Agendamen
                 Agendamento agendamento = dataSnapshot.getValue(Agendamento.class);
 
                 mAgendamentos.add(agendamento);
-                myAdapter.notifyDataSetChanged();
+                mMyAdapter.notifyDataSetChanged();
                 mProgressDialog.dismiss();
             }
 
@@ -115,7 +113,6 @@ public class AgendamentosActivity extends AppCompatActivity implements Agendamen
 
     @Override
     public boolean onSupportNavigateUp() {
-        // TODO: Verificar se ha alteracoes antes de voltar
         onBackPressed();
         return true;
     }
