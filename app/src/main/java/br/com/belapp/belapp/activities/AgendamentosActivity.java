@@ -85,7 +85,7 @@ public class AgendamentosActivity extends AppCompatActivity implements Agendamen
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-
+                // empty
             }
         });
 

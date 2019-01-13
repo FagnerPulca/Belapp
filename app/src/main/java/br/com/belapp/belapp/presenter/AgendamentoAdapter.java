@@ -31,7 +31,7 @@ public class AgendamentoAdapter extends RecyclerView.Adapter<AgendamentoAdapter.
         activity =  (ItemClicked) context;
     }
 
-    protected class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder{
 
         TextView tvDataAgendamento;
         TextView tvHoraAgendamento;
