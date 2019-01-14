@@ -84,6 +84,17 @@ public class PagAvaliacaoActivity extends AppCompatActivity {
             }
         });
 
+        ibInformacoes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(PagAvaliacaoActivity.this, InfoActivity.class);
+                intent.putExtra("salao", salao); //id do salão é passado para puxar informações do mesmo
+                Toast.makeText(PagAvaliacaoActivity.this, "Informações", Toast.LENGTH_SHORT).show();
+
+                startActivity(intent);
+            }
+        });
+
         ibAvaliacoes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -107,7 +107,10 @@ public class PagSalaoActivity extends AppCompatActivity implements ServicoAdapte
 
         mDatabaseReference = ConfiguracaoFireBase.getFirebase();
 
-        if(Permissao.estaLogado()) verificaCurtida();
+        if(Permissao.estaLogado()) {
+            mUserId = getUsuarioAtual().getUid();
+            verificaCurtida();
+        }
         buscar();
         dialogBuscando();
 

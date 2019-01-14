@@ -3,13 +3,12 @@ package br.com.belapp.belapp.servicos;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
+
 
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -18,7 +17,6 @@ import java.util.List;
 
 import br.com.belapp.belapp.activities.CadastroBasicoActivity;
 import br.com.belapp.belapp.activities.LoginActivity;
-import br.com.belapp.belapp.activities.PagSalaoActivity;
 
 import static android.support.v4.content.ContextCompat.startActivity;
 
@@ -54,7 +52,6 @@ public class Permissao {
 
     public static boolean verificarPermissaoRestritivo(Context contexto){
         FirebaseAuth autenticacao = FirebaseAuth.getInstance();
-        Log.d("PERM33",String.valueOf(autenticacao.getCurrentUser()));
         if(autenticacao.getCurrentUser() == null){
             alertaPrecisaEntrar(contexto);
             return false;
