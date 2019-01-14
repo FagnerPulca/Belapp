@@ -3,31 +3,24 @@ package br.com.belapp.belapp.activities;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-
 import android.support.v7.widget.Toolbar;
-
 import android.widget.Toast;
 
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
-
-
-
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
 import br.com.belapp.belapp.R;
-import br.com.belapp.belapp.model.ConfiguracaoFireBase;
 import br.com.belapp.belapp.model.Estabelecimento;
 import br.com.belapp.belapp.presenter.ApplicationClass;
 import br.com.belapp.belapp.presenter.SalaoAdapter;
@@ -107,7 +100,6 @@ public class SaloesActivity extends AppCompatActivity implements SalaoAdapter.It
         Bundle bundle = new Bundle();
         bundle.putSerializable("estabelecimento", mResultados.get(index));
         intent.putExtras(bundle);
-        intent.putExtra("salao", mResultados.get(index).getmEid());
         startActivity(intent);
         Toast.makeText(SaloesActivity.this, mResultados.get(index).getmNome(), Toast.LENGTH_SHORT).show();
     }

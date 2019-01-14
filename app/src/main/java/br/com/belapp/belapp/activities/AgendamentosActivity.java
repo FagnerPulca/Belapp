@@ -33,6 +33,7 @@ import br.com.belapp.belapp.presenter.AgendamentoAdapter;
 import br.com.belapp.belapp.utils.DateUtils;
 
 public class AgendamentosActivity extends AppCompatActivity implements AgendamentoAdapter.ItemClicked{
+
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mMyAdapter;
     private ArrayList<Agendamento> mAgendamentos;
@@ -52,6 +53,7 @@ public class AgendamentosActivity extends AppCompatActivity implements Agendamen
         toolbar.setTitleTextColor(Color.WHITE);
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
         setSupportActionBar(toolbar);
+
 
         mFiltroMeses = findViewById(R.id.spinner_meses_toolBar);
         List<String> listaStringsMeses = MesesEnum.getListaMeses();
@@ -88,17 +90,16 @@ public class AgendamentosActivity extends AppCompatActivity implements Agendamen
                 // empty
             }
         });
-
         mRecyclerView = findViewById(R.id.rvAgendamentos);
         mRecyclerView.setHasFixedSize(true);
 
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        mRecyclerView.setLayoutManager(mLayoutManager);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        mRecyclerView.setLayoutManager(layoutManager);
 
-        mAgendamentos = new ArrayList<>();
+        mAgendamentos = new ArrayList<Agendamento>();
 
-        mMyAdapter = new AgendamentoAdapter(AgendamentosActivity.this, mAgendamentos);
-        mRecyclerView.setAdapter(mMyAdapter);
+        buscarFiltrarAgendamentos();
+
         buscar();
         dialogBuscando();
 
@@ -106,43 +107,42 @@ public class AgendamentosActivity extends AppCompatActivity implements Agendamen
     }
 
     private void buscarFiltrarAgendamentos() {
-        ArrayList<Agendamento> auxList = mAgendamentos;
+//        ArrayList<Agendamento> auxList = mAgendamentos;
         if(!mFiltroStatus.getSelectedItem().toString().contains("Todos")
                 && !mFiltroMeses.getSelectedItem().toString().contains("Todos")){
 
             if(mFiltroStatus.getSelectedItem().toString().contains("Agendado")){
-                auxList = filtrarPorStatusAgendado(mAgendamentos);
+                mAgendamentos = filtrarPorStatusAgendado(mAgendamentos);
             }
             else if(mFiltroStatus.getSelectedItem().toString().contains("Concluído")){
-                auxList = filtrarPorStatusConcluido(mAgendamentos);
+                mAgendamentos = filtrarPorStatusConcluido(mAgendamentos);
             }
-            auxList = filtrarPorMes(auxList);
+            mAgendamentos = filtrarPorMes(mAgendamentos);
         }
         else {
 
             if(!mFiltroMeses.getSelectedItem().toString().contains("Todos")){
-                auxList = filtrarPorMes(mAgendamentos);
+                mAgendamentos = filtrarPorMes(mAgendamentos);
             }
 
             if(mFiltroStatus.getSelectedItem().toString().contains("Agendado")){
-                auxList = filtrarPorStatusAgendado(mAgendamentos);
+                mAgendamentos = filtrarPorStatusAgendado(mAgendamentos);
             }
             else if(mFiltroStatus.getSelectedItem().toString().contains("Concluído")){
-                auxList = filtrarPorStatusConcluido(mAgendamentos);
+                mAgendamentos = filtrarPorStatusConcluido(mAgendamentos);
             }
         }
-        if(auxList.size() == 0){
+        if(mAgendamentos.size() == 0) {
             Agendamento agendamento = new Agendamento();
             Servico servico = new Servico();
             servico.setmNome(getString(R.string.error_nao_ha_resultados));
             agendamento.setmServico(servico);
-            auxList.add(agendamento);
-        }
-        else{
-            mAgendamentos = auxList;
+            agendamento.setmId("");
+            agendamento.setmData("00/00/0000");
+            mAgendamentos.add(agendamento);
         }
 
-        mMyAdapter = new AgendamentoAdapter(AgendamentosActivity.this, auxList);
+        mMyAdapter = new AgendamentoAdapter(AgendamentosActivity.this, mAgendamentos);
         mRecyclerView.setAdapter(mMyAdapter);
         mMyAdapter.notifyDataSetChanged();
     }
@@ -202,11 +202,17 @@ public class AgendamentosActivity extends AppCompatActivity implements Agendamen
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, String s) {
                 Agendamento agendamento = dataSnapshot.getValue(Agendamento.class);
 
-                mAgendamentos.add(agendamento);
-                mMyAdapter.notifyDataSetChanged();
-                ordenarResultados();
-                buscarFiltrarAgendamentos();
-                mProgressDialog.dismiss();
+
+                if(!mAgendamentos.contains(agendamento)){
+                    mAgendamentos.add(agendamento);
+                    ordenarResultados();
+                    buscarFiltrarAgendamentos();
+                    mProgressDialog.dismiss();
+                }
+
+
+
+//                removerDuplicados();
 
             }
 
@@ -246,7 +252,6 @@ public class AgendamentosActivity extends AppCompatActivity implements Agendamen
 
     @Override
     public boolean onSupportNavigateUp() {
-        // TODO: Verificar se ha alteracoes antes de voltar
         onBackPressed();
         return true;
     }

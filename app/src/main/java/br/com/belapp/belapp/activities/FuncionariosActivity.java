@@ -3,8 +3,8 @@ package br.com.belapp.belapp.activities;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -36,6 +36,7 @@ public class FuncionariosActivity extends AppCompatActivity implements Funcionar
 
     private Estabelecimento mEstabelecimento;
     private Servico mServico;
+    private Agendamento mAgendamento;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +58,9 @@ public class FuncionariosActivity extends AppCompatActivity implements Funcionar
         profissionais = new ArrayList<Profissional>();
         mEstabelecimento = (Estabelecimento) getIntent().getSerializableExtra("estabelecimento");
         mServico = (Servico) getIntent().getSerializableExtra("servico");
+        if(getIntent().hasExtra("agendamento")){
+            mAgendamento = (Agendamento) getIntent().getSerializableExtra("agendamento");
+        }
 
 
 
@@ -119,17 +123,17 @@ public class FuncionariosActivity extends AppCompatActivity implements Funcionar
 
     @Override
     public void onAgendarButtonClicked(int index) {
-        Agendamento agendamento = new Agendamento();
-        agendamento.setmCliente(FirebaseUtils.getUsuarioAtual().getUid());
-        agendamento.setmEstabelecimento(mEstabelecimento);
-        agendamento.setmData("20/12/2018");
-        agendamento.setmHora("11:00");
-        agendamento.setmServico(mServico);
-        agendamento.setmProfissional(profissionais.get(index));
+        if(mAgendamento == null){
+            mAgendamento = new Agendamento();
+        }
+        mAgendamento.setmCliente(FirebaseUtils.getUsuarioAtual().getUid());
+        mAgendamento.setmEstabelecimento(mEstabelecimento);
+        mAgendamento.setmServico(mServico);
+        mAgendamento.setmProfissional(profissionais.get(index));
 
         Intent intent = new Intent();
         Bundle bundle = new Bundle();
-        bundle.putSerializable("agendamento", agendamento);
+        bundle.putSerializable("agendamento", mAgendamento);
         intent.setClass(FuncionariosActivity.this, AgendarServicoActivity.class);
         intent.putExtras(bundle);
         startActivity(intent);
