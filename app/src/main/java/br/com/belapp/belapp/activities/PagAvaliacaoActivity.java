@@ -35,6 +35,7 @@ import br.com.belapp.belapp.model.Avaliacao;
 import br.com.belapp.belapp.model.ConfiguracaoFireBase;
 import br.com.belapp.belapp.model.Servico;
 import br.com.belapp.belapp.presenter.AvaliacaoAdapter;
+import br.com.belapp.belapp.servicos.Permissao;
 
 import static android.widget.Toast.makeText;
 
@@ -87,7 +88,7 @@ public class PagAvaliacaoActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 FirebaseUser usuario = ConfiguracaoFireBase.getFirebaseAutenticacao().getCurrentUser();
-                if (usuario != null) {
+                if (Permissao.verificarPermissaoRestritivo(PagAvaliacaoActivity.this)) {
                     Intent intent = new Intent(PagAvaliacaoActivity.this,AvaliarActitivy.class);
                     intent.putExtra("nome",nome);
                     intent.putExtra("idEstabelecimento",salao);
