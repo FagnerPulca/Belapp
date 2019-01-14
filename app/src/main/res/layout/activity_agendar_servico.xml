@@ -89,14 +89,31 @@
 
     <Button
         android:id="@+id/btnAgendar"
-        android:layout_width="331dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="32dp"
+        android:background="@drawable/fui_idp_button_background_phone"
         android:text="@string/app_agendar"
+        android:textColor="@color/com_facebook_button_background_color_focused"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/btnAlterarServico"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/fui_idp_button_background_github"
+        android:text="@string/app_alterar_servico"
+        android:textColor="@color/com_facebook_button_background_color_focused"
+        app:layout_constraintBottom_toTopOf="@+id/btnAgendar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.523"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView

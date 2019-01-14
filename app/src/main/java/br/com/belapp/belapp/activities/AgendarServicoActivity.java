@@ -7,7 +7,6 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -39,12 +38,12 @@ import br.com.belapp.belapp.utils.StringUtils;
 
 public class AgendarServicoActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener{
 
-    private static final String TAG = "belapp.activities";
+//    private static final String TAG = "belapp.activities";
     private EditText mEdtData;
     private Agendamento mAgendamento;
     private ArrayList<Agendamento> mAgendamentosCliente;
     private ArrayList<Agendamento> mAgendamentosProfissional;
-
+    private boolean mDataNaoMudou;
     private Spinner mSpHorariosDisponiveis;
     private Collection<String> mHorariosDisponiveis;
     @Override
@@ -59,6 +58,94 @@ public class AgendarServicoActivity extends AppCompatActivity implements DatePic
         toolbar.setTitleTextColor(Color.WHITE);
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
         setSupportActionBar(toolbar);
+        configurarDatePicker();
+
+        mAgendamento = (Agendamento) getIntent().getSerializableExtra("agendamento");
+        TextView tvServico = findViewById(R.id.tvServicoAgendar);
+        TextView tvEstabelecimento = findViewById(R.id.tvEstabelecimentoAgendar);
+        TextView tvProfissional = findViewById(R.id.tvProfissionalAgendar);
+        TextView tvPreco = findViewById(R.id.tvPrecoAgendar);
+        TextView tvDiasFuncionamento = findViewById(R.id.tvDiasFuncionamento);
+
+
+        tvServico.setText(String.format(Locale.getDefault(), "Serviço: %s",
+                mAgendamento.getmServico().getmNome()));
+        tvPreco.setText(String.format(Locale.getDefault(), "Preço: %s",
+                StringUtils.getDinheiro(mAgendamento.getmServico().getmPreco())));
+        tvProfissional.setText(String.format(Locale.getDefault(), "Profissional: %s",
+                mAgendamento.getmProfissional().getNome()));
+        tvEstabelecimento.setText(String.format(Locale.getDefault(), "Estabelecimento: %s",
+                mAgendamento.getmEstabelecimento().getmNome()));
+
+        tvDiasFuncionamento.setText(
+                String.format("%s: %s", getString(R.string.app_dias_funcionamento),
+                        mAgendamento.getmEstabelecimento().getDiasFuncionamento()));
+
+
+        Button btnAlterarServico = findViewById(R.id.btnAlterarServico);
+        btnAlterarServico.setOnClickListener(view -> {
+            Intent intent = new Intent(AgendarServicoActivity.this, PagSalaoActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("agendamento", mAgendamento);
+            intent.putExtras(bundle);
+            startActivity(intent);
+        });
+
+        Button btnAgendar = findViewById(R.id.btnAgendar);
+        btnAgendar.setOnClickListener(view -> {
+            try {
+                validar();
+                adicionarDataEHoraNoAgendamento();
+                AgendamentoDAO dao = new AgendamentoDAO();
+                if(mAgendamento.getmId() != null){
+                    dao.update(mAgendamento);
+                }
+                else{
+                    dao.save(mAgendamento);
+                }
+                Toast.makeText(AgendarServicoActivity.this,
+                        getString(R.string.sucess_agendamento_realizado), Toast.LENGTH_LONG).show();
+                Intent intent = new Intent();
+                intent.setClass(AgendarServicoActivity.this, ClienteLogadoActivity.class);
+                startActivity(intent);
+//                finish();
+            } catch (ValidationException e) {
+                Toast.makeText(AgendarServicoActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
+
+        configurarSpinnerHorarios();
+
+        buscarAgendamentosCliente();
+        bucarAgendamentosProfissional();
+        mDataNaoMudou = true;
+        if(mAgendamento.getmData() != null){
+            mEdtData.setText(mAgendamento.getmData());
+            filtrarHorarios();
+            btnAlterarServico.setVisibility(View.VISIBLE);
+        }
+        else{
+            btnAlterarServico.setVisibility(View.GONE);
+        }
+    }
+
+    private void configurarSpinnerHorarios() {
+        mSpHorariosDisponiveis = findViewById(R.id.spHorariosAgendar);
+
+        mHorariosDisponiveis = new ArrayList<>();
+        mHorariosDisponiveis.add(getString(R.string.app_selecionar));
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_spinner_item, new ArrayList<>(mHorariosDisponiveis));
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mSpHorariosDisponiveis.setAdapter(dataAdapter);
+    }
+
+    private void adicionarDataEHoraNoAgendamento() {
+        mAgendamento.setmData(mEdtData.getText().toString());
+        mAgendamento.setmHora(((String) mSpHorariosDisponiveis.getSelectedItem()));
+    }
+
+    private void configurarDatePicker() {
         mEdtData = findViewById(R.id.edtData);
 
         // Atribui a ação de escolha de data.
@@ -90,60 +177,6 @@ public class AgendarServicoActivity extends AppCompatActivity implements DatePic
 
 
         });
-
-        mAgendamento = (Agendamento) getIntent().getSerializableExtra("agendamento");
-        TextView tvServico = findViewById(R.id.tvServicoAgendar);
-        TextView tvEstabelecimento = findViewById(R.id.tvEstabelecimentoAgendar);
-        TextView tvProfissional = findViewById(R.id.tvProfissionalAgendar);
-        TextView tvPreco = findViewById(R.id.tvPrecoAgendar);
-        TextView tvDiasFuncionamento = findViewById(R.id.tvDiasFuncionamento);
-
-
-        tvServico.setText(String.format(Locale.getDefault(), "Serviço: %s",
-                mAgendamento.getmServico().getmNome()));
-        tvPreco.setText(String.format(Locale.getDefault(), "Preço: %s",
-                StringUtils.getDinheiro(mAgendamento.getmServico().getmPreco())));
-        tvProfissional.setText(String.format(Locale.getDefault(), "Profissional: %s",
-                mAgendamento.getmProfissional().getNome()));
-        tvEstabelecimento.setText(String.format(Locale.getDefault(), "Estabelecimento: %s",
-                mAgendamento.getmEstabelecimento().getmNome()));
-
-        tvDiasFuncionamento.setText(
-                String.format("%s: %s", getString(R.string.app_dias_funcionamento),
-                        mAgendamento.getmEstabelecimento().getDiasFuncionamento()));
-
-
-        Button btnAgendar = findViewById(R.id.btnAgendar);
-        btnAgendar.setOnClickListener(view -> {
-            try {
-                validar();
-                mAgendamento.setmData(mEdtData.getText().toString());
-                mAgendamento.setmHora(((String) mSpHorariosDisponiveis.getSelectedItem()));
-                AgendamentoDAO dao = new AgendamentoDAO();
-                dao.save(mAgendamento);
-                Toast.makeText(AgendarServicoActivity.this,
-                        getString(R.string.sucess_agendamento_realizado), Toast.LENGTH_LONG).show();
-                Intent intent = new Intent();
-                intent.setClass(AgendarServicoActivity.this, ClienteLogadoActivity.class);
-                startActivity(intent);
-                finish();
-            } catch (ValidationException e) {
-                Toast.makeText(AgendarServicoActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
-            }
-        });
-
-        mSpHorariosDisponiveis = findViewById(R.id.spHorariosAgendar);
-
-        mHorariosDisponiveis = new ArrayList<>();
-        mHorariosDisponiveis.add(getString(R.string.app_selecionar));
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_spinner_item, new ArrayList<>(mHorariosDisponiveis));
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mSpHorariosDisponiveis.setAdapter(dataAdapter);
-
-        buscarAgendamentosCliente();
-        bucarAgendamentosProfissional();
-        Log.d(TAG, "");
     }
 
     private void bucarAgendamentosProfissional() {
@@ -156,8 +189,7 @@ public class AgendarServicoActivity extends AppCompatActivity implements DatePic
                 if (Objects.requireNonNull(agendamento).getmProfissional().equals(mAgendamento.getmProfissional())){
                     mAgendamentosProfissional.add(agendamento);
                 }
-//                myAdapter.notifyDataSetChanged();
-//                mProgressDialog.dismiss();
+
             }
 
             @Override
@@ -192,8 +224,7 @@ public class AgendarServicoActivity extends AppCompatActivity implements DatePic
                 if (Objects.requireNonNull(agendamento).getmCliente().equals(mAgendamento.getmCliente())){
                     mAgendamentosCliente.add(agendamento);
                 }
-//                myAdapter.notifyDataSetChanged();
-//                mProgressDialog.dismiss();
+
             }
 
             @Override
@@ -224,7 +255,14 @@ public class AgendarServicoActivity extends AppCompatActivity implements DatePic
         filtrarHorarios();
     }
 
+    private void checarMudancaData() {
+        if(mAgendamento.getmData() != null && !mEdtData.getText().toString().equals(mAgendamento.getmData())){
+            mDataNaoMudou = false;
+        }
+    }
+
     public void filtrarHorarios() {
+        checarMudancaData();
         mHorariosDisponiveis.clear();
         mHorariosDisponiveis.add(getString(R.string.app_selecionar));
 
@@ -246,11 +284,18 @@ public class AgendarServicoActivity extends AppCompatActivity implements DatePic
 
         mHorariosDisponiveis.removeAll(horariosOcupadosCliente);
         mHorariosDisponiveis.removeAll(horariosOcupadosProfissional);
+        ArrayList<String> arrayHorarios = new ArrayList<>(mHorariosDisponiveis);
+        // se for um reagendamento, o horário agendado anteriormente também estará disponível
+        if(mAgendamento.getmData() != null && mDataNaoMudou){
+            arrayHorarios.remove(mAgendamento.getmHora());
+            arrayHorarios.set(0, mAgendamento.getmHora());
+        }
 
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_spinner_item, new ArrayList<>(mHorariosDisponiveis));
+                android.R.layout.simple_spinner_item, arrayHorarios);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mSpHorariosDisponiveis.setAdapter(dataAdapter);
+
         // Valida se ha datas disponiveis
         try {
             validar();
@@ -316,5 +361,34 @@ public class AgendarServicoActivity extends AppCompatActivity implements DatePic
         }
         return horariosDiaSelecionado;
     }
+
+    /**
+     * Métodos para auxilixar nos testes envoltendo data nesta activity
+     *
+     */
+
+    public void setData(String data){
+        runOnUiThread(() -> {
+            mEdtData.setText(data);
+            filtrarHorarios();
+
+        });
+
+    }
+
+    public Collection<Integer> getDiasFuncionamento(){
+        Collection<Integer> dias = new ArrayList<>();
+        for(HorarioAtendimento horarioAtendimento: mAgendamento.getmEstabelecimento().getmHorariosAtendimento()){
+            if(horarioAtendimento != null) {
+                dias.add(horarioAtendimento.getmDiaFuncionamento());
+            }
+        }
+        return dias;
+    }
+
+    public String getDataAgendamento(){
+        return mAgendamento.getmData();
+    }
+
 }
 

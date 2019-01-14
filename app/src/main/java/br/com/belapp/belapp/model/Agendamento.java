@@ -76,4 +76,9 @@ public class Agendamento implements Serializable {
     public String getmStatus() {
         return mStatus;
     }
+
+    @Override
+    public boolean equals( Object obj) {
+        return obj != null & obj instanceof Agendamento && this.getmId().equals(((Agendamento)obj).getmId());
+    }
 }

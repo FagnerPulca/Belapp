@@ -86,6 +86,11 @@ public class Servico implements Serializable {
         this.mCategoria = mCategoria;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof Servico && ((Servico) obj).getmId().equals(this.getmId());
+    }
+
     /*public Servico(String mId, String nome, double preco, String duracao, String profissionais, String categoria) {
         this.mId = mId;
         this.nome = nome;

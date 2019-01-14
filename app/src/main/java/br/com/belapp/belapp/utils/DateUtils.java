@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
 import java.util.Locale;
 
@@ -37,6 +38,56 @@ public class DateUtils {
      */
     public static boolean checarSeDomingo(Calendar data){
         return data.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY;
+    }
+
+    /**
+     * Verifica se data é segunda .
+     *
+     * @param   data        Um objeto Calendar
+     * @return  boolean
+     */
+    public static boolean checarSeSegunda(Calendar data){
+        return data.get(Calendar.DAY_OF_WEEK) == Calendar.MONDAY;
+    }
+
+    /**
+     * Verifica se data é terça .
+     *
+     * @param   data        Um objeto Calendar
+     * @return  boolean
+     */
+    public static boolean checarSeTerca(Calendar data){
+        return data.get(Calendar.DAY_OF_WEEK) == Calendar.TUESDAY;
+    }
+
+    /**
+     * Verifica se data é quarta .
+     *
+     * @param   data        Um objeto Calendar
+     * @return  boolean
+     */
+    public static boolean checarSeQuarta(Calendar data){
+        return data.get(Calendar.DAY_OF_WEEK) == Calendar.WEDNESDAY;
+    }
+
+    /**
+     * Verifica se data é Quinta .
+     *
+     * @param   data        Um objeto Calendar
+     * @return  boolean
+     */
+    public static boolean checarSeQuinta(Calendar data){
+        return data.get(Calendar.DAY_OF_WEEK) == Calendar.THURSDAY;
+    }
+
+    /**
+     * Verifica se data é sexta .
+     *
+     * @param   data        Um objeto Calendar
+     * @return  boolean
+     */
+    public static boolean checarSeSexta(Calendar data){
+        return data.get(Calendar.DAY_OF_WEEK) == Calendar.FRIDAY;
     }
 
     public static String getFormatoHora(int hora, int minutos){
@@ -123,12 +174,52 @@ public class DateUtils {
      * @return Data atualizada data + dias no formado DD/MM/YYYY
      */
     public static String getSomaDiasComDataEspecifica(int dias, String data) {
-            Calendar c = Calendar.getInstance();
-            @SuppressLint("SimpleDateFormat") SimpleDateFormat sd = new SimpleDateFormat("dd/MM/yyyy");
-            String[] componentesData = data.split("/");
-            c.set(Integer.parseInt(componentesData[2]), Integer.parseInt(componentesData[1]) - 1, Integer.parseInt(componentesData[0]) + dias);
-            return sd.format(c.getTime());
+        Calendar c = Calendar.getInstance();
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat sd = new SimpleDateFormat("dd/MM/yyyy");
+        String[] componentesData = data.split("/");
+        c.set(Integer.parseInt(componentesData[2]), Integer.parseInt(componentesData[1]) - 1, Integer.parseInt(componentesData[0]) + dias);
+        return sd.format(c.getTime());
     }
+
+    /**
+     * Gera uma data com base na data atual
+     * @return uma data no formato  DD/MM/YYYY
+     */
+    public static String gerarData(){
+        int numero = (int) (Math.random() * 10) + 1;
+        return getSomaDiasComDataEspecifica(numero, getDataAtual());
+    }
+
+    public static String gerarDataValida(Collection<Integer> diasValidos){
+        String data = gerarData();
+        boolean find = false;
+        while (!find){
+            if(diasValidos.contains(getDiaDaSemanaEmData(data))){
+                find = true;
+            }
+        }
+        return data;
+    }
+    /**
+     *
+     * @param diasInvalidos onde a data não pode estar
+     * @return uma data que não pertença aos diasInvalidos
+     */
+    public static String gerarDataInvalida(Collection<Integer> diasInvalidos){
+        String data = "";
+        boolean find = false;
+        if(diasInvalidos.size() == 7){
+            return getSomaDiasComDataEspecifica(-1, getDataAtual());
+        }
+        while (!find){
+            data = gerarData();
+            if(!diasInvalidos.contains(getDiaDaSemanaEmData(data))){
+                find = true;
+            }
+        }
+        return data;
+    }
+
 
     /**
      * @param dias a serem subtraídos da data base
