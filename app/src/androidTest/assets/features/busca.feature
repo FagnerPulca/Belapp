@@ -42,3 +42,19 @@
     Quando Eu digito um serviço
     E Eu clico em buscar
     Entao  Eu devo ver os salões retornados
+
+  @busca-feature
+   Cenario: Procurar um estabelecimento disponível por data
+     Dado Eu estou na tela de busca
+     Quando Digito um serviço de estabelecimento
+     E Digito uma data
+     E Eu clico em buscar
+     Então Eu devo ver o estabelecimento
+
+  @busca-feature
+   Cenario: Procurar estabelecimento indisponível por data
+     Dado Eu estou na tela de busca
+     Quando Digito um serviço de estabelecimento
+     E Digito uma data
+     E Eu clico em buscar
+     Então Eu não devo ver nenhum estabelecimento

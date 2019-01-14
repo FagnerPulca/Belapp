@@ -1,5 +1,6 @@
 package br.com.belapp.belapp.test;
 
+
 import android.content.Intent;
 import android.support.test.rule.ActivityTestRule;
 
@@ -15,8 +16,10 @@ import cucumber.api.java.it.Quando;
 import cucumber.api.java.pt.Entao;
 
 import static android.support.test.espresso.Espresso.onView;
+
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static junit.framework.TestCase.assertNotNull;
+
 
 
 public class BuscaActivitySteps extends DefaultTest {
@@ -91,6 +94,33 @@ public class BuscaActivitySteps extends DefaultTest {
     @Entao("^Devo ver uma mensagem dizendo para digitar algum dado$")
     public void verMensagem(){
         verificarMensagemToast(getAtualActivity().getString(R.string.digite_algum_dado));
+    }
+
+    @Quando("^Digito um serviço de estabelecimento$")
+    public void digitoServicoEstabelacimento(){ preencherCampoEditText(R.id.etServCat, "manicure");}
+
+    @E ("^Digito uma data$")
+    public void digitoUmaData(){
+     //   apertarBotao(R.id.etDataBusca);
+
+      //  onView(withClassName(Matchers.equalTo(DatePickerDialog.class.getName()))).check(matches(isDisplayed()));
+
+        //onView(withClassName(Matchers.equalTo(DatePickerDialog.class.getName())))
+                //.perform(PickerActions.setDate(2019,0,24));
+        //getActivity().getResources().
+    }
+
+    @Entao("^Eu devo ver o estabelecimento$")
+    public void verEstabelecimento(){
+        esperar(2000);
+        //onView(withText(getActivity().getString(R.string.title_activity_estabelecimentos)));
+
+    }
+
+    @Entao("^Eu não devo ver nenhum estabelecimento$")
+    public void naoVerEstabelecimento(){
+        esperar(2000);
+       // onView(withText(getActivity().getString(R.string.title_activity_estabelecimentos)));
     }
 
 }

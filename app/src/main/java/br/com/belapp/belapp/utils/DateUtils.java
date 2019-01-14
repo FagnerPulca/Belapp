@@ -115,7 +115,18 @@ public class DateUtils {
     }
 
     /**
-     * Este Método retorna o dia da semana referente a data informado no
+
+     * Converte uma data para String no formato 00/00/0000
+     * @param data do tipo Calendar
+     * @return String com a data no formato 00/00/0000
+     */
+    public static String converterDataParaString(Calendar data){
+        String formato = "dd/MM/yyyy";
+        SimpleDateFormat formatador = new SimpleDateFormat(formato, new Locale("pt","BR"));
+        return formatador.format(data.getTime());
+    }
+
+     /* Este Método retorna o dia da semana referente a data informado no
      * parâmetro
      *
      * 1º dia da semana retorna 1; Ultimo dias da semana retorna 7;
