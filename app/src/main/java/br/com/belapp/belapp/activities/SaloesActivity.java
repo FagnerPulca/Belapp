@@ -3,31 +3,31 @@ package br.com.belapp.belapp.activities;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-
 import android.support.v7.widget.Toolbar;
-
 import android.widget.Toast;
 
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
-
-
-
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
 
 import br.com.belapp.belapp.R;
-import br.com.belapp.belapp.model.ConfiguracaoFireBase;
+
+import br.com.belapp.belapp.model.Agendamento;
+
 import br.com.belapp.belapp.model.Estabelecimento;
 import br.com.belapp.belapp.presenter.ApplicationClass;
 import br.com.belapp.belapp.presenter.SalaoAdapter;
@@ -41,7 +41,8 @@ public class SaloesActivity extends AppCompatActivity implements SalaoAdapter.It
     private ArrayList<String> mIds;
     private ArrayList<String> mIdcateg, mServicos, mCategServ;
     private ArrayList<String> mPrecoServ, mNomeServ;
-    private String mCategoria, mEstab, mEndereco, mServcat; //busca
+    private ArrayList<Agendamento> mAgendamentos;
+    private String mCategoria, mEstab, mEndereco, mServcat, mDataSelecionada; //busca
     private int mPreco; //busca
     private double mLatitude;
     private double mLongitude;
@@ -68,6 +69,7 @@ public class SaloesActivity extends AppCompatActivity implements SalaoAdapter.It
         mEndereco = getIntent().getStringExtra("mEndereco");
         mServcat = getIntent().getStringExtra("mServcat");
         mPreco = getIntent().getIntExtra("mPreco", 300);
+        mDataSelecionada = getIntent().getStringExtra("mDataSelecionada");
 
         mIds = new ArrayList<>();
         mIdcateg = new ArrayList<>();
@@ -75,12 +77,14 @@ public class SaloesActivity extends AppCompatActivity implements SalaoAdapter.It
         mCategServ = new ArrayList<>();
         mPrecoServ = new ArrayList<>();
         mNomeServ = new ArrayList<>();
+        mAgendamentos = new ArrayList<>();
         mIds = getIntent().getStringArrayListExtra("mIds");
         mIdcateg = getIntent().getStringArrayListExtra("mIdcateg");
         mServicos = getIntent().getStringArrayListExtra("mServicos");
         mCategServ = getIntent().getStringArrayListExtra("mCategServ");
         mPrecoServ = getIntent().getStringArrayListExtra("mPrecoServ");
         mNomeServ = getIntent().getStringArrayListExtra("mNomeServ");
+        mAgendamentos = (ArrayList<Agendamento>) getIntent().getSerializableExtra("mAgendamentos");
 
         mLatitude = getIntent().getDoubleExtra("mLatitude", -8);
         mLongitude = getIntent().getDoubleExtra("mLongitude", -36);
@@ -107,7 +111,6 @@ public class SaloesActivity extends AppCompatActivity implements SalaoAdapter.It
         Bundle bundle = new Bundle();
         bundle.putSerializable("estabelecimento", mResultados.get(index));
         intent.putExtras(bundle);
-        intent.putExtra("salao", mResultados.get(index).getmEid());
         startActivity(intent);
         Toast.makeText(SaloesActivity.this, mResultados.get(index).getmNome(), Toast.LENGTH_SHORT).show();
     }
@@ -138,10 +141,12 @@ public class SaloesActivity extends AppCompatActivity implements SalaoAdapter.It
                                     (mServcat.isEmpty() || mNomeServ.get(i).toLowerCase().contains(mServcat) ||
                                             mCategServ.get(i).toLowerCase().contains(mServcat))){
                                 mResultados.add(estabelecimento);
+                                verificarServiçosDisponíveis();
                                 break;
                             }
                         }
                 }
+
 
                 Collections.sort(mResultados, new Comparator<Estabelecimento>() {
                     @Override
@@ -200,6 +205,36 @@ public class SaloesActivity extends AppCompatActivity implements SalaoAdapter.It
             Thread.sleep(tempo);
         } catch (InterruptedException e) {
             e.printStackTrace();
+        }
+    }
+
+    //Verifica se a quantidade de horas agendas no dia é inferior a carga horária diária
+    private void verificarServiçosDisponíveis(){
+        Map<String,Integer> tm = new TreeMap<String,Integer>();
+        for(int i=0; i < mAgendamentos.size(); i++){
+            String idEstab = mAgendamentos.get(i).getmEstabelecimento().getmEid();
+            int duracao = mAgendamentos.get(i).getmServico().getmDuracao();
+            if(tm.get(idEstab) != null){
+                int valor = tm.get(idEstab);
+                valor += duracao;
+                tm.put(idEstab,valor);
+            } else {
+                tm.put(idEstab,duracao);
+            }
+        }
+
+        //Remover o estabelecimento do mResultado caso não possua o horário disponível
+        Set<Map.Entry<String,Integer>> set = tm.entrySet();
+        Iterator<Map.Entry<String,Integer>> inte = set.iterator();
+        while(inte.hasNext()){
+            Map.Entry item = inte.next();
+            if((Integer)item.getValue() >= 1200){
+                for(int i=0; i < mResultados.size(); i++){
+                    if(mResultados.get(i).getmEid().equals(item.getKey())) {
+                        mResultados.remove(i);
+                    }
+                }
+            }
         }
     }
 }
