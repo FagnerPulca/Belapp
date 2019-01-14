@@ -6,7 +6,9 @@ import android.support.test.rule.ActivityTestRule;
 import org.junit.Rule;
 
 import br.com.belapp.belapp.R;
+import br.com.belapp.belapp.activities.AgendarServicoActivity;
 import br.com.belapp.belapp.activities.InicialActivity;
+import br.com.belapp.belapp.utils.DateUtils;
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
@@ -14,9 +16,6 @@ import cucumber.api.java.pt.E;
 import cucumber.api.java.pt.Entao;
 import cucumber.api.java.pt.Quando;
 
-import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static junit.framework.TestCase.assertNotNull;
 
 public class AgendamentoActivitySteps extends DefaultTest{
@@ -78,17 +77,19 @@ public class AgendamentoActivitySteps extends DefaultTest{
 
     @Quando("^eu informo uma data valida$")
     public void euInformoUmaDataValida() {
-        apertarBotao(R.id.edtData);
-//        onView(withText("27")).perform(click());
-        onView(withText("OK")).perform(click());
+        if(getAtualActivity() instanceof AgendarServicoActivity){
+            AgendarServicoActivity activityAgendamento = (AgendarServicoActivity) getAtualActivity();
+            activityAgendamento.setData(DateUtils.gerarDataValida(activityAgendamento.getDiasFuncionamento()));
+        }
     }
 
     @E("^eu informo uma data invalida$")
     public void euInformoUmaDataInvalida() {
-        apertarBotao(R.id.edtData);
-//        onView(withText("27")).perform(click());
-        esperar(660);
-        onView(withText("OK")).perform(click());
+        if(getAtualActivity() instanceof AgendarServicoActivity){
+            AgendarServicoActivity activityAgendamento = (AgendarServicoActivity) getAtualActivity();
+            activityAgendamento.setData(
+                    DateUtils.gerarDataInvalida(activityAgendamento.getDiasFuncionamento()));
+        }
     }
 
     @Quando("^eu seleciono um horario valido$")

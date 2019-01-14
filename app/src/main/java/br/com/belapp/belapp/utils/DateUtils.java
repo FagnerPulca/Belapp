@@ -179,6 +179,16 @@ public class DateUtils {
         return getSomaDiasComDataEspecifica(numero, getDataAtual());
     }
 
+    public static String gerarDataValida(Collection<Integer> diasValidos){
+        String data = gerarData();
+        boolean find = false;
+        while (!find){
+            if(diasValidos.contains(getDiaDaSemanaEmData(data))){
+                find = true;
+            }
+        }
+        return data;
+    }
     /**
      *
      * @param diasInvalidos onde a data não pode estar

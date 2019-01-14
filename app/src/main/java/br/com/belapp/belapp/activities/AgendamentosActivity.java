@@ -22,7 +22,6 @@ import com.google.firebase.database.Query;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 
 import br.com.belapp.belapp.R;
@@ -255,15 +254,6 @@ public class AgendamentosActivity extends AppCompatActivity implements Agendamen
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
-    }
-
-    private ArrayList<Agendamento> removerDuplicados(ArrayList<Agendamento> agendamentos){
-        ArrayList<Agendamento> aux = new ArrayList<>();
-        HashSet<Agendamento> hs=new HashSet<>(agendamentos);
-        for(Agendamento a: hs){
-            aux.add(a);
-        }
-        return aux;
     }
 
     private void ordenarResultados(){
