@@ -66,7 +66,9 @@ public class CadastroActivitySteps extends DefaultTest {
     public void euNaoPreenchoOCampoTelefone() {
         preencherCampoEditText(R.id.etNomeCadastro, "Maria Jose");
         preencherCampoEditText(R.id.etEmailCadastro,"teste3@teste.com");
+        preencherCampoEditText(R.id.etConfirmacaoEmailCadastro,"teste3@teste.com");
         preencherCampoEditText(R.id.etSenhaCadastro,"8123456");
+        preencherCampoEditText(R.id.etConfirmcaoSenhaCadastro,"8123456");
         preencherCampoEditText(R.id.etTelefoneCadastro,"");
     }
 
@@ -84,8 +86,11 @@ public class CadastroActivitySteps extends DefaultTest {
     public void euNaoPreenchoOCampoNome() {
         preencherCampoEditText(R.id.etNomeCadastro, "");
         preencherCampoEditText(R.id.etEmailCadastro,"teste3@teste.com");
+        preencherCampoEditText(R.id.etConfirmacaoEmailCadastro,"teste3@teste.com");
         preencherCampoEditText(R.id.etTelefoneCadastro,"124659879");
         preencherCampoEditText(R.id.etSenhaCadastro,"8123456");
+        preencherCampoEditText(R.id.etConfirmcaoSenhaCadastro,"8123456");
+
 
     }
 
@@ -99,8 +104,10 @@ public class CadastroActivitySteps extends DefaultTest {
     public void euNaoPreenchoOCampoEmail() {
         preencherCampoEditText(R.id.etNomeCadastro, "Maria Jose");
         preencherCampoEditText(R.id.etEmailCadastro,"");
-        preencherCampoEditText(R.id.etTelefoneCadastro,"12354674897");
+        preencherCampoEditText(R.id.etConfirmacaoEmailCadastro,"");
+        preencherCampoEditText(R.id.etTelefoneCadastro,"124659879");
         preencherCampoEditText(R.id.etSenhaCadastro,"8123456");
+        preencherCampoEditText(R.id.etConfirmcaoSenhaCadastro,"8123456");
 
     }
 
@@ -113,8 +120,10 @@ public class CadastroActivitySteps extends DefaultTest {
     public void euNaoPreenchoOCampoSenha() {
         preencherCampoEditText(R.id.etNomeCadastro, "Maria Jose");
         preencherCampoEditText(R.id.etEmailCadastro,"teste3@teste.com");
-        preencherCampoEditText(R.id.etTelefoneCadastro,"123126456");
+        preencherCampoEditText(R.id.etConfirmacaoEmailCadastro,"teste3@teste.com");
+        preencherCampoEditText(R.id.etTelefoneCadastro,"124659879");
         preencherCampoEditText(R.id.etSenhaCadastro,"");
+        preencherCampoEditText(R.id.etConfirmcaoSenhaCadastro,"");
 
     }
 
@@ -125,11 +134,13 @@ public class CadastroActivitySteps extends DefaultTest {
     }
     @Quando("^eu preencho todos os campos corretamente$")
     public void euNaoPreenchoOCampo() {
+        String email = StringUtils.gerarEmail();
         preencherCampoEditText(R.id.etNomeCadastro, "Maria Jose");
-        preencherCampoEditText(R.id.etEmailCadastro, StringUtils.gerarEmail());
+        preencherCampoEditText(R.id.etEmailCadastro, email);
+        preencherCampoEditText(R.id.etConfirmacaoEmailCadastro,email);
         preencherCampoEditText(R.id.etTelefoneCadastro,"21356456478");
         preencherCampoEditText(R.id.etSenhaCadastro,"8123456");
-
+        preencherCampoEditText(R.id.etConfirmcaoSenhaCadastro,"8123456");
     }
 
 
