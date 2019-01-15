@@ -417,7 +417,7 @@ public class ClienteLogadoActivity extends AppCompatActivity
 
             Intent intentInicialActivity = new Intent(ClienteLogadoActivity.this, InicialActivity.class);
             startActivity(intentInicialActivity);
-
+            ClienteLogadoActivity.this.finish();
         }
 
 
