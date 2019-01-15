@@ -23,6 +23,8 @@ public class Estabelecimento implements Serializable {
     private String mCidade;
     private String mComplemento;
     private String mCep;
+    private String img;
+    private String foto;
 
     private List<HorarioAtendimento> mHorariosAtendimento;
 
@@ -38,12 +40,79 @@ public class Estabelecimento implements Serializable {
 
     }
 
-    public Estabelecimento(String mEid, String mNome, String mDescricao, double mDistancia) {
+    public Estabelecimento(String mEid, String mNome, String mDescricao, double mDistancia, String img) {
         this.mEid = mEid;
         this.mNome = mNome;
         this.mDescricao = mDescricao;
+        this.mIdEndereco = mIdEndereco;
         this.mDistancia = mDistancia;
         this.mHorariosAtendimento = new ArrayList<>();
+        this.img = img;
+        this.foto = foto;
+    }
+
+    public String getmTelefone() {
+        return mTelefone;
+    }
+
+    public void setmTelefone(String mTelefone) {
+        this.mTelefone = mTelefone;
+    }
+
+    public String getmHorarios() {
+        return mHorarios;
+    }
+
+    public void setmHorarios(String mHorarios) {
+        this.mHorarios = mHorarios;
+    }
+
+    public String getmLinkFacebook() {
+        return mLinkFacebook;
+    }
+
+    public void setmLinkFacebook(String mLinkFacebook) {
+        this.mLinkFacebook = mLinkFacebook;
+    }
+
+    public String getmLinkInstagram() {
+        return mLinkInstagram;
+    }
+
+    public void setmLinkInstagram(String mLinkInstagram) {
+        this.mLinkInstagram = mLinkInstagram;
+    }
+
+    public String getmLinkSite() {
+        return mLinkSite;
+    }
+
+    public void setmLinkSite(String mLinkSite) {
+        this.mLinkSite = mLinkSite;
+    }
+
+    public String getmLinkEmail() {
+        return mLinkEmail;
+    }
+
+    public void setmLinkEmail(String mLinkEmail) {
+        this.mLinkEmail = mLinkEmail;
+    }
+
+    public String getFoto() {
+        return foto;
+    }
+
+    public void setFoto(String foto) {
+        this.foto = foto;
+    }
+
+    public String getImg() {
+        return img;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
     }
 
     public String getmEid() {
@@ -172,57 +241,8 @@ public class Estabelecimento implements Serializable {
 
     @Override
     public boolean equals(Object obj) {
-        return (obj instanceof Estabelecimento && this.mEid.equals(((Estabelecimento) obj).mEid));
+        return (obj instanceof Estabelecimento && this.mEid == ((Estabelecimento) obj).mEid);
     }
-
-    public String getmTelefone() {
-        return mTelefone;
-    }
-
-    public void setmTelefone(String mTelefone) {
-        this.mTelefone = mTelefone;
-    }
-
-    public String getmHorarios() {
-        return mHorarios;
-    }
-
-    public void setmHorarios(String mHorarios) {
-        this.mHorarios = mHorarios;
-    }
-
-    public String getmLinkFacebook() {
-        return mLinkFacebook;
-    }
-
-    public void setmLinkFacebook(String mLinkFacebook) {
-        this.mLinkFacebook = mLinkFacebook;
-    }
-
-    public String getmLinkInstagram() {
-        return mLinkInstagram;
-    }
-
-    public void setmLinkInstagram(String mLinkInstagram) {
-        this.mLinkInstagram = mLinkInstagram;
-    }
-
-    public String getmLinkSite() {
-        return mLinkSite;
-    }
-
-    public void setmLinkSite(String mLinkEmail) {
-        this.mLinkSite = mLinkEmail;
-    }
-
-    public String getmLinkEmail() {
-        return mLinkEmail;
-    }
-
-    public void setmLinkEmail(String mLinkEmail) {
-        this.mLinkEmail = mLinkEmail;
-    }
-
     //Aqui atributos e metodos da classe
     /*String mEId;
     String mNome;

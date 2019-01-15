@@ -22,9 +22,11 @@
 
             <ImageView
                 android:id="@+id/ivFotoSalao"
-                android:layout_width="150dp"
+                android:layout_width="match_parent"
                 android:layout_height="150dp"
+                android:layout_margin="10dp"
                 android:layout_weight="1"
+                android:scaleType="centerCrop"
                 app:srcCompat="@drawable/salao_teste" />
 
             <LinearLayout

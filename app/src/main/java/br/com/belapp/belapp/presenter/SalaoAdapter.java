@@ -3,6 +3,7 @@ package br.com.belapp.belapp.presenter;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import java.util.ArrayList;
 
 import br.com.belapp.belapp.R;
 import br.com.belapp.belapp.model.Estabelecimento;
+import br.com.belapp.belapp.utils.ImageDownloaderTask;
 
 public class SalaoAdapter extends RecyclerView.Adapter<SalaoAdapter.ViewHolder> {
 
@@ -30,16 +32,17 @@ public class SalaoAdapter extends RecyclerView.Adapter<SalaoAdapter.ViewHolder> 
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
-        ImageView ivFotoSalao;
+        ImageView imagem;
         TextView tvNomeSalao, tvEnderecoSalao, tvDistancia;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            ivFotoSalao = itemView.findViewById(R.id.ivFotoSalao);
+            //ivFotoSalao = itemView.findViewById(R.id.ivFotoSalao);
             tvNomeSalao = itemView.findViewById(R.id.tvNomeSalao);
             tvEnderecoSalao = itemView.findViewById(R.id.tvEnderecoSalao);
             tvDistancia = itemView.findViewById(R.id.tvDistancia);
+             imagem = (ImageView)itemView.findViewById(R.id.ivFotoSalao);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -69,7 +72,20 @@ public class SalaoAdapter extends RecyclerView.Adapter<SalaoAdapter.ViewHolder> 
                     lista.get(i).getmBairro()+", "+lista.get(i).getmCidade());
             viewHolder.tvDistancia.setText("Distância: "+df2.format(lista.get(i).getmDistancia())+" Km");
 
-            viewHolder.ivFotoSalao.setImageResource(R.drawable.salao_teste);
+            String caminhourl = lista.get(i).getImg();
+            if(caminhourl != null){
+                Log.d("caminho img:", caminhourl);
+                try
+                {
+                    new ImageDownloaderTask(viewHolder.imagem).execute(caminhourl);
+                }
+                catch(Exception e)
+                {
+                    System.out.println(e.getMessage());
+                }
+
+            }
+            //viewHolder.ivFotoSalao.setImageResource(R.drawable.salao_teste);
         }
 
     }
