@@ -1,5 +1,6 @@
 package br.com.belapp.belapp.activities;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
@@ -108,6 +109,7 @@ public class SaloesFavoritosActivity extends AppCompatActivity implements SalaoA
         bundle.putSerializable("estabelecimento", resultados.get(index));
         intent.putExtras(bundle);
         startActivity(intent);
+        SaloesFavoritosActivity.this.finish();
         Toast.makeText(SaloesFavoritosActivity.this, resultados.get(index).getmNome(), Toast.LENGTH_SHORT).show();
     }
 

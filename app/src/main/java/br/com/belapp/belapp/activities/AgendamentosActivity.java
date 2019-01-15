@@ -249,6 +249,7 @@ public class AgendamentosActivity extends AppCompatActivity implements Agendamen
         intent.putExtras(bundle);
         intent.setClass(AgendamentosActivity.this, AgendamentoActivity.class);
         startActivity(intent);
+        AgendamentosActivity.this.finish();
     }
 
 
