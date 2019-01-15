@@ -3,6 +3,10 @@ package br.com.belapp.belapp.model;
 
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+import br.com.belapp.belapp.enums.DiasSemanaEnum;
 
 public class Estabelecimento implements Serializable {
 
@@ -19,18 +23,88 @@ public class Estabelecimento implements Serializable {
     private String mCidade;
     private String mComplemento;
     private String mCep;
+    private String img;
+    private String foto;
+
+    private List<HorarioAtendimento> mHorariosAtendimento;
+
+    private String mTelefone;
+    private String mHorarios;
+    private String mLinkFacebook;
+    private String mLinkInstagram;
+    private String mLinkSite;
+    private String mLinkEmail;
+
 
     public Estabelecimento(){
 
     }
 
-    public Estabelecimento(String mEid, String mNome, String mDescricao, double mDistancia) {
+    public Estabelecimento(String mEid, String mNome, String mDescricao, double mDistancia, String img) {
         this.mEid = mEid;
         this.mNome = mNome;
         this.mDescricao = mDescricao;
         this.mIdEndereco = mIdEndereco;
         this.mDistancia = mDistancia;
+        this.mHorariosAtendimento = new ArrayList<>();
         this.img = img;
+        this.foto = foto;
+    }
+
+    public String getmTelefone() {
+        return mTelefone;
+    }
+
+    public void setmTelefone(String mTelefone) {
+        this.mTelefone = mTelefone;
+    }
+
+    public String getmHorarios() {
+        return mHorarios;
+    }
+
+    public void setmHorarios(String mHorarios) {
+        this.mHorarios = mHorarios;
+    }
+
+    public String getmLinkFacebook() {
+        return mLinkFacebook;
+    }
+
+    public void setmLinkFacebook(String mLinkFacebook) {
+        this.mLinkFacebook = mLinkFacebook;
+    }
+
+    public String getmLinkInstagram() {
+        return mLinkInstagram;
+    }
+
+    public void setmLinkInstagram(String mLinkInstagram) {
+        this.mLinkInstagram = mLinkInstagram;
+    }
+
+    public String getmLinkSite() {
+        return mLinkSite;
+    }
+
+    public void setmLinkSite(String mLinkSite) {
+        this.mLinkSite = mLinkSite;
+    }
+
+    public String getmLinkEmail() {
+        return mLinkEmail;
+    }
+
+    public void setmLinkEmail(String mLinkEmail) {
+        this.mLinkEmail = mLinkEmail;
+    }
+
+    public String getFoto() {
+        return foto;
+    }
+
+    public void setFoto(String foto) {
+        this.foto = foto;
     }
 
     public String getImg() {
@@ -143,6 +217,26 @@ public class Estabelecimento implements Serializable {
 
     public void setmCep(String mCep) {
         this.mCep = mCep;
+    }
+
+    public List<HorarioAtendimento> getmHorariosAtendimento() {
+        return mHorariosAtendimento;
+    }
+
+    public void setmHorariosAtendimento(List<HorarioAtendimento> mHorariosAtendimento) {
+        this.mHorariosAtendimento = mHorariosAtendimento;
+    }
+
+    public String getDiasFuncionamento(){
+        String dias = "";
+        for(HorarioAtendimento horarioAtendimento: getmHorariosAtendimento()){
+            if(horarioAtendimento != null){
+                dias = dias.concat(String.format(" %s,", DiasSemanaEnum.getDia(horarioAtendimento.getmDiaFuncionamento()).substring(0, 3)));
+            }
+        }
+
+        dias = dias.substring(0, dias.length() -1);
+        return dias;
     }
 
     @Override
