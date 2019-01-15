@@ -25,6 +25,7 @@ import br.com.belapp.belapp.model.Estabelecimento;
 import br.com.belapp.belapp.model.Profissional;
 import br.com.belapp.belapp.model.Servico;
 import br.com.belapp.belapp.presenter.FuncionarioAdapter;
+import br.com.belapp.belapp.servicos.Permissao;
 
 public class FuncionariosActivity extends AppCompatActivity implements FuncionarioAdapter.ItemClicked, FuncionarioAdapter.AgendarButtonClicked{
 
@@ -123,21 +124,22 @@ public class FuncionariosActivity extends AppCompatActivity implements Funcionar
 
     @Override
     public void onAgendarButtonClicked(int index) {
-        if(mAgendamento == null){
-            mAgendamento = new Agendamento();
+        if(Permissao.verificarPermissaoRestritivo(FuncionariosActivity.this)) {
+            if (mAgendamento == null) {
+                mAgendamento = new Agendamento();
+            }
+            mAgendamento.setmCliente(FirebaseUtils.getUsuarioAtual().getUid());
+            mAgendamento.setmEstabelecimento(mEstabelecimento);
+            mAgendamento.setmServico(mServico);
+            mAgendamento.setmProfissional(profissionais.get(index));
+
+            Intent intent = new Intent();
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("agendamento", mAgendamento);
+            intent.setClass(FuncionariosActivity.this, AgendarServicoActivity.class);
+            intent.putExtras(bundle);
+            startActivity(intent);
         }
-        mAgendamento.setmCliente(FirebaseUtils.getUsuarioAtual().getUid());
-        mAgendamento.setmEstabelecimento(mEstabelecimento);
-        mAgendamento.setmServico(mServico);
-        mAgendamento.setmProfissional(profissionais.get(index));
-
-        Intent intent = new Intent();
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("agendamento", mAgendamento);
-        intent.setClass(FuncionariosActivity.this, AgendarServicoActivity.class);
-        intent.putExtras(bundle);
-        startActivity(intent);
-
     }
 
     /*private void selProfissionais(String servico){

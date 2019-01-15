@@ -99,15 +99,20 @@ public class BuscaActivitySteps extends DefaultTest {
     @Quando("^Digito um serviço de estabelecimento$")
     public void digitoServicoEstabelacimento(){ preencherCampoEditText(R.id.etServCat, "manicure");}
 
-    @E ("^Digito uma data$")
-    public void digitoUmaData(){
-     //   apertarBotao(R.id.etDataBusca);
+    @E ("^Digito uma data disponivel$")
+    public void digitoUmaDataDisponivel(){
+        if(getAtualActivity() instanceof TelaBuscaActivity){
+            TelaBuscaActivity activityAgendamento = (TelaBuscaActivity) getAtualActivity();
+            activityAgendamento.setMetDataBusca("24/01/2019");
+        }
+    }
 
-      //  onView(withClassName(Matchers.equalTo(DatePickerDialog.class.getName()))).check(matches(isDisplayed()));
-
-        //onView(withClassName(Matchers.equalTo(DatePickerDialog.class.getName())))
-                //.perform(PickerActions.setDate(2019,0,24));
-        //getActivity().getResources().
+    @E ("^Digito uma data indisponivel$")
+    public void digitoUmaDataIndisponivel(){
+        if(getAtualActivity() instanceof TelaBuscaActivity){
+            TelaBuscaActivity activityAgendamento = (TelaBuscaActivity) getAtualActivity();
+            activityAgendamento.setMetDataBusca("25/01/2019");
+        }
     }
 
     @Entao("^Eu devo ver o estabelecimento$")

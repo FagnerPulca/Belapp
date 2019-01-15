@@ -47,7 +47,7 @@
    Cenario: Procurar um estabelecimento disponível por data
      Dado Eu estou na tela de busca
      Quando Digito um serviço de estabelecimento
-     E Digito uma data
+     E Digito uma data disponivel
      E Eu clico em buscar
      Então Eu devo ver o estabelecimento
 
@@ -55,6 +55,6 @@
    Cenario: Procurar estabelecimento indisponível por data
      Dado Eu estou na tela de busca
      Quando Digito um serviço de estabelecimento
-     E Digito uma data
+     E Digito uma data indisponivel
      E Eu clico em buscar
      Então Eu não devo ver nenhum estabelecimento

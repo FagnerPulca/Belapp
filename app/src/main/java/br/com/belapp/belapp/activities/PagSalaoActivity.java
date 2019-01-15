@@ -34,6 +34,7 @@ import br.com.belapp.belapp.model.Estabelecimento;
 import br.com.belapp.belapp.model.Favorito;
 import br.com.belapp.belapp.model.Servico;
 import br.com.belapp.belapp.presenter.ServicoAdapter;
+import br.com.belapp.belapp.servicos.Permissao;
 
 import static br.com.belapp.belapp.database.utils.FirebaseUtils.getUsuarioAtual;
 
@@ -61,8 +62,8 @@ public class PagSalaoActivity extends AppCompatActivity implements ServicoAdapte
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pag_salao);
 
-        isLogado();
-        mUserId = getUsuarioAtual().getUid();
+        //isLogado();
+        //mUserId = getUsuarioAtual().getUid();
 
 
         ImageButton ibInformacoes = findViewById(R.id.ibInformacoes);
@@ -106,7 +107,10 @@ public class PagSalaoActivity extends AppCompatActivity implements ServicoAdapte
 
         mDatabaseReference = ConfiguracaoFireBase.getFirebase();
 
-        verificaCurtida();
+        if(Permissao.estaLogado()) {
+            mUserId = getUsuarioAtual().getUid();
+            verificaCurtida();
+        }
         buscar();
         dialogBuscando();
 
@@ -125,14 +129,18 @@ public class PagSalaoActivity extends AppCompatActivity implements ServicoAdapte
         mLikeButton.setOnLikeListener(new OnLikeListener() {
             @Override
             public void liked(LikeButton likeButton) {
-                curtir();
-                Toast.makeText(PagSalaoActivity.this, getString(R.string.adicionando_favorito), Toast.LENGTH_LONG).show();
+                if(Permissao.verificarPermissaoRestritivo(PagSalaoActivity.this)) {
+                    curtir();
+                    Toast.makeText(PagSalaoActivity.this, getString(R.string.adicionando_favorito), Toast.LENGTH_LONG).show();
+                }
             }
 
             @Override
             public void unLiked(LikeButton likeButton) {
-                descurtir();
-                Toast.makeText(PagSalaoActivity.this, getString(R.string.retirando_favoritoo), Toast.LENGTH_LONG).show();
+                if(Permissao.verificarPermissaoRestritivo(PagSalaoActivity.this)) {
+                    descurtir();
+                    Toast.makeText(PagSalaoActivity.this, getString(R.string.retirando_favoritoo), Toast.LENGTH_LONG).show();
+                }
             }
         });
 
@@ -148,10 +156,6 @@ public class PagSalaoActivity extends AppCompatActivity implements ServicoAdapte
                 startActivity(intent);
             }
         });
-
-
-
-
     }
 
 
@@ -293,13 +297,5 @@ public class PagSalaoActivity extends AppCompatActivity implements ServicoAdapte
 
             }
         });
-    }
-
-    public void isLogado() {
-        if (mLogado.getCurrentUser() == null) {
-            Intent intentAbritCadastro = new Intent(PagSalaoActivity.this , CadastroBasicoActivity.class);
-            startActivity(intentAbritCadastro);
-
-        }
     }
 }

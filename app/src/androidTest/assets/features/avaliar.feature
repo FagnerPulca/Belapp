@@ -1,5 +1,5 @@
 #language: pt
-    
+
 Funcionalidade: Avaliar estabelecimento
 
 @avaliar-feature

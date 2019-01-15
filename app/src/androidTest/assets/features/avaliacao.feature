@@ -1,5 +1,5 @@
 #language: pt
-    
+
 Funcionalidade: Visualizar avaliações do estabelecimento
 
 @avaliacao-feature
