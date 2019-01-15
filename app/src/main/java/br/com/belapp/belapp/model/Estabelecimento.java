@@ -19,13 +19,12 @@ public class Estabelecimento implements Serializable {
     private String mCidade;
     private String mComplemento;
     private String mCep;
-    private String img;
 
     public Estabelecimento(){
 
     }
 
-    public Estabelecimento(String mEid, String mNome, String mDescricao, double mDistancia, String img) {
+    public Estabelecimento(String mEid, String mNome, String mDescricao, double mDistancia) {
         this.mEid = mEid;
         this.mNome = mNome;
         this.mDescricao = mDescricao;

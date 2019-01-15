@@ -9,7 +9,10 @@ public class Servico implements Serializable {
     private String mEstabId;
     private String mNome;
     private double mPreco;
+
+
     // duraçao em minutos
+
     private int mDuracao;
     private String mProfissionais;
     private String mCategoria;
@@ -81,6 +84,11 @@ public class Servico implements Serializable {
 
     public void setmCategoria(String mCategoria) {
         this.mCategoria = mCategoria;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof Servico && ((Servico) obj).getmId().equals(this.getmId());
     }
 
     /*public Servico(String mId, String nome, double preco, String duracao, String profissionais, String categoria) {

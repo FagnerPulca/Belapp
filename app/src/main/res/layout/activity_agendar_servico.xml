@@ -37,18 +37,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:text="@string/servicos"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvEstabelecimentoAgendar" />
+        app:layout_constraintTop_toBottomOf="@+id/tvDiasFuncionamento" />
 
     <TextView
         android:id="@+id/tvProfissionalAgendar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:text="TextView"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
@@ -58,7 +58,7 @@
         android:id="@+id/tvPrecoAgendar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         android:text="TextView"
         android:textSize="18sp"
@@ -70,7 +70,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="8dp"
         android:text="@string/app_selecionar_data"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
@@ -80,7 +80,7 @@
         android:id="@+id/edtData"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="12dp"
         android:layout_marginEnd="16dp"
         android:ems="10"
         android:inputType="date"
@@ -89,14 +89,31 @@
 
     <Button
         android:id="@+id/btnAgendar"
-        android:layout_width="331dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="32dp"
+        android:background="@drawable/fui_idp_button_background_phone"
         android:text="@string/app_agendar"
+        android:textColor="@color/com_facebook_button_background_color_focused"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/btnAlterarServico"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/fui_idp_button_background_github"
+        android:text="@string/app_alterar_servico"
+        android:textColor="@color/com_facebook_button_background_color_focused"
+        app:layout_constraintBottom_toTopOf="@+id/btnAgendar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.523"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
@@ -104,7 +121,7 @@
         android:layout_width="wrap_content"
         android:layout_height="28dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="12dp"
         android:text="@string/app_selecionar_horario"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
@@ -115,13 +132,25 @@
         android:layout_width="0dp"
         android:layout_height="41dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         android:background="@drawable/view_transparent"
         android:minWidth="@dimen/browser_actions_context_menu_min_padding"
         android:spinnerMode="dialog"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvHorarioAgendar" />
+
+    <TextView
+        android:id="@+id/tvDiasFuncionamento"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:text="TextView"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvEstabelecimentoAgendar" />
 
 </android.support.constraint.ConstraintLayout>

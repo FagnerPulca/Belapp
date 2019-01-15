@@ -22,6 +22,9 @@ import br.com.belapp.belapp.R;
 import br.com.belapp.belapp.model.Estabelecimento;
 import br.com.belapp.belapp.model.Servico;
 import br.com.belapp.belapp.presenter.ServicoAdapter;
+import br.com.belapp.belapp.servicos.Permissao;
+
+import static br.com.belapp.belapp.database.utils.FirebaseUtils.getUsuarioAtual;
 import br.com.belapp.belapp.utils.ImageDownloaderTask;
 
 public class PagSalaoActivity extends AppCompatActivity implements ServicoAdapter.ItemClicked {
@@ -50,18 +53,11 @@ public class PagSalaoActivity extends AppCompatActivity implements ServicoAdapte
         recyclerView = findViewById(R.id.rvServicos);
         recyclerView.setHasFixedSize(true);
 
-
         layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(layoutManager);
 
         mEstabelecimento = (Estabelecimento) getIntent().getSerializableExtra("estabelecimento");
         tvNomeSalao.setText(mEstabelecimento.getmNome());
-        String caminho = mEstabelecimento.getImg();
-        if(caminho != null)
-        {
-            new ImageDownloaderTask(ivFotoSalao).execute(caminho);
-        }
-
         servicos = new ArrayList<>();
 
         myAdapter = new ServicoAdapter(this, servicos);

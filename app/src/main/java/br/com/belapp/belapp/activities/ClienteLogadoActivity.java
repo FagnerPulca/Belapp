@@ -2,13 +2,10 @@ package br.com.belapp.belapp.activities;
 
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
-
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
-
-import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -18,12 +15,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
-
-
-import android.support.v4.app.NotificationCompat;
-import android.view.View;
-
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -31,38 +24,39 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-
-import android.widget.TextView;
-
+import android.view.View;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
-
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.auth.api.Auth;
-
 import com.facebook.login.LoginManager;
+import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.auth.FirebaseAuth;
-
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
-
-import com.google.firebase.auth.FirebaseUser;
-import com.google.android.gms.common.ConnectionResult;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import br.com.belapp.belapp.R;
+import br.com.belapp.belapp.model.Agendamento;
+import br.com.belapp.belapp.model.Cliente;
 import br.com.belapp.belapp.model.Servico;
 import br.com.belapp.belapp.presenter.LocalizacaoCliente;
 import br.com.belapp.belapp.servicos.MyServiceLocation;
+import br.com.belapp.belapp.utils.DateUtils;
 
 import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
+import static br.com.belapp.belapp.database.utils.FirebaseUtils.getUsuarioAtual;
 
 public class ClienteLogadoActivity extends AppCompatActivity
 
@@ -87,6 +81,7 @@ public class ClienteLogadoActivity extends AppCompatActivity
     private NotificationCompat.Builder mBuilder;
     private NotificationManager mNotificationManager;
     public static final String NOTIFICATION_CHANNEL_ID = "10001";
+    private ArrayList<Agendamento> mAgendamentos;
 
 
     private final static int ALL_PERMISSIONS_RESULT = 101;
@@ -158,7 +153,14 @@ public class ClienteLogadoActivity extends AppCompatActivity
 
         buscar();
         dialogBuscando();
-        Notificacao("Agendamento", "Você tem um serviço agendado");
+
+        try {
+            verificarAgendamentos();
+        }catch (Exception e){
+            System.out.println("ERRO: " + e);
+        }
+
+        //Notificacao("Agendamento", "Você tem um serviço agendado");
 
 
         btnBarba.setOnClickListener(new View.OnClickListener() {
@@ -166,11 +168,11 @@ public class ClienteLogadoActivity extends AppCompatActivity
             public void onClick(View v) {
                 categoria = "Barba";
                 Intent intent = new Intent(ClienteLogadoActivity.this, SaloesActivity.class);
-                intent.putExtra("categoria", "Barba");
-                intent.putExtra("latitude", localizao.getLatitude());
-                intent.putExtra("longitude", localizao.getLongitude());
-                intent.putExtra("ids", ids);
-                intent.putExtra("idcateg", idcateg);
+                intent.putExtra("mCategoria", "Barba");
+                intent.putExtra("mLatitude", localizao.getLatitude());
+                intent.putExtra("mLongitude", localizao.getLongitude());
+                intent.putExtra("mIds", ids);
+                intent.putExtra("mIdcateg", idcateg);
                 startActivity(intent);
                 Toast.makeText(ClienteLogadoActivity.this, "Barba", Toast.LENGTH_SHORT).show();
             }
@@ -180,11 +182,11 @@ public class ClienteLogadoActivity extends AppCompatActivity
             public void onClick(View v) {
                 categoria = "Cabelo";
                 Intent intent = new Intent(ClienteLogadoActivity.this, SaloesActivity.class);
-                intent.putExtra("categoria", "Cabelo");
-                intent.putExtra("latitude", localizao.getLatitude());
-                intent.putExtra("longitude", localizao.getLongitude());
-                intent.putExtra("ids", ids);
-                intent.putExtra("idcateg", idcateg);
+                intent.putExtra("mCategoria", "Cabelo");
+                intent.putExtra("mLatitude", localizao.getLatitude());
+                intent.putExtra("mLongitude", localizao.getLongitude());
+                intent.putExtra("mIds", ids);
+                intent.putExtra("mIdcateg", idcateg);
                 startActivity(intent);
                 Toast.makeText(ClienteLogadoActivity.this, "Cabelo", Toast.LENGTH_SHORT).show();
             }
@@ -194,11 +196,11 @@ public class ClienteLogadoActivity extends AppCompatActivity
             public void onClick(View v) {
                 categoria = "Depilação";
                 Intent intent = new Intent(ClienteLogadoActivity.this, SaloesActivity.class);
-                intent.putExtra("categoria", "Depilação");
-                intent.putExtra("latitude", localizao.getLatitude());
-                intent.putExtra("longitude", localizao.getLongitude());
-                intent.putExtra("ids", ids);
-                intent.putExtra("idcateg", idcateg);
+                intent.putExtra("mCategoria", "Depilação");
+                intent.putExtra("mLatitude", localizao.getLatitude());
+                intent.putExtra("mLongitude", localizao.getLongitude());
+                intent.putExtra("mIds", ids);
+                intent.putExtra("mIdcateg", idcateg);
                 startActivity(intent);
                 Toast.makeText(ClienteLogadoActivity.this, "Depilação", Toast.LENGTH_SHORT).show();
             }
@@ -208,11 +210,11 @@ public class ClienteLogadoActivity extends AppCompatActivity
             public void onClick(View v) {
                 categoria = "Olho";
                 Intent intent = new Intent(ClienteLogadoActivity.this, SaloesActivity.class);
-                intent.putExtra("categoria", "Olho");
-                intent.putExtra("latitude", localizao.getLatitude());
-                intent.putExtra("longitude", localizao.getLongitude());
-                intent.putExtra("ids", ids);
-                intent.putExtra("idcateg", idcateg);
+                intent.putExtra("mCategoria", "Olho");
+                intent.putExtra("mLatitude", localizao.getLatitude());
+                intent.putExtra("mLongitude", localizao.getLongitude());
+                intent.putExtra("mIds", ids);
+                intent.putExtra("mIdcateg", idcateg);
                 startActivity(intent);
                 Toast.makeText(ClienteLogadoActivity.this, "Olho", Toast.LENGTH_SHORT).show();
             }
@@ -222,11 +224,11 @@ public class ClienteLogadoActivity extends AppCompatActivity
             public void onClick(View v) {
                 categoria = "Sobrancelha";
                 Intent intent = new Intent(ClienteLogadoActivity.this, SaloesActivity.class);
-                intent.putExtra("categoria", "Sobrancelha");
-                intent.putExtra("latitude", localizao.getLatitude());
-                intent.putExtra("longitude", localizao.getLongitude());
-                intent.putExtra("ids", ids);
-                intent.putExtra("idcateg", idcateg);
+                intent.putExtra("mCategoria", "Sobrancelha");
+                intent.putExtra("mLatitude", localizao.getLatitude());
+                intent.putExtra("mLongitude", localizao.getLongitude());
+                intent.putExtra("mIds", ids);
+                intent.putExtra("mIdcateg", idcateg);
                 startActivity(intent);
                 Toast.makeText(ClienteLogadoActivity.this, "Sobrancelha", Toast.LENGTH_SHORT).show();
             }
@@ -236,11 +238,11 @@ public class ClienteLogadoActivity extends AppCompatActivity
             public void onClick(View v) {
                 categoria = "Unha";
                 Intent intent = new Intent(ClienteLogadoActivity.this, SaloesActivity.class);
-                intent.putExtra("categoria", "Unha");
-                intent.putExtra("latitude", localizao.getLatitude());
-                intent.putExtra("longitude", localizao.getLongitude());
-                intent.putExtra("ids", ids);
-                intent.putExtra("idcateg", idcateg);
+                intent.putExtra("mCategoria", "Unha");
+                intent.putExtra("mLatitude", localizao.getLatitude());
+                intent.putExtra("mLongitude", localizao.getLongitude());
+                intent.putExtra("mIds", ids);
+                intent.putExtra("mIdcateg", idcateg);
                 startActivity(intent);
                 Toast.makeText(ClienteLogadoActivity.this, "Unha", Toast.LENGTH_SHORT).show();
             }
@@ -253,12 +255,23 @@ public class ClienteLogadoActivity extends AppCompatActivity
         TextView titulo = header.findViewById(R.id.tvTituloNavegadorLogado);
         TextView subtitulo = header.findViewById(R.id.tvSubtituloNavegadorLogado);
 
-        FirebaseUser usuario = logado.getCurrentUser();
-        if (usuario != null) {
-            String nome = usuario.getDisplayName();
-            String email = usuario.getEmail();
-            if (nome != null) titulo.setText(nome);
-            if (email != null) subtitulo.setText(email);
+        if(logado.getUid() != null) {
+            DatabaseReference raiz = FirebaseDatabase.getInstance().getReference();
+            DatabaseReference cliente = raiz.child("clientes").child(logado.getUid());
+
+            cliente.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    Cliente cliente1 = dataSnapshot.getValue(Cliente.class);
+                    titulo.setText(cliente1.getmNome());
+                    subtitulo.setText(cliente1.getmEmail());
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
         }
     }
 
@@ -370,14 +383,29 @@ public class ClienteLogadoActivity extends AppCompatActivity
         } else if (id == R.id.nav_notificacao) {
 
 
+
         } else if (id == R.id.nav_agenda) {
             Intent intent = new Intent();
             intent.setClass(ClienteLogadoActivity.this, AgendamentosActivity.class);
             startActivity(intent);
         } else if (id == R.id.nav_favoritos) {
 
-        } else if (id == R.id.nav_promocoes) {
+            Intent intent = new Intent(ClienteLogadoActivity.this, SaloesFavoritosActivity.class);
+            intent.putExtra("latitude", localizao.getLatitude());
+            intent.putExtra("longitude", localizao.getLongitude());
+            intent.putExtra("ids", ids);
 
+            startActivity(intent);
+            Toast.makeText(ClienteLogadoActivity.this, "Favoritos", Toast.LENGTH_SHORT).show();
+
+
+        } else if (id == R.id.nav_promocoes) {
+            Intent intent = new Intent(ClienteLogadoActivity.this, PromocoesActivity.class);
+            intent.putExtra("latitude", localizao.getLatitude());
+            intent.putExtra("longitude", localizao.getLongitude());
+            intent.putExtra("ids", ids);
+            startActivity(intent);
+            Toast.makeText(ClienteLogadoActivity.this,R.string.title_activity_promocoes, Toast.LENGTH_SHORT).show();
         } else if (id == R.id.nav_sair) {
 
             logado.signOut();
@@ -475,6 +503,53 @@ public class ClienteLogadoActivity extends AppCompatActivity
         localizao.stopListener();
     }
 
+
+    //verifica se o cliente que está logado possui
+    //um agendamento marcado e gera a notificação
+    public void verificarAgendamentos() {
+        String idUser = getUsuarioAtual().getUid();
+        ArrayList mAgendamentos = new ArrayList<Agendamento>();
+        mAgendamentos.clear();
+
+        Query query = FirebaseDatabase.getInstance().getReference("agendamentos").orderByChild("mData");
+        query.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, String s) {
+                Agendamento agendamento = dataSnapshot.getValue(Agendamento.class);
+
+
+                if(!mAgendamentos.contains(agendamento) && agendamento.getmCliente().equals(idUser))
+                {
+
+                    Notificacao("Agendamento", "Você tem um serviço agendado");
+
+                }
+
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, String s) {
+                // empty
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+                // empty
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, String s) {
+                // empty
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // empty
+            }
+        });
+
+    }
+
     public void Notificacao(String title, String message)
     {
 
@@ -510,5 +585,14 @@ public class ClienteLogadoActivity extends AppCompatActivity
         assert mNotificationManager != null;
         mNotificationManager.notify(0 /* Request Code */, mBuilder.build());
     }
+
+    private void ordenarResultados(){
+        Collections.sort(mAgendamentos, (o1, o2) -> DateUtils
+                .getDiferencaEntreDuasDatasEspecificas(
+                        o2.getmData(),
+                        o1.getmData()));
+
+    }
+
 
 }

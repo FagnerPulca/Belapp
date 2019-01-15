@@ -8,6 +8,7 @@ import org.junit.Rule;
 import br.com.belapp.belapp.R;
 import br.com.belapp.belapp.activities.AgendarServicoActivity;
 import br.com.belapp.belapp.activities.InicialActivity;
+import br.com.belapp.belapp.utils.DateUtils;
 import cucumber.api.java.After;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
@@ -15,9 +16,6 @@ import cucumber.api.java.pt.E;
 import cucumber.api.java.pt.Entao;
 import cucumber.api.java.pt.Quando;
 
-import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static junit.framework.TestCase.assertNotNull;
 
 public class AgendamentoActivitySteps extends DefaultTest{
@@ -28,12 +26,15 @@ public class AgendamentoActivitySteps extends DefaultTest{
     public void setup() {
         activityTestRule.launchActivity(new Intent());
         setActivity(activityTestRule.getActivity());
+        esperar(2000);
     }
 
     @After("@agendamento-feature")
     public void tearDown() {
-
-        finalizarActivities();
+        // Conclua esta activity, bem como todas as activity imediatamente abaixo dela na task stack
+        // atual que tenham a mesma afinidade.
+        getAtualActivity().finishAffinity();
+        esperar(600);
         activityTestRule.finishActivity();
     }
 
@@ -54,6 +55,18 @@ public class AgendamentoActivitySteps extends DefaultTest{
         esperar(2000);
 
     }
+    @Quando("^eu busco por um servico do estabelecimento$")
+    public void euBuscoServico2() {
+        apertarBotao(R.id.ibUnha);
+        esperar(2000);
+        selecionarItemReciclerView(R.id.rvSaloes, 1);
+        esperar(2000);
+        selecionarItemReciclerView(R.id.rvServicos, 0);
+        esperar(2000);
+        selecionarItemReciclerView(R.id.rvProfissionais, 0);
+        esperar(2000);
+
+    }
 
     @Quando("^eu escolho um profissional$")
     public void euEscolhoProfissional() {
@@ -64,9 +77,19 @@ public class AgendamentoActivitySteps extends DefaultTest{
 
     @Quando("^eu informo uma data valida$")
     public void euInformoUmaDataValida() {
-        apertarBotao(R.id.edtData);
-//        onView(withText("27")).perform(click());
-        onView(withText("OK")).perform(click());
+        if(getAtualActivity() instanceof AgendarServicoActivity){
+            AgendarServicoActivity activityAgendamento = (AgendarServicoActivity) getAtualActivity();
+            activityAgendamento.setData(DateUtils.gerarDataValida(activityAgendamento.getDiasFuncionamento()));
+        }
+    }
+
+    @E("^eu informo uma data invalida$")
+    public void euInformoUmaDataInvalida() {
+        if(getAtualActivity() instanceof AgendarServicoActivity){
+            AgendarServicoActivity activityAgendamento = (AgendarServicoActivity) getAtualActivity();
+            activityAgendamento.setData(
+                    DateUtils.gerarDataInvalida(activityAgendamento.getDiasFuncionamento()));
+        }
     }
 
     @Quando("^eu seleciono um horario valido$")
@@ -86,6 +109,10 @@ public class AgendamentoActivitySteps extends DefaultTest{
     @Entao("^devo ver a mensagem, Selecione um horario de agendamento!$")
     public void devoVerAMensagemInformeHorario() {
         verificarMensagemToast(getActivity().getString(R.string.error_selecione_um_horario));
+    }
+    @Entao("^devo ver a mensagem, O estabelecimento estará fechado na data selecionada$")
+    public void devoVerAMensagemEstabelecimentoNaoFunciona() {
+        verificarMensagemToast(getActivity().getString(R.string.error_estabelecimento_fechado_na_data));
     }
 
 }

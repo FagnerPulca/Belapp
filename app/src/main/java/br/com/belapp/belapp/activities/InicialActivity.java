@@ -1,12 +1,9 @@
 package br.com.belapp.belapp.activities;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
 import android.app.AlertDialog;
-import android.app.Notification;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
+
 import android.app.ProgressDialog;
 import android.app.TaskStackBuilder;
 import android.content.Context;
@@ -19,7 +16,6 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.os.Build;
 import android.os.Bundle;
 
 import android.provider.Settings;
@@ -56,11 +52,8 @@ import java.util.Locale;
 import br.com.belapp.belapp.R;
 
 import br.com.belapp.belapp.model.Servico;
-import br.com.belapp.belapp.presenter.LocalizacaoCliente;
 import br.com.belapp.belapp.servicos.MyServiceLocation;
-
-import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
-import static android.Manifest.permission.ACCESS_FINE_LOCATION;
+import br.com.belapp.belapp.servicos.Permissao;
 
 
 public class InicialActivity extends AppCompatActivity
@@ -69,21 +62,22 @@ public class InicialActivity extends AppCompatActivity
     //para pegar dados de  localização via dispositivo
     private LocationManager locationMangaer=null;
     private LocationListener locationListener=null;
-    LocalizacaoCliente localCliente;
     //logalização
-    MyServiceLocation localizao;
-    private ArrayList permissionsToRequest;
-    private ArrayList permissionsRejected = new ArrayList();
-    private ArrayList permissions = new ArrayList();
+    MyServiceLocation localizacao;
     private ProgressDialog mProgressDialog;
     private ArrayList<String> ids;
     private ArrayList<String> idcateg;
     private ArrayList<Servico> servicos;
     private String categoria;
-
-    private final static int ALL_PERMISSIONS_RESULT = 101;
-
-
+    private String[] permissoesNecessarias = new String[]{
+            Manifest.permission.GET_ACCOUNTS,
+            Manifest.permission.READ_CONTACTS,
+            Manifest.permission.INTERNET,
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.ACCESS_COARSE_LOCATION,
+            Manifest.permission.CHANGE_NETWORK_STATE
+    };
+    private boolean mPermissoesConcedidas;
     private static final String TAG = "Debug";
     private Boolean flag = false;
 
@@ -91,11 +85,13 @@ public class InicialActivity extends AppCompatActivity
     private TextView AbriActivityLogin;
     ImageButton btnBarba, btnCabelo, btnDepilacao, btnOlho, btnSobrancelha, btnUnha;
 
-    @SuppressLint("MissingPermission")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mPermissoesConcedidas = Permissao.validaPermissoes(1,this,permissoesNecessarias);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.title_activity_main);
         setSupportActionBar(toolbar);
@@ -113,30 +109,7 @@ public class InicialActivity extends AppCompatActivity
         //verifica se esta logado
         isLogado();
 
-        locationMangaer = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
-        locationListener = new MyLocationListener();
-
-        locationMangaer.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 10,locationListener);
-
-        permissions.add(ACCESS_FINE_LOCATION);
-        permissions.add(ACCESS_COARSE_LOCATION);
-
-        permissionsToRequest = findUnAskedPermissions(permissions);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (permissionsToRequest.size() > 0)
-                requestPermissions((String[]) permissionsToRequest.toArray(new String[permissionsToRequest.size()]), ALL_PERMISSIONS_RESULT);
-        }
-        localizao = new MyServiceLocation(InicialActivity.this);
-
-
-        if (localizao.canGetLocation()) {
-            double longitude = localizao.getLongitude();
-            double latitude = localizao.getLatitude();
-            //Toast.makeText(getApplicationContext(), "Longitude:" + Double.toString(longitude) + "\nLatitude:" + Double.toString(latitude), Toast.LENGTH_SHORT).show();
-        } else {
-            localizao.showSettingsAlert();
-        }
+        localizar();
 
         btnBarba = findViewById(R.id.ibBarba);
         btnCabelo = findViewById(R.id.ibCabelo);
@@ -144,6 +117,13 @@ public class InicialActivity extends AppCompatActivity
         btnOlho = findViewById(R.id.ibOlho);
         btnSobrancelha = findViewById(R.id.ibSobrancelha);
         btnUnha = findViewById(R.id.ibUnha);
+
+
+    //        EstabelecimentoDAO estabelecimentoDAO = new EstabelecimentoDAO();
+    //        estabelecimentoDAO.inserirEstabelecimento();*/
+        /*ProfissionalDAO profDAO = new ProfissionalDAO();
+        profDAO.inserirProfissional();*/
+
 
         ids = new ArrayList<>();
         idcateg = new ArrayList<>();
@@ -155,88 +135,131 @@ public class InicialActivity extends AppCompatActivity
         btnBarba.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                categoria = "Barba";
-                Intent intent = new Intent(InicialActivity.this, SaloesActivity.class);
-                intent.putExtra("categoria", "Barba");
-                intent.putExtra("latitude", localizao.getLatitude());
-                intent.putExtra("longitude", localizao.getLongitude());
-                intent.putExtra("ids", ids);
-                intent.putExtra("idcateg", idcateg);
-                startActivity(intent);
-                Toast.makeText(InicialActivity.this, "Barba", Toast.LENGTH_SHORT).show();
+                if(mPermissoesConcedidas) {
+                    categoria = "Barba";
+                    Intent intent = new Intent(InicialActivity.this, SaloesActivity.class);
+                    intent.putExtra("mCategoria", "Barba");
+                    intent.putExtra("mLatitude", localizacao.getLatitude());
+                    intent.putExtra("mLongitude", localizacao.getLongitude());
+                    intent.putExtra("mIds", ids);
+                    intent.putExtra("mIdcateg", idcateg);
+                    startActivity(intent);
+                    Toast.makeText(InicialActivity.this, "Barba", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         btnCabelo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
+                if(mPermissoesConcedidas) {
+                    categoria = "Cabelo";
+                    Intent intent = new Intent(InicialActivity.this, SaloesActivity.class);
+                    intent.putExtra("mCategoria", "Cabelo");
+                    intent.putExtra("mLatitude", localizacao.getLatitude());
+                    intent.putExtra("mLongitude", localizacao.getLongitude());
+                    intent.putExtra("mIds", ids);
+                    intent.putExtra("mIdcateg", idcateg);
+                    startActivity(intent);
+                    Toast.makeText(InicialActivity.this, "Cabelo", Toast.LENGTH_SHORT).show();
+                }
+
                 categoria = "Cabelo";
                 Intent intent = new Intent(InicialActivity.this, SaloesActivity.class);
                 intent.putExtra("categoria", "Cabelo");
-                intent.putExtra("latitude", localizao.getLatitude());
-                intent.putExtra("longitude", localizao.getLongitude());
+                intent.putExtra("latitude", localizacao.getLatitude());
+                intent.putExtra("longitude", localizacao.getLongitude());
                 intent.putExtra("ids", ids);
                 intent.putExtra("idcateg", idcateg);
                 startActivity(intent);
                 Toast.makeText(InicialActivity.this, "Cabelo", Toast.LENGTH_SHORT).show();
+
             }
         });
         btnDepilacao.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                categoria = "Depilação";
-                Intent intent = new Intent(InicialActivity.this, SaloesActivity.class);
-                intent.putExtra("categoria", "Depilação");
-                intent.putExtra("latitude", localizao.getLatitude());
-                intent.putExtra("longitude", localizao.getLongitude());
-                intent.putExtra("ids", ids);
-                intent.putExtra("idcateg", idcateg);
-                startActivity(intent);
-                Toast.makeText(InicialActivity.this, "Depilação", Toast.LENGTH_SHORT).show();
+                if(mPermissoesConcedidas) {
+                    categoria = "Depilação";
+                    Intent intent = new Intent(InicialActivity.this, SaloesActivity.class);
+                    intent.putExtra("mCategoria", "Depilação");
+                    intent.putExtra("mLatitude", localizacao.getLatitude());
+                    intent.putExtra("mLongitude", localizacao.getLongitude());
+                    intent.putExtra("mIds", ids);
+                    intent.putExtra("mIdcateg", idcateg);
+                    startActivity(intent);
+                    Toast.makeText(InicialActivity.this, "Depilação", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         btnOlho.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                categoria = "Olho";
-                Intent intent = new Intent(InicialActivity.this, SaloesActivity.class);
-                intent.putExtra("categoria", "Olho");
-                intent.putExtra("latitude", localizao.getLatitude());
-                intent.putExtra("longitude", localizao.getLongitude());
-                intent.putExtra("ids", ids);
-                intent.putExtra("idcateg", idcateg);
-                startActivity(intent);
-                Toast.makeText(InicialActivity.this, "Olho", Toast.LENGTH_SHORT).show();
+                if(mPermissoesConcedidas) {
+                    categoria = "Olho";
+                    Intent intent = new Intent(InicialActivity.this, SaloesActivity.class);
+                    intent.putExtra("mCategoria", "Olho");
+                    intent.putExtra("mLatitude", localizacao.getLatitude());
+                    intent.putExtra("mLongitude", localizacao.getLongitude());
+                    intent.putExtra("mIds", ids);
+                    intent.putExtra("mIdcateg", idcateg);
+                    startActivity(intent);
+                    Toast.makeText(InicialActivity.this, "Olho", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         btnSobrancelha.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                categoria = "Sobrancelha";
-                Intent intent = new Intent(InicialActivity.this, SaloesActivity.class);
-                intent.putExtra("categoria", "Sobrancelha");
-                intent.putExtra("latitude", localizao.getLatitude());
-                intent.putExtra("longitude", localizao.getLongitude());
-                intent.putExtra("ids", ids);
-                intent.putExtra("idcateg", idcateg);
-                startActivity(intent);
-                Toast.makeText(InicialActivity.this, "Sobrancelha", Toast.LENGTH_SHORT).show();
+                if(mPermissoesConcedidas) {
+                    categoria = "Sobrancelha";
+                    Intent intent = new Intent(InicialActivity.this, SaloesActivity.class);
+                    intent.putExtra("mCategoria", "Sobrancelha");
+                    intent.putExtra("mLatitude", localizacao.getLatitude());
+                    intent.putExtra("mLongitude", localizacao.getLongitude());
+                    intent.putExtra("mIds", ids);
+                    intent.putExtra("mIdcateg", idcateg);
+                    startActivity(intent);
+                    Toast.makeText(InicialActivity.this, "Sobrancelha", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         btnUnha.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                categoria = "Unha";
-                Intent intent = new Intent(InicialActivity.this, SaloesActivity.class);
-                intent.putExtra("categoria", "Unha");
-                intent.putExtra("latitude", localizao.getLatitude());
-                intent.putExtra("longitude", localizao.getLongitude());
-                intent.putExtra("ids", ids);
-                intent.putExtra("idcateg", idcateg);
-                startActivity(intent);
-                Toast.makeText(InicialActivity.this, "Unha", Toast.LENGTH_SHORT).show();
+                if(mPermissoesConcedidas) {
+                    categoria = "Unha";
+                    Intent intent = new Intent(InicialActivity.this, SaloesActivity.class);
+                    intent.putExtra("mCategoria", "Unha");
+                    intent.putExtra("mLatitude", localizacao.getLatitude());
+                    intent.putExtra("mLongitude", localizacao.getLongitude());
+                    intent.putExtra("mIds", ids);
+                    intent.putExtra("mIdcateg", idcateg);
+                    startActivity(intent);
+                    Toast.makeText(InicialActivity.this, "Unha", Toast.LENGTH_SHORT).show();
+                }
             }
         });
+    }
+
+    @SuppressLint("MissingPermission")
+    private void localizar(){
+        if(mPermissoesConcedidas) {
+            locationMangaer = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+            locationListener = new MyLocationListener();
+
+            locationMangaer.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 10, locationListener);
+
+            localizacao = new MyServiceLocation(InicialActivity.this);
+
+            if (localizacao.canGetLocation()) {
+                double longitude = localizacao.getLongitude();
+                double latitude = localizacao.getLatitude();
+                //Toast.makeText(getApplicationContext(), "Longitude:" + Double.toString(longitude) + "\nLatitude:" + Double.toString(latitude), Toast.LENGTH_SHORT).show();
+            } else {
+                localizacao.showSettingsAlert();
+            }
+        }
     }
 
     private void buscar(){
@@ -251,7 +274,7 @@ public class InicialActivity extends AppCompatActivity
                 ids.add(servico.getmEstabId());
                 idcateg.add(servico.getmCategoria());
 
-                //myAdapter.notifyDataSetChanged();
+               // myAdapter.notifyDataSetChanged();
                 mProgressDialog.dismiss();
             }
 
@@ -320,8 +343,8 @@ public class InicialActivity extends AppCompatActivity
         if (id == R.id.app_bar_search) {
 
             Intent intetAbrirTelaLogin = new Intent(InicialActivity.this, TelaBuscaActivity.class);
-            intetAbrirTelaLogin.putExtra("latitude", localizao.getLatitude());
-            intetAbrirTelaLogin.putExtra("longitude", localizao.getLongitude());
+            intetAbrirTelaLogin.putExtra("latitude", localizacao.getLatitude());
+            intetAbrirTelaLogin.putExtra("longitude", localizacao.getLongitude());
             startActivity(intetAbrirTelaLogin);
 
         }
@@ -368,7 +391,7 @@ public class InicialActivity extends AppCompatActivity
         public void onLocationChanged(Location loc) {
 
             //editLocation.setText("");
-          //  pb.setVisibility(View.INVISIBLE);
+            //  pb.setVisibility(View.INVISIBLE);
             /*Toast.makeText(getBaseContext(),"Location changed : Lat: " +
                             loc.getLatitude()+ " Lng: " + loc.getLongitude(),
                     Toast.LENGTH_SHORT).show();*/
@@ -384,11 +407,11 @@ public class InicialActivity extends AppCompatActivity
             List<Address> addresses;
             try
             {
-             addresses = gcd.getFromLocation(loc.getLatitude(), loc
+                addresses = gcd.getFromLocation(loc.getLatitude(), loc
                         .getLongitude(), 1);
                 if (addresses.size() > 0)
                     System.out.println(addresses.get(0).getLocality());
-                    cityName=addresses.get(0).getLocality();
+                cityName=addresses.get(0).getLocality();
             }
             catch (IOException e)
             {
@@ -418,82 +441,36 @@ public class InicialActivity extends AppCompatActivity
         }
     }
 
-    private ArrayList findUnAskedPermissions(ArrayList wanted) {
-        ArrayList result = new ArrayList();
-
-        for (Object perm : wanted) {
-            if (!hasPermission((String) perm)) {
-                result.add(perm);
-            }
-        }
-
-        return result;
-    }
-
-    private boolean hasPermission(Object permission) {
-        if (canMakeSmores()) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                return (checkSelfPermission((String) permission) == PackageManager.PERMISSION_GRANTED);
-            }
-        }
-        return true;
-    }
-
-    private boolean canMakeSmores() {
-        return (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP_MR1);
-    }
-
-
-    @TargetApi(Build.VERSION_CODES.M)
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-
-        switch (requestCode) {
-
-            case ALL_PERMISSIONS_RESULT:
-                for (Object perms : permissionsToRequest) {
-                    if (!hasPermission(perms)) {
-                        permissionsRejected.add(perms);
-                    }
-                }
-
-                if (permissionsRejected.size() > 0) {
-
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        if (shouldShowRequestPermissionRationale((String) permissionsRejected.get(0))) {
-                            showMessageOKCancel("These permissions are mandatory for the application. Please allow access.",
-                                    new DialogInterface.OnClickListener() {
-                                        @Override
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                                                requestPermissions((String[]) permissionsRejected.toArray(new String[permissionsRejected.size()]), ALL_PERMISSIONS_RESULT);
-                                            }
-                                        }
-                                    });
-                            return;
-                        }
-                    }
-                }
-
-                break;
-        }
-    }
-
-    private void showMessageOKCancel(String message, DialogInterface.OnClickListener okListener) {
-        new AlertDialog.Builder(InicialActivity.this)
-                .setMessage(message)
-                .setPositiveButton("OK", okListener)
-                .setNegativeButton("Cancel", null)
-                .create()
-                .show();
-    }
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        localizao.stopListener();
+        if(localizacao != null) localizacao.stopListener();
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults){
+        super.onRequestPermissionsResult(requestCode,permissions,grantResults);
 
+        for(int resultado : grantResults){
+            if(resultado == PackageManager.PERMISSION_DENIED){
+                mPermissoesConcedidas = false;
+                alertaValidacaoPermissao();
+            } else {
+                mPermissoesConcedidas = true;
+            }
+        }
+        if(mPermissoesConcedidas){localizar();}
+    }
+
+    private void alertaValidacaoPermissao(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Permissões negadas");
+        builder.setMessage("É necessário aceitar as permissões");
+
+        builder.setPositiveButton("OK", (dialogInterface, i) -> finish());
+
+        AlertDialog dialog =  builder.create();
+        dialog.show();
+    }
 
 }

@@ -3,7 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/action_settings"
+        android:icon="@drawable/ic_search"
         android:orderInCategory="100"
+        android:visible="true"
         android:title="Pesquisar"
-        app:showAsAction="never" />
+        app:showAsAction="ifRoom" />
 </menu>

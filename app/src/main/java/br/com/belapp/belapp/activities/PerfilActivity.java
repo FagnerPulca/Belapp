@@ -22,6 +22,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 import br.com.belapp.belapp.R;
@@ -37,6 +38,7 @@ public class PerfilActivity extends AppCompatActivity {
     private static final String TAG = "belapp.activities";
     private Cliente mClienteAtual, mClienteModificado;
     private EditText mEtNome, mEtEmail, mEtTelefone;
+
 
 
 

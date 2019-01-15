@@ -4,8 +4,8 @@
 
     <item
         android:id="@+id/app_bar_search"
-        android:icon="@color/common_google_signin_btn_text_dark_focused"
+        android:icon="@drawable/ic_search"
         android:orderInCategory="101"
         android:title="Pesquisar"
-        app:actionViewClass="android.widget.SearchView" />
+        app:showAsAction="ifRoom"/>
 </menu>

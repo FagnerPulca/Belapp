@@ -1,10 +1,28 @@
 package br.com.belapp.belapp.test;
 
 import android.app.Activity;
+import android.support.annotation.NonNull;
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.contrib.RecyclerViewActions;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseAuthInvalidUserException;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+
+import java.util.ArrayList;
+
+import br.com.belapp.belapp.model.ConfiguracaoFireBase;
+import br.com.belapp.belapp.model.Servico;
 
 import static android.support.test.espresso.Espresso.onData;
 import static android.support.test.espresso.Espresso.onView;
@@ -109,39 +127,63 @@ public class DefaultTest {
 
                 if (checkedView.getContext() instanceof Activity) {
                     activity[0] = (Activity) checkedView.getContext();
-                    return;
                 }
             }
         });
         return activity[0];
-    }
-
-    public Activity finalizarActivities() {
-        final Activity[] activity = new Activity[1];
-
-        onView(isRoot()).check((view, noViewFoundException) -> {
-
-            View checkedView = view;
-
-            while (checkedView instanceof ViewGroup && ((ViewGroup) checkedView).getChildCount() > 0) {
-
-                checkedView = ((ViewGroup) checkedView).getChildAt(0);
-
-                if (checkedView.getContext() instanceof Activity) {
-                    ((Activity) checkedView.getContext()).finish();
-
-                }
-            }
-        });
-        return activity[0];
-    }
-    public void selecionarItemReciclerView(int idRecicledView, int posicao){
-        onView(withId(idRecicledView))
-                .perform(RecyclerViewActions.actionOnItemAtPosition(posicao, click()));
     }
 
     public void selecionarItemSpinnerByPosition(int idSpiner, int posicao){
         onView(withId(idSpiner)).perform(click());
         onData(anything()).atPosition(1).perform(click());
     }
+
+    public void logarPorEmail(String email, String senha){
+        FirebaseAuth autenticacao = ConfiguracaoFireBase.getFirebaseAutenticacao();
+        if(autenticacao.getUid() == null) {
+            autenticacao.signInWithEmailAndPassword(email, senha).
+                    addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                //Toast.makeText(getAtualActivity().getApplicationContext(), "Login realizado com sucesso!", Toast.LENGTH_LONG).show();
+                            } else {
+
+                                //tratamento de exceções do cadastro
+                                String excecao = "";
+                                try {
+                                    throw task.getException();
+                                } catch (FirebaseAuthInvalidUserException e) {
+                                    excecao = "Usuario não cadastrado!";
+                                } catch (FirebaseAuthInvalidCredentialsException e) {
+                                    excecao = "email ou senha não correspndem a um usuario cadastrado !";
+                                } catch (Exception e) {
+                                    excecao = "Erro ao logar usuario" + e.getMessage();
+                                    e.printStackTrace();
+                                }
+
+                                /*Toast.makeText(getAtualActivity().getApplicationContext(),
+                                        excecao,
+                                        Toast.LENGTH_SHORT).show();*/
+                            }
+                        }
+                    });
+            esperar(10000);
+        }
+    }
+
+    public void deslogar(){
+        FirebaseAuth usuario = ConfiguracaoFireBase.getFirebaseAutenticacao();
+        if(usuario.getUid() != null) usuario.signOut();
+    }
+
+    public void selecionarItemReciclerView(int idRecicledView, int posicao){
+        onView(withId(idRecicledView))
+                .perform(RecyclerViewActions.actionOnItemAtPosition(posicao, click()));
+
+    }
+
+
+
 }

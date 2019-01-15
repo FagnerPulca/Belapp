@@ -20,3 +20,11 @@ Funcionalidade: Agendar serviço
     E eu aperto em agendar
     Entao devo ver a mensagem, Agendamento realizado com sucesso!
 
+    @agendamento-feature
+      Cenario: TA_03: Agendar um serviço de beleza informando data ou horário indisponível.
+        Dado que estou na tela de inicial
+        Quando eu busco por um servico do estabelecimento
+        Quando eu escolho um profissional
+        E eu informo uma data invalida
+        Entao devo ver a mensagem, O estabelecimento estará fechado na data selecionada
+

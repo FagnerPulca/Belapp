@@ -2,10 +2,12 @@ package br.com.belapp.belapp.activities;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.widget.Toast;
 
 import com.google.firebase.database.ChildEventListener;
@@ -23,6 +25,7 @@ import br.com.belapp.belapp.model.Estabelecimento;
 import br.com.belapp.belapp.model.Profissional;
 import br.com.belapp.belapp.model.Servico;
 import br.com.belapp.belapp.presenter.FuncionarioAdapter;
+import br.com.belapp.belapp.servicos.Permissao;
 
 public class FuncionariosActivity extends AppCompatActivity implements FuncionarioAdapter.ItemClicked, FuncionarioAdapter.AgendarButtonClicked{
 
@@ -34,11 +37,18 @@ public class FuncionariosActivity extends AppCompatActivity implements Funcionar
 
     private Estabelecimento mEstabelecimento;
     private Servico mServico;
+    private Agendamento mAgendamento;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_funcionarios);
+        // Configuraçao do toolbar
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle(R.string.title_activity_profissionais);
+        toolbar.setTitleTextColor(Color.WHITE);
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
+        setSupportActionBar(toolbar);
 
         recyclerView = findViewById(R.id.rvProfissionais);
         recyclerView.setHasFixedSize(true);
@@ -49,6 +59,9 @@ public class FuncionariosActivity extends AppCompatActivity implements Funcionar
         profissionais = new ArrayList<Profissional>();
         mEstabelecimento = (Estabelecimento) getIntent().getSerializableExtra("estabelecimento");
         mServico = (Servico) getIntent().getSerializableExtra("servico");
+        if(getIntent().hasExtra("agendamento")){
+            mAgendamento = (Agendamento) getIntent().getSerializableExtra("agendamento");
+        }
 
 
 
@@ -111,21 +124,22 @@ public class FuncionariosActivity extends AppCompatActivity implements Funcionar
 
     @Override
     public void onAgendarButtonClicked(int index) {
-        Agendamento agendamento = new Agendamento();
-        agendamento.setmCliente(FirebaseUtils.getUsuarioAtual().getUid());
-        agendamento.setmEstabelecimento(mEstabelecimento);
-        agendamento.setmData("20/12/2018");
-        agendamento.setmHora("11:00");
-        agendamento.setmServico(mServico);
-        agendamento.setmProfissional(profissionais.get(index));
+        if(Permissao.verificarPermissaoRestritivo(FuncionariosActivity.this)) {
+            if (mAgendamento == null) {
+                mAgendamento = new Agendamento();
+            }
+            mAgendamento.setmCliente(FirebaseUtils.getUsuarioAtual().getUid());
+            mAgendamento.setmEstabelecimento(mEstabelecimento);
+            mAgendamento.setmServico(mServico);
+            mAgendamento.setmProfissional(profissionais.get(index));
 
-        Intent intent = new Intent();
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("agendamento", agendamento);
-        intent.setClass(FuncionariosActivity.this, AgendarServicoActivity.class);
-        intent.putExtras(bundle);
-        startActivity(intent);
-
+            Intent intent = new Intent();
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("agendamento", mAgendamento);
+            intent.setClass(FuncionariosActivity.this, AgendarServicoActivity.class);
+            intent.putExtras(bundle);
+            startActivity(intent);
+        }
     }
 
     /*private void selProfissionais(String servico){
@@ -136,4 +150,10 @@ public class FuncionariosActivity extends AppCompatActivity implements Funcionar
             }
         }
     }*/
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
 }

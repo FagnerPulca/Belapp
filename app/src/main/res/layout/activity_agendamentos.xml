@@ -20,12 +20,46 @@
             android:background="?attr/colorPrimary"
             app:popupTheme="@style/AppTheme.PopupOverlay" />
 
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbarFiltros"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimaryDark"
+            app:popupTheme="@style/AppTheme.PopupOverlay">
+
+            <TextView
+                android:id="@+id/textView16"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/app_filtros" />
+
+            <android.support.v7.widget.AppCompatSpinner
+                android:id="@+id/spinner_meses_toolBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:overlapAnchor="false" />
+
+            <android.support.v7.widget.AppCompatSpinner
+                android:id="@+id/spinner_status_agendamento_toolBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:overlapAnchor="false" />
+        </android.support.v7.widget.Toolbar>
+
     </android.support.design.widget.AppBarLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rvAgendamentos"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/appBarLayout" />
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/appBarLayout">
+    </android.support.v7.widget.RecyclerView>
 
 </android.support.constraint.ConstraintLayout>
