@@ -2,20 +2,21 @@ package br.com.belapp.belapp.activities;
 
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
-
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
-
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
-
-
-import android.view.View;
-
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -23,45 +24,44 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-
-import android.widget.TextView;
-
+import android.view.View;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
-
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.auth.api.Auth;
-
 import com.facebook.login.LoginManager;
+import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.auth.FirebaseAuth;
-
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
-
-import com.google.android.gms.common.ConnectionResult;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import br.com.belapp.belapp.R;
+import br.com.belapp.belapp.model.Agendamento;
 import br.com.belapp.belapp.model.Cliente;
 import br.com.belapp.belapp.model.Servico;
 import br.com.belapp.belapp.presenter.LocalizacaoCliente;
 import br.com.belapp.belapp.servicos.MyServiceLocation;
+import br.com.belapp.belapp.utils.DateUtils;
 
 import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
+import static br.com.belapp.belapp.database.utils.FirebaseUtils.getUsuarioAtual;
 
 public class ClienteLogadoActivity extends AppCompatActivity
 
         implements NavigationView.OnNavigationItemSelectedListener, GoogleApiClient.OnConnectionFailedListener {
-    private FirebaseAuth logado = FirebaseAuth.getInstance();
+   private FirebaseAuth logado = FirebaseAuth.getInstance();
     private GoogleApiClient mGoogleApiClient;
 
         
@@ -78,6 +78,11 @@ public class ClienteLogadoActivity extends AppCompatActivity
     private ArrayList<String> idcateg;
     private ArrayList<Servico> servicos;
     private String categoria;
+    private NotificationCompat.Builder mBuilder;
+    private NotificationManager mNotificationManager;
+    public static final String NOTIFICATION_CHANNEL_ID = "10001";
+    private ArrayList<Agendamento> mAgendamentos;
+
 
     private final static int ALL_PERMISSIONS_RESULT = 101;
 
@@ -148,6 +153,15 @@ public class ClienteLogadoActivity extends AppCompatActivity
 
         buscar();
         dialogBuscando();
+
+        try {
+            verificarAgendamentos();
+        }catch (Exception e){
+            System.out.println("ERRO: " + e);
+        }
+
+        //Notificacao("Agendamento", "Você tem um serviço agendado");
+
 
         btnBarba.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -488,5 +502,97 @@ public class ClienteLogadoActivity extends AppCompatActivity
         super.onDestroy();
         localizao.stopListener();
     }
+
+
+    //verifica se o cliente que está logado possui
+    //um agendamento marcado e gera a notificação
+    public void verificarAgendamentos() {
+        String idUser = getUsuarioAtual().getUid();
+        ArrayList mAgendamentos = new ArrayList<Agendamento>();
+        mAgendamentos.clear();
+
+        Query query = FirebaseDatabase.getInstance().getReference("agendamentos").orderByChild("mData");
+        query.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, String s) {
+                Agendamento agendamento = dataSnapshot.getValue(Agendamento.class);
+
+
+                if(!mAgendamentos.contains(agendamento) && agendamento.getmCliente().equals(idUser))
+                {
+
+                    Notificacao("Agendamento", "Você tem um serviço agendado");
+
+                }
+
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, String s) {
+                // empty
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+                // empty
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, String s) {
+                // empty
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // empty
+            }
+        });
+
+    }
+
+    public void Notificacao(String title, String message)
+    {
+
+        Intent resultIntent = new Intent(ClienteLogadoActivity.this , AgendamentosActivity.class);
+        resultIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+        PendingIntent resultPendingIntent = PendingIntent.getActivity(ClienteLogadoActivity.this,
+                0 /* Request code */, resultIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT);
+
+        mBuilder = new NotificationCompat.Builder(ClienteLogadoActivity.this);
+        mBuilder.setSmallIcon(R.drawable.salao_teste);
+        mBuilder.setContentTitle(title)
+                .setContentText(message)
+                .setAutoCancel(false)
+                .setSound(Settings.System.DEFAULT_NOTIFICATION_URI)
+                .setContentIntent(resultPendingIntent);
+
+        mNotificationManager = (NotificationManager) ClienteLogadoActivity.this.getSystemService(Context.NOTIFICATION_SERVICE);
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O)
+        {
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+            NotificationChannel notificationChannel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, "NOTIFICATION_CHANNEL_NAME", importance);
+            notificationChannel.enableLights(true);
+            notificationChannel.setLightColor(Color.RED);
+            notificationChannel.enableVibration(true);
+            notificationChannel.setVibrationPattern(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
+            assert mNotificationManager != null;
+            mBuilder.setChannelId(NOTIFICATION_CHANNEL_ID);
+            mNotificationManager.createNotificationChannel(notificationChannel);
+        }
+        assert mNotificationManager != null;
+        mNotificationManager.notify(0 /* Request Code */, mBuilder.build());
+    }
+
+    private void ordenarResultados(){
+        Collections.sort(mAgendamentos, (o1, o2) -> DateUtils
+                .getDiferencaEntreDuasDatasEspecificas(
+                        o2.getmData(),
+                        o1.getmData()));
+
+    }
+
 
 }

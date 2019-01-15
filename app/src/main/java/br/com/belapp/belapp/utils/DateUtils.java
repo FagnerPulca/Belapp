@@ -10,6 +10,7 @@ import java.util.Locale;
 
 public class DateUtils {
 
+
     /**
      * Metodo que obtem a data atual do smartphone.
      * @return data no formato dd/mm/YYYY.
@@ -268,5 +269,11 @@ public class DateUtils {
     public static boolean checarSeDataPertenceAoMes(String data, int mes){
         return (Integer.parseInt(data.split("/")[1]) == mes);
     }
+
+
+
+
+
+
 
 }

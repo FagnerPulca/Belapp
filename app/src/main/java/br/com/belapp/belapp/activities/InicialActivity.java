@@ -3,11 +3,14 @@ package br.com.belapp.belapp.activities;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+
 import android.app.ProgressDialog;
+import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -15,6 +18,9 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 
+import android.provider.Settings;
+import android.support.annotation.RequiresApi;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -112,10 +118,12 @@ public class InicialActivity extends AppCompatActivity
         btnSobrancelha = findViewById(R.id.ibSobrancelha);
         btnUnha = findViewById(R.id.ibUnha);
 
+
     //        EstabelecimentoDAO estabelecimentoDAO = new EstabelecimentoDAO();
     //        estabelecimentoDAO.inserirEstabelecimento();*/
         /*ProfissionalDAO profDAO = new ProfissionalDAO();
         profDAO.inserirProfissional();*/
+
 
         ids = new ArrayList<>();
         idcateg = new ArrayList<>();
@@ -143,6 +151,7 @@ public class InicialActivity extends AppCompatActivity
         btnCabelo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 if(mPermissoesConcedidas) {
                     categoria = "Cabelo";
                     Intent intent = new Intent(InicialActivity.this, SaloesActivity.class);
@@ -154,6 +163,17 @@ public class InicialActivity extends AppCompatActivity
                     startActivity(intent);
                     Toast.makeText(InicialActivity.this, "Cabelo", Toast.LENGTH_SHORT).show();
                 }
+
+                categoria = "Cabelo";
+                Intent intent = new Intent(InicialActivity.this, SaloesActivity.class);
+                intent.putExtra("categoria", "Cabelo");
+                intent.putExtra("latitude", localizacao.getLatitude());
+                intent.putExtra("longitude", localizacao.getLongitude());
+                intent.putExtra("ids", ids);
+                intent.putExtra("idcateg", idcateg);
+                startActivity(intent);
+                Toast.makeText(InicialActivity.this, "Cabelo", Toast.LENGTH_SHORT).show();
+
             }
         });
         btnDepilacao.setOnClickListener(new View.OnClickListener() {
@@ -452,4 +472,5 @@ public class InicialActivity extends AppCompatActivity
         AlertDialog dialog =  builder.create();
         dialog.show();
     }
+
 }
