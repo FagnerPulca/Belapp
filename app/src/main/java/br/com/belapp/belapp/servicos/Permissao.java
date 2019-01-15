@@ -9,7 +9,6 @@ import android.os.Build;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 
-
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
@@ -19,6 +18,7 @@ import br.com.belapp.belapp.activities.CadastroBasicoActivity;
 import br.com.belapp.belapp.activities.LoginActivity;
 
 import static android.support.v4.content.ContextCompat.startActivity;
+
 
 public class Permissao {
 
@@ -80,5 +80,4 @@ public class Permissao {
         if (autenticacao.getCurrentUser() == null) return false;
         else return true;
     }
-
 }

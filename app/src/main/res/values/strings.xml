@@ -27,9 +27,8 @@
     <string name="error_selecione_uma_data">Selecione uma data</string>
     <string name="error_selecione_um_horario">Selecione um horário para o agendamento</string>
     <string name="error_nao_ha_horario_disponivel_para_data">Não há horários disponíveis para a data selecionada</string>
-    <string name="error_estabelecimento_fechado_na_data">O estabelecimento estará fechado na data selecionada</string>
-    <string name="error_nao_ha_resultados">Não há resultados para os filtros selecionados.</string>
-
+    <string name="error_confirmacao_senha">As senhas não correspondem</string>
+    <string name="error_confirmacao_email">Os emails não correspondem</string>
 
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
@@ -54,8 +53,10 @@
     <string name="button_cadastrar">Cadastrar</string>
     <string name="et_nome">Nome</string>
     <string name="et_email">Email</string>
+    <string name="et_confirmacao_email">Confirmação de Email</string>
     <string name="et_telefone">Telefone</string>
     <string name="et_senha">Senha</string>
+    <string name="et_confirmacao_senha">Confirmação de Senha</string>
     <string name="erro_teefone">telefone não pode ficar em branco</string>
     <string name="erro_Email">Email não pode ficar em branco</string>
     <string name="erro_Nome">Nome não pode ficar em branco</string>
@@ -66,19 +67,20 @@
     <string name="fb_login_protocol_scheme">fb190569431853174</string>
 
 
+
+
     <string name="title_activity_salao">Salão</string>
 
 
     <string name="title_activity_perfil">Meu Perfil</string>
-    <string name="title_activity_estabelecimentos">Estabelecimentos</string>
-    <string name="title_activity_favoritos">Favoritos</string>
+    <string name="title_activity_estabelecimentos">Estabelecimentos</string>,
+    <string name="title_activity_favoritos">Favoritos</string>,
     <string name="title_activity_Pesquisar">Pesquisar</string>
-    <string name="title_activity_promocoes">Promoções</string>
+
     <string name="title_activity_avaliacoes">Avaliações</string>
     <string name="title_activity_avaliar">Avaliar</string>
 
     <string name="title_activity_agendar_servico">Agendar Serviço</string>
-    <string name="title_activity_profissionais">Profissionais</string>
     <string name="title_activity_minha_agenda">Minha Agenda</string>
     <string name="title_activity_agendamento">Agendamento</string>
 
@@ -92,7 +94,6 @@
     <string name="info_exemplo_telefone">(87) 996623985</string>
     <string name="app_alterar_senha">Alterar senha</string>
     <string name="app_agendar">Agendar</string>
-    <string name="app_dias_funcionamento">Dias de Funcionamento</string>
 
     <string name="sucess_alteracao_realizada">Alteração realizada com sucesso!</string>
     <string name="sucess_agendamento_realizado">Agendamento realizado com sucesso!</string>
@@ -122,17 +123,11 @@
     <string name="app_selecionar_data">Selecionar Data:</string>
     <string name="app_selecionar_horario">Selecionar Horário:</string>
     <string name="app_selecionar">Selecionar</string>
-    <string name="app_filtros">Filtros</string>
-
-
     <string name="app_confirmacao">Confirmação</string>
     <string name="app_pergunta_confirmacao_cancelamento_agendamento">Confirma a intenção de cancelar o agendamento?</string>
 
     <string name="adicionando_favorito">adicionado aos favoritos</string>
     <string name="retirando_favoritoo">Retirado dos faforitos</string>
-    <string name="app_reagendar">Reagendar</string>
-    <string name="app_alterar_servico">Alterar Serviço</string>
-    <string name="app_desistir">Desistir</string>
-    <string name="listangem_promocoes">Promoções</string>
+
 
 </resources>

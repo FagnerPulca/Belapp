@@ -40,15 +40,17 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 
-import com.google.firebase.auth.FirebaseUser;
 import com.google.android.gms.common.ConnectionResult;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
 import br.com.belapp.belapp.R;
+import br.com.belapp.belapp.model.Cliente;
 import br.com.belapp.belapp.model.Servico;
 import br.com.belapp.belapp.presenter.LocalizacaoCliente;
 import br.com.belapp.belapp.servicos.MyServiceLocation;
@@ -239,12 +241,23 @@ public class ClienteLogadoActivity extends AppCompatActivity
         TextView titulo = header.findViewById(R.id.tvTituloNavegadorLogado);
         TextView subtitulo = header.findViewById(R.id.tvSubtituloNavegadorLogado);
 
-        FirebaseUser usuario = logado.getCurrentUser();
-        if (usuario != null) {
-            String nome = usuario.getDisplayName();
-            String email = usuario.getEmail();
-            if (nome != null) titulo.setText(nome);
-            if (email != null) subtitulo.setText(email);
+        if(logado.getUid() != null) {
+            DatabaseReference raiz = FirebaseDatabase.getInstance().getReference();
+            DatabaseReference cliente = raiz.child("clientes").child(logado.getUid());
+
+            cliente.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    Cliente cliente1 = dataSnapshot.getValue(Cliente.class);
+                    titulo.setText(cliente1.getmNome());
+                    subtitulo.setText(cliente1.getmEmail());
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
         }
     }
 

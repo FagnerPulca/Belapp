@@ -25,7 +25,7 @@ import br.com.belapp.belapp.model.ConfiguracaoFireBase;
 public class CadastroBasicoActivity extends AppCompatActivity {
 
     private ImageView mBotaoFacebook , mBotaoGoogle;
-    private EditText mCampoNome, mCampoSenha, mCampoEmail, mCampoTelefone;
+    private EditText mCampoNome, mCampoSenha, mCampoEmail, mCampoTelefone, mCampoConfirmacaoSenha, mCampoConfirmacaoEmail;
     private Button mBotaoCadastrar;
     private Cliente cliente;
     private FirebaseAuth autenticacao;
@@ -58,6 +58,8 @@ public class CadastroBasicoActivity extends AppCompatActivity {
         mCampoNome = findViewById(R.id.etNomeCadastro);
         mCampoSenha = findViewById(R.id.etSenhaCadastro);
         mCampoEmail = findViewById(R.id.etEmailCadastro);
+        mCampoConfirmacaoSenha = findViewById(R.id.etConfirmcaoSenhaCadastro);
+        mCampoConfirmacaoEmail = findViewById(R.id.etConfirmacaoEmailCadastro);
         mCampoTelefone = findViewById(R.id.etTelefoneCadastro);
         mBotaoCadastrar = findViewById(R.id.btnCadastrar);
 
@@ -68,22 +70,37 @@ public class CadastroBasicoActivity extends AppCompatActivity {
                 String textoSenha = mCampoSenha.getText().toString();
                 String textoEmail = mCampoEmail.getText().toString();
                 String textoTelefone = mCampoTelefone.getText().toString();
+                String textoConfEmail = mCampoConfirmacaoEmail.getText().toString();
+                String textoConfSenha = mCampoConfirmacaoSenha.getText().toString();
                 //validar campos
-                validarCampos(textoNome, textoEmail, textoTelefone, textoSenha);
+                validarCampos(textoNome, textoEmail, textoTelefone, textoSenha, textoConfEmail, textoConfSenha);
 
             }
         });
     }
 
     //método para validar campos
-    public void validarCampos(String textoNome, String textoEmail, String textoTelefone, String textoSenha) {
+    public void validarCampos(String textoNome, String textoEmail, String textoTelefone, String textoSenha, String textoConfEmail, String textoConfSenha) {
 
         if (!textoNome.isEmpty()) {
             if (!textoEmail.isEmpty()) {
                 if (!textoTelefone.isEmpty()) {
                     if (!textoSenha.isEmpty()) {
-                        cliente = criarCliente(textoNome, textoEmail, textoTelefone, textoSenha);
-                        cadastrarUsuarios(cliente);
+                        if(textoSenha.equals(textoConfSenha) && textoEmail.equals(textoConfEmail)) {
+
+                            cliente = criarCliente(textoNome, textoEmail, textoTelefone, textoSenha);
+                            cadastrarUsuarios(cliente);
+
+                        } else{
+                            if(!textoEmail.equals(textoConfEmail))
+                                Toast.makeText(CadastroBasicoActivity.this,
+                                        R.string.error_confirmacao_email,
+                                        Toast.LENGTH_SHORT).show();
+                            if(!textoSenha.equals(textoConfSenha))
+                                Toast.makeText(CadastroBasicoActivity.this,
+                                        R.string.error_confirmacao_senha,
+                                        Toast.LENGTH_SHORT).show();
+                        }
                     } else {
                         Toast.makeText(CadastroBasicoActivity.this,
                                 R.string.erro_Senha,
