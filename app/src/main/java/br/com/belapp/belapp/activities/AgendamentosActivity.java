@@ -32,6 +32,8 @@ import br.com.belapp.belapp.model.Servico;
 import br.com.belapp.belapp.presenter.AgendamentoAdapter;
 import br.com.belapp.belapp.utils.DateUtils;
 
+import static br.com.belapp.belapp.database.utils.FirebaseUtils.getUsuarioAtual;
+
 public class AgendamentosActivity extends AppCompatActivity implements AgendamentoAdapter.ItemClicked{
 
     private RecyclerView mRecyclerView;
@@ -40,13 +42,13 @@ public class AgendamentosActivity extends AppCompatActivity implements Agendamen
     private ProgressDialog mProgressDialog;
     private Spinner mFiltroMeses;
     private Spinner mFiltroStatus;
-
+    private String idUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_agendamentos);
-
+        idUser = getUsuarioAtual().getUid();
         // Configuraçao do toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.title_activity_minha_agenda);
@@ -203,7 +205,7 @@ public class AgendamentosActivity extends AppCompatActivity implements Agendamen
                 Agendamento agendamento = dataSnapshot.getValue(Agendamento.class);
 
 
-                if(!mAgendamentos.contains(agendamento)){
+                if(!mAgendamentos.contains(agendamento) && agendamento.getmCliente().equals(idUser)){
                     mAgendamentos.add(agendamento);
                     ordenarResultados();
                     buscarFiltrarAgendamentos();
