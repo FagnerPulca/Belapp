@@ -252,4 +252,8 @@ public class TelaBuscaActivity extends AppCompatActivity implements DatePickerDi
             });
         }
     }
+
+    public void setMetDataBusca(String data){
+        metDataBusca.setText(data);
+    }
 }
