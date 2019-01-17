@@ -111,21 +111,21 @@ public class BuscaActivitySteps extends DefaultTest {
     public void digitoUmaDataIndisponivel(){
         if(getAtualActivity() instanceof TelaBuscaActivity){
             TelaBuscaActivity activityAgendamento = (TelaBuscaActivity) getAtualActivity();
-            activityAgendamento.setMetDataBusca("25/01/2019");
+            activityAgendamento.setMetDataBusca("31/01/2019");
         }
     }
 
     @Entao("^Eu devo ver o estabelecimento$")
     public void verEstabelecimento(){
         esperar(2000);
-        //onView(withText(getActivity().getString(R.string.title_activity_estabelecimentos)));
+        onView(withText(getActivity().getString(R.string.title_activity_estabelecimentos)));
 
     }
 
     @Entao("^Eu não devo ver nenhum estabelecimento$")
     public void naoVerEstabelecimento(){
         esperar(2000);
-       // onView(withText(getActivity().getString(R.string.title_activity_estabelecimentos)));
+        onView(withText(getActivity().getString(R.string.title_activity_estabelecimentos)));
     }
 
 }
