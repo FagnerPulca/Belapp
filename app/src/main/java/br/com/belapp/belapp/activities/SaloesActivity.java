@@ -29,9 +29,10 @@ import br.com.belapp.belapp.R;
 import br.com.belapp.belapp.model.Agendamento;
 
 import br.com.belapp.belapp.model.Estabelecimento;
+import br.com.belapp.belapp.model.HorarioAtendimento;
 import br.com.belapp.belapp.presenter.ApplicationClass;
 import br.com.belapp.belapp.presenter.SalaoAdapter;
-
+import br.com.belapp.belapp.utils.DateUtils;
 
 
 public class SaloesActivity extends AppCompatActivity implements SalaoAdapter.ItemClicked{
@@ -50,6 +51,7 @@ public class SaloesActivity extends AppCompatActivity implements SalaoAdapter.It
     private RecyclerView.Adapter myAdapter;
 
     private ProgressDialog mProgressDialog;
+    private Map<String, Integer> mapaAgendamento = new TreeMap<String, Integer>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,6 +104,7 @@ public class SaloesActivity extends AppCompatActivity implements SalaoAdapter.It
         recyclerView.setAdapter(myAdapter);
         buscar();
         dialogBuscando();
+        somarCargaTrabalho();
     }
 
 
@@ -140,13 +143,12 @@ public class SaloesActivity extends AppCompatActivity implements SalaoAdapter.It
                             if((mPreco >= Double.valueOf(mPrecoServ.get(i)) && mServicos.get(i).equals(estabelecimento.getmEid())) &&
                                     (mServcat.isEmpty() || mNomeServ.get(i).toLowerCase().contains(mServcat) ||
                                             mCategServ.get(i).toLowerCase().contains(mServcat))){
-                                mResultados.add(estabelecimento);
-                                verificarServiçosDisponíveis();
+                                //mResultados.add(estabelecimento);
+                                verificarServiçosDisponíveis(estabelecimento);
                                 break;
                             }
                         }
                 }
-
 
                 Collections.sort(mResultados, new Comparator<Estabelecimento>() {
                     @Override
@@ -208,33 +210,63 @@ public class SaloesActivity extends AppCompatActivity implements SalaoAdapter.It
         }
     }
 
-    //Verifica se a quantidade de horas agendas no dia é inferior a carga horária diária
-    private void verificarServiçosDisponíveis(){
-        Map<String,Integer> tm = new TreeMap<String,Integer>();
-        for(int i=0; i < mAgendamentos.size(); i++){
+    private void somarCargaTrabalho(){
+        ArrayList<Estabelecimento> estabelecimentosTemp = new ArrayList<>();
+        for (int i = 0; i < mAgendamentos.size(); i++) {
             String idEstab = mAgendamentos.get(i).getmEstabelecimento().getmEid();
             int duracao = mAgendamentos.get(i).getmServico().getmDuracao();
-            if(tm.get(idEstab) != null){
-                int valor = tm.get(idEstab);
+            if (mapaAgendamento.get(idEstab) != null) {
+                int valor = mapaAgendamento.get(idEstab);
                 valor += duracao;
-                tm.put(idEstab,valor);
+                mapaAgendamento.put(idEstab, valor);
             } else {
-                tm.put(idEstab,duracao);
-            }
-        }
-
-        //Remover o estabelecimento do mResultado caso não possua o horário disponível
-        Set<Map.Entry<String,Integer>> set = tm.entrySet();
-        Iterator<Map.Entry<String,Integer>> inte = set.iterator();
-        while(inte.hasNext()){
-            Map.Entry item = inte.next();
-            if((Integer)item.getValue() >= 1200){
-                for(int i=0; i < mResultados.size(); i++){
-                    if(mResultados.get(i).getmEid().equals(item.getKey())) {
-                        mResultados.remove(i);
-                    }
+                mapaAgendamento.put(idEstab, duracao);
+                if (!estabelecimentosTemp.contains(mAgendamentos.get(i).getmEstabelecimento())) {
+                    estabelecimentosTemp.add(mAgendamentos.get(i).getmEstabelecimento());
                 }
             }
         }
+    }
+
+    //Verifica se a quantidade de horas agendas no dia é inferior a carga horária diária
+    private void verificarServiçosDisponíveis(Estabelecimento estabelecimento){
+        if(!mDataSelecionada.equals("")) {
+        /*
+            Os resultados não serão verificados se estiverem vazios
+            Remover estabelecimentos que não atendem no dia selecionado
+
+        */
+            HorarioAtendimento horarios = obterHorarioFuncionamentoEstabelecimento(estabelecimento);
+            if (horarios == null) return;
+
+        /*
+            Verificar se o estabelecimento possui o horário disponível
+            Comparar se a carga horária agendada é inferior a carga diária
+        */
+            Set<Map.Entry<String, Integer>> set = mapaAgendamento.entrySet();
+            Iterator<Map.Entry<String, Integer>> iterator = set.iterator();
+            while (iterator.hasNext()) {
+                Map.Entry mapa = iterator.next();
+                               if (String.valueOf(mapa.getKey()).equals(estabelecimento.getmEid())) {
+                    int tempoTrabalho = horarios.getmFechamento() - horarios.getmAbertura();
+                    if ((Integer) mapa.getValue() >= tempoTrabalho) return;
+                }
+            }
+        }
+        mResultados.add(estabelecimento);
+    }
+
+    /**
+     * Filtra o horário do estabelecimento para o dia selecionado para o atendimento.
+     */
+    private HorarioAtendimento obterHorarioFuncionamentoEstabelecimento(Estabelecimento estabelecimento){
+        HorarioAtendimento horariosDiaSelecionado = null;
+        for(HorarioAtendimento horarioAtendimento: estabelecimento.getmHorariosAtendimento()){
+            if(horarioAtendimento!= null
+                    && horarioAtendimento.getmDiaFuncionamento() == DateUtils.getDiaDaSemanaEmData(mDataSelecionada)){
+                horariosDiaSelecionado = horarioAtendimento;
+            }
+        }
+        return horariosDiaSelecionado;
     }
 }

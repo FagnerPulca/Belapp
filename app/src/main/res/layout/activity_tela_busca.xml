@@ -131,6 +131,7 @@
                 android:layout_marginTop="5dp"
                 android:layout_marginRight="10dp"
                 android:ems="10"
+                android:hint="Data"
                 android:inputType="date" />
 
             <Button

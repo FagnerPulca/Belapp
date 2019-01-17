@@ -251,7 +251,13 @@ public class AgendarServicoActivity extends AppCompatActivity implements DatePic
 
     @Override
     public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
-        mEdtData.setText(String.format(Locale.getDefault(), "%d/%d/%d", dayOfMonth, (monthOfYear+1), year));
+        Calendar now = Calendar.getInstance();
+        now.set(Calendar.YEAR, year);
+        now.set(Calendar.MONTH, monthOfYear);
+        now.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+        String DataSelecionada = DateUtils.converterDataParaString(now);
+        mEdtData.setText(DataSelecionada);
+        //mEdtData.setText(String.format(Locale.getDefault(), "%d/%d/%d", dayOfMonth, (monthOfYear+1), year));
         filtrarHorarios();
     }
 

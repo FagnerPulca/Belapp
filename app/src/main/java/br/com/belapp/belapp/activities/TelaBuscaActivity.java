@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -211,6 +212,7 @@ public class TelaBuscaActivity extends AppCompatActivity implements DatePickerDi
         now.set(Calendar.DAY_OF_MONTH, dayOfMonth);
         mDataSelecionada = DateUtils.converterDataParaString(now);
         metDataBusca.setText( mDataSelecionada);
+        Log.d("TELA01",mDataSelecionada);
         buscarPorData(mDataSelecionada);
     }
 
@@ -227,6 +229,7 @@ public class TelaBuscaActivity extends AppCompatActivity implements DatePickerDi
                     Agendamento agendamento = dataSnapshot.getValue(Agendamento.class);
                     if (Objects.requireNonNull(agendamento).getmData().equals(data)) {
                         mAgendamentos.add(agendamento);
+                        Log.d("TELA02",agendamento.getmId());
                     }
                 }
 
