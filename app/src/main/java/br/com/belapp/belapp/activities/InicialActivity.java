@@ -163,17 +163,6 @@ public class InicialActivity extends AppCompatActivity
                     startActivity(intent);
                     Toast.makeText(InicialActivity.this, "Cabelo", Toast.LENGTH_SHORT).show();
                 }
-
-                categoria = "Cabelo";
-                Intent intent = new Intent(InicialActivity.this, SaloesActivity.class);
-                intent.putExtra("categoria", "Cabelo");
-                intent.putExtra("latitude", localizacao.getLatitude());
-                intent.putExtra("longitude", localizacao.getLongitude());
-                intent.putExtra("ids", ids);
-                intent.putExtra("idcateg", idcateg);
-                startActivity(intent);
-                Toast.makeText(InicialActivity.this, "Cabelo", Toast.LENGTH_SHORT).show();
-
             }
         });
         btnDepilacao.setOnClickListener(new View.OnClickListener() {
