@@ -106,9 +106,6 @@ public class InicialActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        //verifica se esta logado
-        isLogado();
-
         localizar();
 
         btnBarba = findViewById(R.id.ibBarba);
@@ -130,7 +127,10 @@ public class InicialActivity extends AppCompatActivity
         servicos = new ArrayList<>();
 
         buscar();
-      //  dialogBuscando();
+        dialogBuscando();
+
+        //verifica se esta logado
+        isLogado();
 
         btnBarba.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -264,7 +264,7 @@ public class InicialActivity extends AppCompatActivity
                 idcateg.add(servico.getmCategoria());
 
                // myAdapter.notifyDataSetChanged();
-               // mProgressDialog.dismiss();
+                mProgressDialog.dismiss();
             }
 
             @Override
@@ -300,6 +300,7 @@ public class InicialActivity extends AppCompatActivity
 
     public void isLogado() {
         if (logado.getCurrentUser() != null) {
+            mProgressDialog.dismiss();
             abrirTelaPrincipal();
 
         }
