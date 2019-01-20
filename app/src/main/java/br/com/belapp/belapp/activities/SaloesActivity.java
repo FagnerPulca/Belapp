@@ -211,18 +211,20 @@ public class SaloesActivity extends AppCompatActivity implements SalaoAdapter.It
     }
 
     private void somarCargaTrabalho(){
-        ArrayList<Estabelecimento> estabelecimentosTemp = new ArrayList<>();
-        for (int i = 0; i < mAgendamentos.size(); i++) {
-            String idEstab = mAgendamentos.get(i).getmEstabelecimento().getmEid();
-            int duracao = mAgendamentos.get(i).getmServico().getmDuracao();
-            if (mapaAgendamento.get(idEstab) != null) {
-                int valor = mapaAgendamento.get(idEstab);
-                valor += duracao;
-                mapaAgendamento.put(idEstab, valor);
-            } else {
-                mapaAgendamento.put(idEstab, duracao);
-                if (!estabelecimentosTemp.contains(mAgendamentos.get(i).getmEstabelecimento())) {
-                    estabelecimentosTemp.add(mAgendamentos.get(i).getmEstabelecimento());
+        if(mAgendamentos != null) {
+            ArrayList<Estabelecimento> estabelecimentosTemp = new ArrayList<>();
+            for (int i = 0; i < mAgendamentos.size(); i++) {
+                String idEstab = mAgendamentos.get(i).getmEstabelecimento().getmEid();
+                int duracao = mAgendamentos.get(i).getmServico().getmDuracao();
+                if (mapaAgendamento.get(idEstab) != null) {
+                    int valor = mapaAgendamento.get(idEstab);
+                    valor += duracao;
+                    mapaAgendamento.put(idEstab, valor);
+                } else {
+                    mapaAgendamento.put(idEstab, duracao);
+                    if (!estabelecimentosTemp.contains(mAgendamentos.get(i).getmEstabelecimento())) {
+                        estabelecimentosTemp.add(mAgendamentos.get(i).getmEstabelecimento());
+                    }
                 }
             }
         }
