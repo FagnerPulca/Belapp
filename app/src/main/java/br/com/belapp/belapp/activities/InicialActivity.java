@@ -130,7 +130,7 @@ public class InicialActivity extends AppCompatActivity
         servicos = new ArrayList<>();
 
         buscar();
-        dialogBuscando();
+      //  dialogBuscando();
 
         btnBarba.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -264,7 +264,7 @@ public class InicialActivity extends AppCompatActivity
                 idcateg.add(servico.getmCategoria());
 
                // myAdapter.notifyDataSetChanged();
-                mProgressDialog.dismiss();
+               // mProgressDialog.dismiss();
             }
 
             @Override
